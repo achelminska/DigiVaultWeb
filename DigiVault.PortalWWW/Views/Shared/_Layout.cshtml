@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DigiVault</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-base-100 min-h-screen">
+
+<div class="navbar bg-neutral shadow-lg px-4">
+    
+    @*LOGO*@
+    <div class="navbar-start">
+        <a href="/" class="text-xl font-bold text-white tracking-tight">
+            Digi<span class="text-primary">Vault</span>
+        </a>
+    </div>
+
+    @*ŚRODEK - desktop*@
+    <div class="navbar-center hidden lg:flex gap-1">
+        <a href="/courses" class="btn btn-ghost btn-sm text-base-content">Search</a>
+        <a href="/my-vault" class="btn btn-ghost btn-sm text-base-content">My Vault</a>
+        <a href="/wishlist" class="btn btn-ghost btn-sm text-base-content">Wishlist</a>
+    </div>
+
+    @*PRAWA STRONA*@
+    <div class="navbar-end gap-2">
+        @*Koszyk*@
+        <a href="/cart" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m5-9v9m4-9v9m5-9l2 9" />
+            </svg>
+        </a>
+
+        @*Zaloguj się*@
+        <a href="/login" class="btn btn-primary btn-sm">Zaloguj się</a>
+
+        @*Hamburger - mobile*@
+        <div class="dropdown dropdown-end lg:hidden">
+            <label tabindex="0" class="btn btn-ghost btn-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </label>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-neutral rounded-box w-52">
+                <li><a href="/courses">Search</a></li>
+                <li><a href="/my-vault">My Vault</a></li>
+                <li><a href="/wishlist">Wishlist</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<main class="container mx-auto px-4 py-6">
+    @RenderBody()
+</main>
+
+@RenderSection("Scripts", required: false)
+</body>
+</html>
