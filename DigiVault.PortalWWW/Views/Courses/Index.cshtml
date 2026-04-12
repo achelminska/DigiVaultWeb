@@ -13,6 +13,8 @@
 @* WYSZUKIWARKA *@
 <section class="mb-4">
     <form asp-action="Index" method="get">
+        <input type="hidden" name="sortBy" value="@Model.CurrentSortBy" />
+        <input type="hidden" name="idCategory" value="@Model.CurrentCategory" />
     <label class="input rounded-full bg-black border-gray-700 w-full flex items-center gap-2">
         <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
@@ -52,6 +54,7 @@
             <a asp-action="Index" 
                asp-route-idCategory="@category.IdCategory"
                asp-route-search="@Model.CurrentSearch"
+               asp-route-sortBy="@Model.CurrentSortBy"
                class="badge badge-outline rounded-full px-4 py-3 cursor-pointer hover:scale-105 transition-transform @categoryClass">
                 @category.Name
             </a>
