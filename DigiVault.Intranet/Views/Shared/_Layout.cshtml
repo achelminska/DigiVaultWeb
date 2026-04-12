@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="pl" data-theme="black">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DigiVault Intranet</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="bg-black min-h-screen flex">
+
+    @* SIDEBAR *@
+    <aside class="w-64 min-h-screen bg-black flex-shrink-0 flex flex-col border-r border-gray-800">
+        
+        @* LOGO *@
+        <div class="p-6 border-b border-gray-800">
+            <a href="/dashboard">
+                <img src="~/images/logoDV.png" alt="DigiVault" class="h-12" />
+            </a>
+        </div>
+
+        @* MENU *@
+        <nav class="flex-1 p-4">
+            <ul class="flex flex-col gap-1">
+                <li>
+                    <a href="/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-chart-line w-4"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/users" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-users w-4"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/courses" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-book w-4"></i>
+                        <span>Courses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/orders" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-shopping-cart w-4"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/reports" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-flag w-4"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-2"></div>
+                <li>
+                    <a href="/cms" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-file-alt w-4"></i>
+                        <span>CMS</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/settings" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-white hover:text-black transition-colors">
+                        <i class="fa fa-cog w-4"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        @* UŻYTKOWNIK NA DOLE *@
+        <div class="p-4 border-t border-gray-800">
+            <div class="flex items-center gap-3">
+                <div class="avatar placeholder">
+                    <div class="bg-gray-700 text-white rounded-full w-8">
+                        <span class="text-xs">AC</span>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-white text-sm font-semibold">Aleksandra</p>
+                    <p class="text-gray-500 text-xs">Admin</p>
+                </div>
+                <a href="/account/login" class="ml-auto text-gray-500 hover:text-white">
+                    <i class="fa fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+    </aside>
+
+    @* GŁÓWNA TREŚĆ *@
+    <div class="flex-1 flex flex-col min-h-screen">
+        
+        @* TOPBAR *@
+        <header class="bg-black border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+            <h1 class="text-white font-semibold">@ViewData["Title"]</h1>
+            <div class="flex items-center gap-3">
+                <button class="btn btn-ghost btn-circle btn-md text-gray-400">
+                    <i class="fa fa-bell text-2xl"></i>
+                </button>
+            </div>
+        </header>
+
+        @* TREŚĆ *@
+        <main class="flex-1 p-6">
+            @RenderBody()
+        </main>
+
+    </div>
+
+</body>
+</html>

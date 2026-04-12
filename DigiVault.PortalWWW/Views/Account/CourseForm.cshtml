@@ -1,8 +1,76 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "Course Form";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<section class="py-6">
+    <h1 class="text-white text-4xl font-bold mb-6">Add Course</h1>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        @* FORMULARZ *@
+        <div class="flex-1">
+            <div class="flex flex-col gap-4">
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Title</label>
+                    <input type="text" placeholder="Course title..." class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Description</label>
+                    <textarea placeholder="Course description..." class="textarea bg-black text-white border-gray-700 rounded-lg w-full h-32"></textarea>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Category</label>
+                    <div class="dropdown w-full">
+                        <div tabindex="0" role="button" class="btn bg-black text-white border-gray-700 rounded-lg w-full justify-start font-normal">
+                            Select category ▾
+                        </div>
+                        <ul tabindex="-1" class="dropdown-content menu bg-black rounded-lg z-10 w-full p-2 border border-gray-700">
+                            <li><a class="text-white hover:bg-white hover:text-black">Web Development</a></li>
+                            <li><a class="text-white hover:bg-white hover:text-black">Mobile Development</a></li>
+                            <li><a class="text-white hover:bg-white hover:text-black">DevOps & Cloud</a></li>
+                            <li><a class="text-white hover:bg-white hover:text-black">Data Science & AI</a></li>
+                            <li><a class="text-white hover:bg-white hover:text-black">UI/UX Design</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Price (PLN)</label>
+                    <input type="number" placeholder="0.00" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Image URL</label>
+                    <input type="text" placeholder="https://..." class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                </div>
+
+                <div class="flex gap-3 mt-4">
+                    <button class="btn bg-white text-black rounded-full px-8 hover:bg-gray-200 font-bold">
+                        Save Course
+                    </button>
+                    <a href="/account" class="btn bg-black text-white border-gray-700 rounded-full px-8 hover:bg-white hover:text-black">
+                        Cancel
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        @* PODGLĄD *@
+        <div class="lg:w-80">
+            <div class="card bg-black border border-gray-800 rounded-xl overflow-hidden sticky top-4">
+                <div class="aspect-video bg-gray-900 flex items-center justify-center">
+                    <p class="text-gray-600 text-sm">Image preview</p>
+                </div>
+                <div class="p-4">
+                    <p class="text-gray-600 text-sm">Course title will appear here</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,158 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+    var popularCourses = Model.PopularCourses;
+    var newestCourses = Model.NewestCourses;
+    var topRatedCourses = Model.TopRatedCourses;
+    var categories = Model.Categories;
+}
+
+@* HERO *@
+<section class="py-8">
+    <h2 class="text-gray-400 text-lg">Hello,</h2>
+    <h1 class="text-white text-4xl font-bold">Aleksandra</h1>
+</section>
+
+@* MOST POPULAR *@
+<section class="py-4">
+    <h2 class="text-white text-2xl font-bold mb-4">🔥 Most Popular</h2>
+    <div class="relative">
+        
+        @* PRZYCISK LEWO *@
+        <button onclick="scrollCarouselLeft('popular')" 
+                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -ml-8 hover:bg-white hover:text-black hover:border-white">
+            ❮
+        </button>
+
+        @* KARUZELA *@
+        <div id="popular" class="flex gap-4 overflow-x-auto pb-4" style="scrollbar-width: none;">
+            @* KARTA - powiel tyle razy ile kursów *@
+        @foreach (var course in popularCourses)
+        {
+            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.IdCourse">
+            <div class="card bg-black min-w-[260px] max-w-[260px] shadow-xl flex-shrink-0">
+                <figure>
+                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
+                </figure>
+                <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">@course.Title</h3>
+                <p class="text-gray-400 text-xs">@course.AuthorName</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                    ⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span>
+                </div>
+                <p class="text-white font-bold">@course.Price.ToString("0.00") PLN</p>
+            </div>
+             </div>
+             </a>
+        }
+
+        </div>
+
+        @* PRZYCISK PRAWO *@
+        <button onclick="scrollCarouselRight('popular')" 
+                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -mr-8 hover:bg-white hover:text-black hover:border-white">
+            ❯
+        </button>
+        
+        
+    </div>
+</section>
+
+@* CATEGORIES *@
+<section class="py-4">
+    <h2 class="text-white text-2xl font-bold mb-4">Categories</h2>
+    <div class="flex flex-wrap gap-3">
+        @foreach (var category in Model.Categories)
+        {
+            <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">@category.Name</span>
+        }
+    </div>
+</section>
+
+@* NEWEST *@
+<section class="py-4">
+    <h2 class="text-white text-2xl font-bold mb-4">🔥 Newest</h2>
+    <div class="relative">
+        
+        @* PRZYCISK LEWO *@
+        <button onclick="scrollCarouselLeft('newest')" 
+                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -ml-8 hover:bg-white hover:text-black hover:border-white">
+            ❮
+        </button>
+
+        @* KARUZELA *@
+        <div id="newest" class="flex gap-4 overflow-x-auto pb-4" style="scrollbar-width: none;">
+            @* KARTA - powiel tyle razy ile kursów *@
+        @foreach (var course in newestCourses)
+        {
+            <div class="card bg-neutral min-w-[260px] max-w-[260px] shadow-xl flex-shrink-0">
+                <figure>
+                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
+                </figure>
+                <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">@course.Title</h3>
+                <p class="text-gray-400 text-xs">@course.AuthorName</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                    ⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span>
+                </div>
+                <p class="text-white font-bold">@course.Price.ToString("0.00") PLN</p>
+            </div>
+             </div>
+        }
+
+        </div>
+
+        @* PRZYCISK PRAWO *@
+        <button onclick="scrollCarouselRight('newest')" 
+                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -mr-8 hover:bg-white hover:text-black hover:border-white">
+            ❯
+        </button>
+        
+        
+    </div>
+</section>
+
+@* TOP RATED *@
+<section class="py-4">
+    <h2 class="text-white text-2xl font-bold mb-4">🔥 Top Rated</h2>
+    <div class="relative">
+        
+        @* PRZYCISK LEWO *@
+        <button onclick="scrollCarouselLeft('top-rated')" 
+                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -ml-8 hover:bg-white hover:text-black hover:border-white">
+            ❮
+        </button>
+
+        @* KARUZELA *@
+        <div id="top-rated" class="flex gap-4 overflow-x-auto pb-4" style="scrollbar-width: none;">
+            @* KARTA - powiel tyle razy ile kursów *@
+        @foreach (var course in topRatedCourses)
+        {
+            <div class="card bg-neutral min-w-[260px] max-w-[260px] shadow-xl flex-shrink-0">
+                <figure>
+                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
+                </figure>
+                <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">@course.Title</h3>
+                <p class="text-gray-400 text-xs">@course.AuthorName</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                    ⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span>
+                </div>
+                <p class="text-white font-bold">@course.Price.ToString("0.00") PLN</p>
+            </div>
+             </div>
+        }
+
+        </div>
+
+        @* PRZYCISK PRAWO *@
+        <button onclick="scrollCarouselRight('top-rated')" 
+                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -mr-8 hover:bg-white hover:text-black hover:border-white">
+            ❯
+        </button>
+        
+        
+    </div>
+</section>

@@ -9,4 +9,9 @@ public class UsersController : Controller
     {
         return View();
     }
+    
+    public IActionResult Detail(int id)
+    {
+        return View();
+    }
 }

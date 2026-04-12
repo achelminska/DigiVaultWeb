@@ -1,8 +1,146 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "My Account";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<section class="py-6">
+    <h1 class="text-white text-4xl font-bold mb-6">My Account</h1>
+
+    @* ZAKŁADKI *@
+    <div role="tablist" class="tabs tabs-bordered mb-8">
+        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Profile" checked />
+        <div role="tabpanel" class="tab-content pt-6">
+
+            @* PROFIL *@
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1">
+                    <h2 class="text-white text-xl font-bold mb-4">Personal Information</h2>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">First Name</label>
+                            <input type="text" value="Aleksandra" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Last Name</label>
+                            <input type="text" value="Chełmińska" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Email</label>
+                            <input type="email" value="aleksandra@example.com" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Login</label>
+                            <input type="text" value="aleksandra123" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <button class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200 mt-2">Save Changes</button>
+                    </div>
+
+                    <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-8"></div>
+
+                    <h2 class="text-white text-xl font-bold mb-4">Change Password</h2>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Current Password</label>
+                            <input type="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">New Password</label>
+                            <input type="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Confirm New Password</label>
+                            <input type="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <button class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200 mt-2">Change Password</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="My Courses" />
+        <div role="tabpanel" class="tab-content pt-6">
+
+            @* MOJE KURSY *@
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-white text-xl font-bold">My Courses</h2>
+                <button class="btn bg-white text-black rounded-full btn-sm px-6 hover:bg-gray-200">
+                    + Add Course
+                </button>
+            </div>
+
+            <div class="flex flex-col gap-2">
+
+                <div class="flex gap-4 items-center py-4 border-b border-gray-800 px-2">
+                    <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" 
+                         class="w-24 h-16 object-cover rounded-lg flex-shrink-0" />
+                    <div class="flex-1">
+                        <h3 class="text-white font-semibold text-sm">Python – Kompletny Kurs</h3>
+                        <p class="text-gray-400 text-xs mt-1">Web Development • 99.99 PLN</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="badge badge-success badge-sm">Active</span>
+                            <span class="text-gray-400 text-xs">420 sales</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-ghost btn-sm text-gray-400 hover:text-white">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-ghost btn-sm text-red-500 hover:text-red-400">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 items-center py-4 border-b border-gray-800 px-2">
+                    <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" 
+                         class="w-24 h-16 object-cover rounded-lg flex-shrink-0" />
+                    <div class="flex-1">
+                        <h3 class="text-white font-semibold text-sm">HTML i CSS od Zera</h3>
+                        <p class="text-gray-400 text-xs mt-1">Web Development • 49.99 PLN</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="badge badge-success badge-sm">Active</span>
+                            <span class="text-gray-400 text-xs">450 sales</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-ghost btn-sm text-gray-400 hover:text-white">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-ghost btn-sm text-red-500 hover:text-red-400">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Earnings" />
+        <div role="tabpanel" class="tab-content pt-6">
+
+            @* ZAROBKI *@
+            <h2 class="text-white text-xl font-bold mb-6">Earnings</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div class="card bg-black border border-gray-800 rounded-xl p-6">
+                    <p class="text-gray-400 text-sm mb-1">Balance</p>
+                    <p class="text-white text-3xl font-bold">1,250.00 PLN</p>
+                </div>
+                <div class="card bg-black border border-gray-800 rounded-xl p-6">
+                    <p class="text-gray-400 text-sm mb-1">Total Earned</p>
+                    <p class="text-white text-3xl font-bold">8,430.00 PLN</p>
+                </div>
+                <div class="card bg-black border border-gray-800 rounded-xl p-6">
+                    <p class="text-gray-400 text-sm mb-1">Total Withdrawn</p>
+                    <p class="text-white text-3xl font-bold">7,180.00 PLN</p>
+                </div>
+            </div>
+
+            <button class="btn bg-white text-black rounded-full px-8 hover:bg-gray-200">
+                Withdraw Funds
+            </button>
+
+        </div>
+    </div>
+</section>

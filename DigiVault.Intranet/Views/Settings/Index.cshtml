@@ -1,8 +1,29 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "Settings";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<div class="flex flex-col gap-6 max-w-2xl">
+
+    @* PROWIZJA *@
+    <div class="card bg-black border border-gray-800 rounded-xl p-6">
+        <h2 class="text-white font-bold text-lg mb-4">Platform Commission</h2>
+        <p class="text-gray-400 text-sm mb-4">Percentage taken from each course sale by the platform.</p>
+        <div class="flex items-center gap-4">
+            <input type="number" value="15" min="0" max="100" 
+                   class="input bg-black text-white border-gray-700 rounded-lg w-32" />
+            <span class="text-gray-400">%</span>
+            <button class="btn bg-white text-black rounded-full btn-sm px-6 hover:bg-gray-200">
+                Save
+            </button>
+        </div>
+    </div>
+
+    @* SALDO PLATFORMY *@
+    <div class="card bg-black border border-gray-800 rounded-xl p-6">
+        <h2 class="text-white font-bold text-lg mb-4">Platform Balance</h2>
+        <p class="text-gray-400 text-sm mb-4">Total revenue collected by the platform from commissions.</p>
+        <p class="text-white text-4xl font-bold">24,830.00 PLN</p>
+    </div>
+
+</div>

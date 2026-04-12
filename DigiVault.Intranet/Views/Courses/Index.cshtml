@@ -1,8 +1,141 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "Courses";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+@* FILTRY *@
+<div class="flex gap-3 mb-6 flex-wrap justify-between">
+    <div class="flex gap-3 flex-wrap">
+        <label class="input input-sm rounded-full bg-black border-gray-700 flex items-center gap-2 w-64">
+            <svg class="h-4 w-4 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </g>
+            </svg>
+            <input type="search" placeholder="Search courses..." class="bg-transparent text-white outline-none w-full text-sm" />
+        </label>
+        <select class="select select-sm bg-black text-white border-gray-700 rounded-full">
+            <option>All Categories</option>
+            <option>Web Development</option>
+            <option>Mobile Development</option>
+            <option>DevOps & Cloud</option>
+        </select>
+        <select class="select select-sm bg-black text-white border-gray-700 rounded-full">
+            <option>All Status</option>
+            <option>Active</option>
+            <option>Hidden</option>
+            <option>Banned</option>
+        </select>
+    </div>
+</div>
+
+@* TABELA *@
+<div class="card bg-black border border-gray-800 rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+                <tr class="text-gray-400 border-gray-800 bg-black">
+                    <th>Course</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Sales</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-300">
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" 
+                                 class="w-12 h-8 object-cover rounded" />
+                            <p class="text-white text-sm font-semibold">Python – Kompletny Kurs</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">Aleksandra Chełmińska</td>
+                    <td class="text-sm">Web Development</td>
+                    <td class="text-sm">99.99 PLN</td>
+                    <td class="text-sm">420</td>
+                    <td class="text-sm">⭐ 4.8</td>
+                    <td><span class="badge badge-success badge-sm rounded-xl">Active</span></td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-ghost btn-xs text-yellow-500 hover:text-yellow-400">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                            <button class="btn btn-ghost btn-xs text-red-500 hover:text-red-400">
+                                <i class="fa fa-ban"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" 
+                                 class="w-12 h-8 object-cover rounded" />
+                            <p class="text-white text-sm font-semibold">HTML i CSS od Zera</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">Aleksandra Chełmińska</td>
+                    <td class="text-sm">Web Development</td>
+                    <td class="text-sm">49.99 PLN</td>
+                    <td class="text-sm">450</td>
+                    <td class="text-sm">⭐ 4.4</td>
+                    <td><span class="badge badge-warning badge-sm rounded-xl">Hidden</span></td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-ghost btn-xs text-yellow-500 hover:text-yellow-400">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                            <button class="btn btn-ghost btn-xs text-red-500 hover:text-red-400">
+                                <i class="fa fa-ban"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1605745341112-85968b19335b?w=400" 
+                                 class="w-12 h-8 object-cover rounded" />
+                            <p class="text-white text-sm font-semibold">Docker i Kubernetes</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">Jan Kowalski</td>
+                    <td class="text-sm">DevOps & Cloud</td>
+                    <td class="text-sm">179.99 PLN</td>
+                    <td class="text-sm">310</td>
+                    <td class="text-sm">⭐ 4.7</td>
+                    <td><span class="badge badge-error badge-sm rounded-xl">Banned</span></td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-ghost btn-xs text-yellow-500 hover:text-yellow-400">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                            <button class="btn btn-ghost btn-xs text-green-500 hover:text-green-400">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

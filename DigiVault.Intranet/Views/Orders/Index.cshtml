@@ -1,8 +1,112 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "Orders";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+@* FILTRY *@
+<div class="flex gap-3 mb-6 flex-wrap">
+    <label class="input input-sm rounded-full bg-black border-gray-700 flex items-center gap-2 w-64">
+        <svg class="h-4 w-4 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+            </g>
+        </svg>
+        <input type="search" placeholder="Search orders..." class="bg-transparent text-white outline-none w-full text-sm" />
+    </label>
+    <input type="date" class="input input-sm bg-black text-white border-gray-700 rounded-full" />
+    <input type="date" class="input input-sm bg-black text-white border-gray-700 rounded-full" />
+</div>
+
+@* TABELA *@
+<div class="card bg-black border border-gray-800 rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+                <tr class="text-gray-400 border-gray-800 bg-black">
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-300">
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td class="font-mono text-xs text-gray-400">#1021</td>
+                    <td>
+                        <div>
+                            <p class="text-white text-sm">Aleksandra Chełmińska</p>
+                            <p class="text-gray-500 text-xs">aleksandra@example.com</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">2 courses</td>
+                    <td class="text-white font-bold text-sm">299.98 PLN</td>
+                    <td class="text-sm text-gray-500">25/03/2026</td>
+                    <td>
+                        <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td class="font-mono text-xs text-gray-400">#1020</td>
+                    <td>
+                        <div>
+                            <p class="text-white text-sm">Jan Kowalski</p>
+                            <p class="text-gray-500 text-xs">jan@example.com</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">1 course</td>
+                    <td class="text-white font-bold text-sm">149.99 PLN</td>
+                    <td class="text-sm text-gray-500">24/03/2026</td>
+                    <td>
+                        <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td class="font-mono text-xs text-gray-400">#1019</td>
+                    <td>
+                        <div>
+                            <p class="text-white text-sm">Anna Nowak</p>
+                            <p class="text-gray-500 text-xs">anna@example.com</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">3 courses</td>
+                    <td class="text-white font-bold text-sm">479.97 PLN</td>
+                    <td class="text-sm text-gray-500">24/03/2026</td>
+                    <td>
+                        <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                    <td class="font-mono text-xs text-gray-400">#1018</td>
+                    <td>
+                        <div>
+                            <p class="text-white text-sm">Piotr Wiśniewski</p>
+                            <p class="text-gray-500 text-xs">piotr@example.com</p>
+                        </div>
+                    </td>
+                    <td class="text-sm">1 course</td>
+                    <td class="text-white font-bold text-sm">249.99 PLN</td>
+                    <td class="text-sm text-gray-500">23/03/2026</td>
+                    <td>
+                        <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,8 +1,126 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "Find Course";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+@* TYTUŁ *@
+<section class="py-6">
+    <h1 class="text-white text-4xl font-bold">Search</h1>
+</section>
+
+@* WYSZUKIWARKA *@
+<section class="mb-4">
+    <label class="input rounded-full bg-black border-gray-700 w-full flex items-center gap-2">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+            </g>
+        </svg>
+        <input type="search" placeholder="Search courses..." class="bg-transparent text-white outline-none w-full" />
+    </label>
+</section>
+
+@* FILTRY *@
+<section class="mb-6">
+    <div class="flex flex-wrap gap-3">
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Popular</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Newest</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Top Rated</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">ReactJS</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Web Development</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Mobile Development</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">DevOps & Cloud</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Databases</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Cybersecurity</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Data Science & AI</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">UI/UX Design</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Programming Languages</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Software Architecture</span>
+        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Productivity & Tools</span>
+    </div>
+</section>
+
+@* RESULTS *@
+<section class="mb-20">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-white text-2xl font-bold">Results</h2>
+        <span class="text-gray-400 text-sm">10 courses</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        
+        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">JavaScript – Pełny Kurs 2024</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.7 <span class="text-gray-400">(320)</span></div>
+                <p class="text-white font-bold">149.99 PLN</p>
+            </div>
+        </div>
+
+        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400" class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">TypeScript – Od Podstaw do Zaawansowanych</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.6 <span class="text-gray-400">(210)</span></div>
+                <p class="text-white font-bold">129.99 PLN</p>
+            </div>
+        </div>
+
+        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">Python – Kompletny Kurs dla Początkujących</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.8 <span class="text-gray-400">(420)</span></div>
+                <p class="text-white font-bold">99.99 PLN</p>
+            </div>
+        </div>
+
+        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">HTML i CSS od Zera</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.4 <span class="text-gray-400">(450)</span></div>
+                <p class="text-white font-bold">49.99 PLN</p>
+            </div>
+        </div>
+
+        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1605745341112-85968b19335b?w=400" class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">Docker i Kubernetes</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.7 <span class="text-gray-400">(310)</span></div>
+                <p class="text-white font-bold">179.99 PLN</p>
+            </div>
+        </div>
+
+        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400" class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">Figma dla Programistów</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.6 <span class="text-gray-400">(180)</span></div>
+                <p class="text-white font-bold">129.99 PLN</p>
+            </div>
+        </div>
+
+    </div>
+</section>

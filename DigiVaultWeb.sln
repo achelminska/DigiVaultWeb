@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiVaultWeb", "DigiVaultWeb\DigiVaultWeb.csproj", "{CD77936F-09B7-4D5E-876D-9FEC40C51512}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiVault.Intranet", "DigiVault.Intranet\DigiVault.Intranet.csproj", "{E6C8F1E9-291C-4FF7-832D-EA22B245936D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigiVault.PortalWWW", "DigiVault.PortalWWW\DigiVault.PortalWWW.csproj", "{BEA7902A-CE21-42D5-AD7F-ACD0A91696F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD77936F-09B7-4D5E-876D-9FEC40C51512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD77936F-09B7-4D5E-876D-9FEC40C51512}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD77936F-09B7-4D5E-876D-9FEC40C51512}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD77936F-09B7-4D5E-876D-9FEC40C51512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6C8F1E9-291C-4FF7-832D-EA22B245936D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6C8F1E9-291C-4FF7-832D-EA22B245936D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6C8F1E9-291C-4FF7-832D-EA22B245936D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6C8F1E9-291C-4FF7-832D-EA22B245936D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA7902A-CE21-42D5-AD7F-ACD0A91696F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA7902A-CE21-42D5-AD7F-ACD0A91696F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA7902A-CE21-42D5-AD7F-ACD0A91696F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA7902A-CE21-42D5-AD7F-ACD0A91696F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

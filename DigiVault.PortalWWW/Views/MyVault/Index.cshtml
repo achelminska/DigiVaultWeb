@@ -1,8 +1,81 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "My Vault";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+@* NAGŁÓWEK *@
+<section class="py-6">
+    <h1 class="text-white text-4xl font-bold mb-6">My Vault</h1>
+    
+    @* FILTRY *@
+    <div class="flex gap-3 flex-wrap mb-2">
+        <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-sm bg-black text-white border-gray-800 rounded-full m-1 hover:bg-white hover:text-black">
+                All Categories ▾
+            </div>
+            <ul tabindex="-1" class="dropdown-content menu bg-black rounded-lg z-10 w-52 p-2 border border-gray-800">
+                <li><a class="text-white hover:bg-gray-800 hover:bg-white hover:text-black">All Categories</a></li>
+                <li><a class="text-white hover:bg-gray-800 hover:bg-white hover:text-black">Web Development</a></li>
+                <li><a class="text-white hover:bg-gray-800 hover:bg-white hover:text-black">Mobile Development</a></li>
+            </ul>
+        </div>
+        <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-sm bg-black text-white border-gray-800 rounded-full m-1 hover:bg-white hover:text-black">
+                Sort: Recently Accessed ▾
+            </div>
+            <ul tabindex="-1" class="dropdown-content menu bg-black rounded-lg z-10 w-52 p-2 border border-gray-800">
+                <li><a class="text-white hover:bg-white hover:text-black">Sort: Recently Accessed</a></li>
+                <li><a class="text-white hover:bg-white hover:text-black">Sort: Title A-Z</a></li>
+                <li><a class="text-white hover:bg-white hover:text-black">Sort: Newest</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+@* LISTA KURSÓW *@
+<section class="mb-20">
+    <p class="text-gray-400 text-sm mb-4">3 courses</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+        <div class="card bg-black hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" 
+                     class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">Vue.js 3 – Kompletny Przewodnik</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.5 <span class="text-gray-400">(95)</span></div>
+                <button class="btn btn-sm rounded-full mt-2 bg-black border-gray-700 text-white hover:bg-white hover:text-black">Continue Learning</button>
+            </div>
+        </div>
+
+        <div class="card bg-black hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400" 
+                     class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">Bezpieczeństwo Sieci Komputerowych</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.4 <span class="text-gray-400">(67)</span></div>
+                <button class="btn btn-sm rounded-full mt-2 bg-black border-gray-700 text-white hover:bg-white hover:text-black">Continue Learning</button>
+            </div>
+        </div>
+
+        <div class="card bg-black hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400" 
+                     class="w-full h-40 object-cover" />
+            </figure>
+            <div class="card-body p-4">
+                <h3 class="card-title text-white text-sm">C# – Programowanie Obiektowe</h3>
+                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
+                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.7 <span class="text-gray-400">(195)</span></div>
+                <button class="btn btn-sm rounded-full mt-2 bg-black border-gray-700 text-white hover:bg-white hover:text-black">Continue Learning</button>
+            </div>
+        </div>
+
+    </div>
+</section>

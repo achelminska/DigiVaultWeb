@@ -1,8 +1,92 @@
-@model TModel
-
 @{
-    ViewBag.Title = "title";
+    ViewData["Title"] = "Course Detail";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<section class="py-6">
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        @* LEWA STRONA - info *@
+        <div class="flex-1">
+
+            <span class="badge badge-outline text-white border-gray-600 rounded-full px-4 py-3 mb-4">Web Development</span>
+            <h1 class="text-white text-3xl font-bold mt-4 mb-3">JavaScript – Pełny Kurs 2024</h1>
+            <p class="text-gray-400 mb-4">ES6+, DOM, asynchroniczność, fetch API. Zostań JS developerem.</p>
+
+            <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
+                <i class="fa fa-user"></i>
+                <span>Aleksandra Chełmińska</span>
+            </div>
+
+            <div class="flex items-center gap-2 text-yellow-400 mb-2">
+                ⭐⭐⭐⭐⭐
+                <span class="text-white font-bold">4.7</span>
+                <span class="text-gray-400 text-sm">(320 reviews)</span>
+            </div>
+
+            <div class="flex gap-6 text-gray-400 text-sm mb-6">
+                <span>🛒 290 sold</span>
+                <span>📅 17/03/2026</span>
+            </div>
+
+            <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
+
+            <div class="mb-6">
+                <h2 class="text-white text-xl font-bold mb-3">About</h2>
+                <p class="text-gray-400">ES6+, DOM, asynchroniczność, fetch API. Zostań JS developerem. Naucz się nowoczesnego JavaScriptu od podstaw do zaawansowanych technik.</p>
+            </div>
+
+            <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
+
+            <div class="mb-20">
+                <h2 class="text-white text-xl font-bold mb-4">Reviews</h2>
+                <div class="flex flex-col items-center justify-center py-12 text-gray-600">
+                    <i class="fa fa-comment-dots fa-3x mb-4"></i>
+                    <p>Reviews coming soon</p>
+                </div>
+            </div>
+
+        </div>
+
+        @* PRAWA STRONA - sticky panel *@
+        <div class="lg:w-96">
+            <div class="card bg-black border border-gray-800 rounded-xl overflow-hidden sticky top-4">
+                
+                @* OBRAZEK *@
+                <div class="aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800" 
+                         class="w-full h-full object-cover" />
+                </div>
+
+                <div class="p-6">
+                    <p class="text-white text-3xl font-bold mb-4">149.99 PLN</p>
+                    <button class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200 mb-3">
+                        Add to Cart
+                    </button>
+                    <button class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        Add to Wishlist
+                    </button>
+                    <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-2"></div>
+                    <div class="flex flex-col gap-2 text-gray-400 text-sm">
+                        <div class="flex justify-between">
+                            <span>Category</span>
+                            <span class="text-white">Web Development</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Rating</span>
+                            <span class="text-white">4.7 ⭐</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Sales</span>
+                            <span class="text-white">290</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" data-theme="dark">
+<html lang="pl" data-theme="black">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,37 +7,45 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="~/js/site.js"></script>
 </head>
-<body class="bg-base-100 min-h-screen">
+<body class="bg-base-100 min-h-screen flex flex-col">
 
-<div class="navbar bg-neutral shadow-lg px-4">
+<div class="navbar bg-black shadow-lg px-4 border-b border-gray-800">
     
     @*LOGO*@
     <div class="navbar-start">
-        <a href="/" class="text-xl font-bold text-white tracking-tight">
-            Digi<span class="text-primary">Vault</span>
+        <a href="/" class="">
+            <img src="~/images/logoDV.png" alt="DigiVault" class="h-10" />
         </a>
     </div>
 
     @*ŚRODEK - desktop*@
-    <div class="navbar-center hidden lg:flex gap-1">
-        <a href="/courses" class="btn btn-ghost btn-sm text-base-content">Search</a>
-        <a href="/my-vault" class="btn btn-ghost btn-sm text-base-content">My Vault</a>
-        <a href="/wishlist" class="btn btn-ghost btn-sm text-base-content">Wishlist</a>
+    <div class="navbar-center hidden lg:flex gap-4 items-center">
+        <a href="/courses" class="btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">Find Course</a>
+        <label class="input input-sm rounded-full bg-black border-gray-800 w-64 h-8 flex items-center gap-2 text-white">
+            <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </g>
+            </svg>
+            <input class="[color:white] placeholder:text-white" type="search" required placeholder="Search" />
+        </label>
+        <a href="/myvault" class="btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">My Vault</a>
+        <a href="/wishlist" class="btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">Wishlist</a>
     </div>
 
     @*PRAWA STRONA*@
     <div class="navbar-end gap-2">
         @*Koszyk*@
         <a href="/cart" class="btn btn-ghost btn-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m5-9v9m4-9v9m5-9l2 9" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
         </a>
 
         @*Zaloguj się*@
-        <a href="/login" class="btn btn-primary btn-sm">Zaloguj się</a>
+        <a href="/account" class="btn btn-primary btn-sm rounded-full">My Account</a>
 
         @*Hamburger - mobile*@
         <div class="dropdown dropdown-end lg:hidden">
@@ -47,17 +55,26 @@
                 </svg>
             </label>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-neutral rounded-box w-52">
-                <li><a href="/courses">Search</a></li>
-                <li><a href="/my-vault">My Vault</a></li>
+                <li><a href="/courses">Find Course</a></li>
+                <li><a href="/myvault">My Vault</a></li>
                 <li><a href="/wishlist">Wishlist</a></li>
             </ul>
         </div>
     </div>
 </div>
 
-<main class="container mx-auto px-4 py-6">
+<main class="container mx-auto px-4 py-6 flex-1">
     @RenderBody()
 </main>
+
+@*FOOTER*@
+<footer class="footer footer-center bg-black text-neutral-content items-center p-4 bottom-0 w-full border-t border-gray-800">
+  <aside class="grid-flow-col items-center">
+      <img src="~/images/logoDV.png" alt="DigiVault" class="h-10" />
+    <p>© 2026 - All right reserved</p>
+  </aside>
+</footer>
+
 
 @RenderSection("Scripts", required: false)
 </body>
