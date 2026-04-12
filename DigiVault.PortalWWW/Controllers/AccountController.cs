@@ -15,18 +15,25 @@ public class AccountController(ApiService api) : Controller
     {
         var response = await api.PostAsync<LoginResponse>("/api/auth/login", new
         {
-            email = model.Email,
+            login = model.Login,
             password = model.Password
         });
 
         if (response?.Token is null)
         {
-            ModelState.AddModelError(string.Empty, "Nieprawidłowy email lub hasło.");
+            ModelState.AddModelError(string.Empty, "Nieprawidłowy login lub hasło.");
             return View(model);
         }
 
         HttpContext.Session.SetString("Token", response.Token);
         return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Login", "Account");
     }
     
     public IActionResult Index() => View();
