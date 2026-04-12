@@ -1,6 +1,9 @@
+@model CourseDetailViewModel
+
 @{
     ViewData["Title"] = "Course Detail";
     Layout = "_Layout";
+    var course = Model.Course;
 }
 
 <section class="py-6">
@@ -9,40 +12,55 @@
         @* LEWA STRONA - info *@
         <div class="flex-1">
 
-            <span class="badge badge-outline text-white border-gray-600 rounded-full px-4 py-3 mb-4">Web Development</span>
-            <h1 class="text-white text-3xl font-bold mt-4 mb-3">JavaScript – Pełny Kurs 2024</h1>
-            <p class="text-gray-400 mb-4">ES6+, DOM, asynchroniczność, fetch API. Zostań JS developerem.</p>
+            <span class="badge badge-outline text-white border-gray-600 rounded-full px-4 py-3 mb-4">@course.CategoryName</span>
+            <h1 class="text-white text-3xl font-bold mt-4 mb-3">@course.Title</h1>
+            <p class="text-gray-400 mb-4">@course.Description</p>
 
             <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
                 <i class="fa fa-user"></i>
-                <span>Aleksandra Chełmińska</span>
+                <span>@course.AuthorName</span>
             </div>
 
             <div class="flex items-center gap-2 text-yellow-400 mb-2">
                 ⭐⭐⭐⭐⭐
-                <span class="text-white font-bold">4.7</span>
-                <span class="text-gray-400 text-sm">(320 reviews)</span>
+                <span class="text-white font-bold">@course.AverageRating.ToString("0.0")</span>
+                <span class="text-gray-400 text-sm">(@course.RatingsCount reviews)</span>
             </div>
 
             <div class="flex gap-6 text-gray-400 text-sm mb-6">
-                <span>🛒 290 sold</span>
-                <span>📅 17/03/2026</span>
+                <span>🛒 @course.SalesCount sold</span>
+                <span>@course.CreatedAt.ToString("dd/MM/yyyy")</span>
             </div>
 
             <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
 
             <div class="mb-6">
                 <h2 class="text-white text-xl font-bold mb-3">About</h2>
-                <p class="text-gray-400">ES6+, DOM, asynchroniczność, fetch API. Zostań JS developerem. Naucz się nowoczesnego JavaScriptu od podstaw do zaawansowanych technik.</p>
+                <p class="text-gray-400">@course.Description</p>
             </div>
 
             <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
 
             <div class="mb-20">
                 <h2 class="text-white text-xl font-bold mb-4">Reviews</h2>
-                <div class="flex flex-col items-center justify-center py-12 text-gray-600">
-                    <i class="fa fa-comment-dots fa-3x mb-4"></i>
-                    <p>Reviews coming soon</p>
+                <div class="flex flex-col gap-4">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div class="bg-black border border-gray-800 rounded-xl p-4">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="avatar placeholder">
+                                    <div class="bg-gray-700 text-white rounded-full w-9">
+                                        <span class="text-sm">@(review.AuthorName.Length >= 2 ? review.AuthorName[..2].ToUpper() : review.AuthorName.ToUpper())</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-white font-semibold text-sm">@review.AuthorName</p>
+                                    <p class="text-yellow-400 text-xs">@string.Concat(Enumerable.Repeat("⭐", review.Rating)) @review.Rating.ToString("0.0")</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-sm">@review.Comment</p>
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -54,12 +72,12 @@
                 
                 @* OBRAZEK *@
                 <div class="aspect-video overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800" 
+                    <img src=@course.ImageUrl 
                          class="w-full h-full object-cover" />
                 </div>
 
                 <div class="p-6">
-                    <p class="text-white text-3xl font-bold mb-4">149.99 PLN</p>
+                    <p class="text-white text-3xl font-bold mb-4">@course.Price.ToString("0.00") PLN</p>
                     <button class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200 mb-3">
                         Add to Cart
                     </button>
@@ -73,15 +91,15 @@
                     <div class="flex flex-col gap-2 text-gray-400 text-sm">
                         <div class="flex justify-between">
                             <span>Category</span>
-                            <span class="text-white">Web Development</span>
+                            <span class="text-white">@course.CategoryName</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Rating</span>
-                            <span class="text-white">4.7 ⭐</span>
+                            <span class="text-white">@course.AverageRating.ToString("0.0") ⭐</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Sales</span>
-                            <span class="text-white">290</span>
+                            <span class="text-white">@course.SalesCount</span>
                         </div>
                     </div>
                 </div>

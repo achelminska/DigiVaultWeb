@@ -31,12 +31,12 @@
             @* KARTA - powiel tyle razy ile kursów *@
         @foreach (var course in popularCourses)
         {
-            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.IdCourse">
-            <div class="card bg-black min-w-[260px] max-w-[260px] shadow-xl flex-shrink-0 outline outline-1 outline-gray-700" style="height: 320px;">
+            <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
+            <div class="card bg-black min-w-[260px] max-w-[260px] hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg flex-shrink-0" style="height: 320px;">
                 <figure class="flex-shrink-0">
-                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
+                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-40 object-cover" />
                 </figure>
-                <div class="card-body p-4 flex flex-col">
+                <div class="card-body p-4">
                     <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
                     <p class="text-gray-400 text-xs">@course.AuthorName</p>
                     <div class="flex items-center gap-1 text-yellow-400 text-xs">
@@ -87,8 +87,8 @@
             @* KARTA - powiel tyle razy ile kursów *@
         @foreach (var course in newestCourses)
         {
-            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.IdCourse">
-            <div class="card bg-black min-w-[260px] max-w-[260px] shadow-xl flex-shrink-0 outline outline-1 outline-gray-700" style="height: 320px;">
+            <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
+            <div class="card bg-black min-w-[260px] max-w-[260px] flex-shrink-0 border border-gray-800 rounded-lg hover:scale-105 transition-transform cursor-pointer" style="height: 320px;">
                 <figure>
                     <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
                 </figure>
@@ -132,8 +132,8 @@
             @* KARTA - powiel tyle razy ile kursów *@
         @foreach (var course in topRatedCourses)
         {
-            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.IdCourse">
-            <div class="card bg-black min-w-[260px] max-w-[260px] shadow-xl flex-shrink-0 outline outline-1 outline-gray-700" style="height: 320px;">
+            <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
+            <div class="card bg-black min-w-[260px] max-w-[260px] flex-shrink-0 border border-gray-800 rounded-lg hover:scale-105 transition-transform cursor-pointer" style="height: 320px;">
                 <figure>
                     <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
                 </figure>

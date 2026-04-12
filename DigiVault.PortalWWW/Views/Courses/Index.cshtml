@@ -1,3 +1,5 @@
+@model CoursesIndexViewModel
+
 @{
     ViewData["Title"] = "Find Course";
     Layout = "_Layout";
@@ -10,6 +12,7 @@
 
 @* WYSZUKIWARKA *@
 <section class="mb-4">
+    <form asp-action="Index" method="get">
     <label class="input rounded-full bg-black border-gray-700 w-full flex items-center gap-2">
         <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
@@ -17,27 +20,42 @@
                 <path d="m21 21-4.3-4.3"></path>
             </g>
         </svg>
-        <input type="search" placeholder="Search courses..." class="bg-transparent text-white outline-none w-full" />
+        <input type="search" placeholder="Search courses..." value="@Model.CurrentSearch" name="search" class="bg-transparent text-white outline-none w-full" />
     </label>
+    </form>
 </section>
 
 @* FILTRY *@
 <section class="mb-6">
+    @* SORTOWANIE *@
+    <div class="flex flex-wrap gap-3 mb-3">
+        @{ var sortOptions = new[] { ("popular", "Popular"), ("newest", "Newest"), ("top-rated", "Top Rated") }; }
+        @foreach (var (value, label) in sortOptions)
+        {
+            var sortClass = Model.CurrentSortBy == value ? "bg-white text-black border-white" : "text-white border-gray-500 hover:bg-white hover:text-black";
+            <a asp-action="Index"
+               asp-route-sortBy="@value"
+               asp-route-search="@Model.CurrentSearch"
+               asp-route-idCategory="@Model.CurrentCategory"
+               class="badge badge-outline rounded-full px-4 py-3 cursor-pointer hover:scale-105 transition-transform @sortClass">
+                @label
+            </a>
+        }
+    </div>
+
+    @* KATEGORIE *@
     <div class="flex flex-wrap gap-3">
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Popular</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Newest</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Top Rated</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">ReactJS</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Web Development</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Mobile Development</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">DevOps & Cloud</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Databases</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Cybersecurity</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Data Science & AI</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">UI/UX Design</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Programming Languages</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Software Architecture</span>
-        <span class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">Productivity & Tools</span>
+        
+        @foreach (var category in Model.Categories)
+        {
+            var categoryClass = Model.CurrentCategory == category.IdCategory ? "bg-white text-black border-white" : "text-white border-gray-500 hover:bg-white hover:text-black";
+            <a asp-action="Index" 
+               asp-route-idCategory="@category.IdCategory"
+               asp-route-search="@Model.CurrentSearch"
+               class="badge badge-outline rounded-full px-4 py-3 cursor-pointer hover:scale-105 transition-transform @categoryClass">
+                @category.Name
+            </a>
+        }
     </div>
 </section>
 
@@ -45,82 +63,44 @@
 <section class="mb-20">
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-white text-2xl font-bold">Results</h2>
-        <span class="text-gray-400 text-sm">10 courses</span>
+        <span class="text-gray-400 text-sm">@Model.Courses.Count() courses</span>
     </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         
-        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
-            <figure>
-                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" class="w-full h-40 object-cover" />
-            </figure>
-            <div class="card-body p-4">
-                <h3 class="card-title text-white text-sm">JavaScript – Pełny Kurs 2024</h3>
-                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.7 <span class="text-gray-400">(320)</span></div>
-                <p class="text-white font-bold">149.99 PLN</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    @foreach (var course in Model.Courses)
+    {
+        <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
+            <div class="card bg-black hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg" style="height: 320px;">
+                <figure class="flex-shrink-0">
+                    <img src="@(course.ImageUrl ?? "/images/default.png")" class="w-full h-40 object-cover" />
+                </figure>
+                <div class="card-body p-4 flex flex-col">
+                    <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
+                    <p class="text-gray-400 text-xs">@course.AuthorName</p>
+                    <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span></div>
+                    <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
+                </div>
             </div>
-        </div>
+        </a>
+    }
+</div>
 
-        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
-            <figure>
-                <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400" class="w-full h-40 object-cover" />
-            </figure>
-            <div class="card-body p-4">
-                <h3 class="card-title text-white text-sm">TypeScript – Od Podstaw do Zaawansowanych</h3>
-                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.6 <span class="text-gray-400">(210)</span></div>
-                <p class="text-white font-bold">129.99 PLN</p>
-            </div>
-        </div>
-
-        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
-            <figure>
-                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" class="w-full h-40 object-cover" />
-            </figure>
-            <div class="card-body p-4">
-                <h3 class="card-title text-white text-sm">Python – Kompletny Kurs dla Początkujących</h3>
-                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.8 <span class="text-gray-400">(420)</span></div>
-                <p class="text-white font-bold">99.99 PLN</p>
-            </div>
-        </div>
-
-        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
-            <figure>
-                <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" class="w-full h-40 object-cover" />
-            </figure>
-            <div class="card-body p-4">
-                <h3 class="card-title text-white text-sm">HTML i CSS od Zera</h3>
-                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.4 <span class="text-gray-400">(450)</span></div>
-                <p class="text-white font-bold">49.99 PLN</p>
-            </div>
-        </div>
-
-        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
-            <figure>
-                <img src="https://images.unsplash.com/photo-1605745341112-85968b19335b?w=400" class="w-full h-40 object-cover" />
-            </figure>
-            <div class="card-body p-4">
-                <h3 class="card-title text-white text-sm">Docker i Kubernetes</h3>
-                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.7 <span class="text-gray-400">(310)</span></div>
-                <p class="text-white font-bold">179.99 PLN</p>
-            </div>
-        </div>
-
-        <div class="card bg-neutral shadow-xl cursor-pointer hover:scale-105 transition-transform">
-            <figure>
-                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400" class="w-full h-40 object-cover" />
-            </figure>
-            <div class="card-body p-4">
-                <h3 class="card-title text-white text-sm">Figma dla Programistów</h3>
-                <p class="text-gray-400 text-xs">Aleksandra Chełmińska</p>
-                <div class="flex items-center gap-1 text-yellow-400 text-xs">⭐ 4.6 <span class="text-gray-400">(180)</span></div>
-                <p class="text-white font-bold">129.99 PLN</p>
-            </div>
-        </div>
-
-    </div>
 </section>
+
+@* PAGINATION *@
+@if (Model.TotalPages > 1)
+{
+    <div class="flex justify-center gap-2 mt-6">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            var pageClass = i == Model.CurrentPage ? "bg-white text-black" : "bg-black text-white border-gray-700";
+            <a asp-action="Index" asp-route-page="@i"
+                asp-route-search="@Model.CurrentSearch"
+                asp-route-idCategory="@Model.CurrentCategory"
+                asp-route-sortBy="@Model.CurrentSortBy"
+                class="btn btn-sm rounded-full @pageClass">
+                @i
+            </a>
+        }
+    </div>
+}
