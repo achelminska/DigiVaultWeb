@@ -8,6 +8,8 @@
 
 Web front-end for **DigiVault** — a digital course marketplace. This solution contains two ASP.NET Core MVC applications: a customer-facing public portal and an internal administration panel (intranet). Both communicate with the [DigiVault API](https://github.com/AIChelminska/DigiVaultAPI) over HTTP.
 
+> 🚧 This project is a work in progress. Some views and features are still being implemented.
+
 ---
 
 ## Table of Contents
@@ -32,7 +34,7 @@ Web front-end for **DigiVault** — a digital course marketplace. This solution 
 | Project | Description |
 |---------|-------------|
 | `DigiVault.PortalWWW` | Public-facing customer portal — browse courses, manage cart and wishlist, view orders, log in |
-| `DigiVault.Intranet` | Internal administration panel — dashboard and management views for staff *(mostly in progress)* |
+| `DigiVault.Intranet` | Internal administration panel — dashboard and management views for staff *(stub views, in progress)* |
 
 Both projects live in the same solution (`DigiVaultWeb.sln`) and target **.NET 9**.
 
