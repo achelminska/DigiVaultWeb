@@ -1,5 +1,47 @@
+## Build output
 bin/
 obj/
-/packages/
-riderModule.iml
+
+## NuGet packages
+packages/
+*.nupkg
+*.snupkg
+
+## Visual Studio / MSBuild
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
 /_ReSharper.Caches/
+
+## JetBrains Rider
+.idea/
+*.DotSettings.user
+riderModule.iml
+
+## macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+## Environment / secrets
+.env
+.env.*
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+# appsettings.json is intentionally kept tracked.
+# Do NOT store secrets (connection strings, JWT keys, API keys) in appsettings.json.
+
+## Logs
+*.log
+logs/
+
+## Temporary files
+*.tmp
+*.temp
+*~
