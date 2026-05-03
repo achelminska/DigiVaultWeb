@@ -29,6 +29,20 @@ app.UseHttpsRedirection();
 app.UseSession();
 app.UseRouting();
 
+app.Use(async (context, next) =>
+{
+    var token = context.Session.GetString("Token");
+    var path = context.Request.Path.Value ?? "";
+
+    if (token == null && !path.StartsWith("/account", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Response.Redirect("/account/login");
+        return;
+    }
+
+    await next();
+});
+
 app.UseAuthorization();
 
 app.MapStaticAssets();

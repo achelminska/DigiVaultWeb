@@ -24,6 +24,14 @@ public async Task<T> GetAsync<T>(string endpoint)
     return await response.Content.ReadFromJsonAsync<T>();
 }
 
+public async Task<T?> PostWithResponseAsync<T>(string endpoint, object data)
+{
+    SetAuthHeader();
+    var response = await _client.PostAsJsonAsync(endpoint, data);
+    response.EnsureSuccessStatusCode();
+    return await response.Content.ReadFromJsonAsync<T>();
+}
+
 public async Task PostAsync(string endpoint, object data)
 {
     SetAuthHeader();

@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
-using DigiVault.PortalWWW.Models;
-using DigiVault.PortalWWW.Services;
+using DigiVault.Intranet.Models;
+using DigiVault.Intranet.Services;
 
-namespace DigiVault.PortalWWW.Controllers;
+namespace DigiVault.Intranet.Controllers;
 
 public class AccountController(ApiService api) : Controller
 {
-    // GET
     [HttpGet]
     public IActionResult Login() => View();
-    
+
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        var response = await api.PostAsync<LoginResponse>("/api/auth/login", new
+        var response = await api.PostWithResponseAsync<LoginResponse>("api/auth/login", new
         {
             login = model.Login,
             password = model.Password
@@ -21,12 +20,12 @@ public class AccountController(ApiService api) : Controller
 
         if (response?.Token is null)
         {
-            ModelState.AddModelError(string.Empty, "Nieprawidłowy login lub hasło.");
+            ModelState.AddModelError(string.Empty, "Invalid login or password.");
             return View(model);
         }
 
         HttpContext.Session.SetString("Token", response.Token);
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Dashboard");
     }
 
     [HttpGet]
