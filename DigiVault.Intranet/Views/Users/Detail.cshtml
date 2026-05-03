@@ -1,3 +1,4 @@
+@model DigiVault.Intranet.Models.AdminUserDetailDto
 @{
     ViewData["Title"] = "User Detail";
     Layout = "_Layout";
@@ -19,98 +20,83 @@
             <div class="flex items-center gap-4 mb-6">
                 <div class="avatar placeholder">
                     <div class="bg-gray-700 text-white rounded-full w-16">
-                        <span class="text-xl">AC</span>
+                        <span class="text-xl">@Model.FirstName[0]@Model.LastName[0]</span>
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-white text-2xl font-bold">Aleksandra Chełmińska</h1>
-                    <p class="text-gray-500 text-sm">aleksandra123</p>
-                    <p class="text-gray-500 text-sm">aleksandra@example.com</p>
+                    <h1 class="text-white text-2xl font-bold">@Model.FirstName @Model.LastName</h1>
+                    <p class="text-gray-500 text-sm">@Model.Login</p>
+                    <p class="text-gray-500 text-sm">@Model.Email</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
                     <p class="text-gray-400">Role</p>
-                    <span class="badge badge-warning mt-1 rounded-full">Worker</span>
+                    <span class="badge @(Model.Role == "Worker" ? "badge-warning" : "bg-white text-black") mt-1 rounded-full">@Model.Role</span>
                 </div>
                 <div>
                     <p class="text-gray-400">Status</p>
-                    <span class="badge badge-success mt-1 rounded-full">Active</span>
+                    <span class="badge @(Model.IsActive ? "badge-success" : "badge-error") mt-1 rounded-full">@(Model.IsActive ? "Active" : "Banned")</span>
                 </div>
                 <div>
                     <p class="text-gray-400">Warnings</p>
-                    <p class="text-white font-bold">0</p>
-                </div>
-                <div>
-                    <p class="text-gray-400">Joined</p>
-                    <p class="text-white">01/01/2026</p>
+                    <p class="text-white font-bold">@Model.WarningsCount</p>
                 </div>
                 <div>
                     <p class="text-gray-400">Balance</p>
-                    <p class="text-white font-bold">1,250.00 PLN</p>
+                    <p class="text-white font-bold">@Model.Balance.ToString("F2") PLN</p>
                 </div>
                 <div>
                     <p class="text-gray-400">Total Withdrawn</p>
-                    <p class="text-white font-bold">7,180.00 PLN</p>
+                    <p class="text-white font-bold">@Model.TotalWithdrawn.ToString("F2") PLN</p>
                 </div>
             </div>
         </div>
 
-        @* KURSY UŻYTKOWNIKA *@
+        @* KURSY STWORZONE *@
         <div class="card bg-black border border-gray-800 rounded-xl p-6 mb-6">
-            <h2 class="text-white font-bold mb-4">Courses</h2>
-            <div class="flex flex-col gap-2">
-                <div class="flex gap-4 items-center py-3 border-b border-gray-800">
-                    <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" 
-                         class="w-16 h-10 object-cover rounded flex-shrink-0" />
-                    <div class="flex-1">
-                        <a href="/courses/detail/1" class="text-white text-sm font-semibold hover:text-gray-300 transition-colors">Python – Kompletny Kurs</a>
-                        <p class="text-gray-500 text-xs">420 sales • 99.99 PLN</p>
-                    </div>
-                    <span class="badge badge-success badge-sm rounded-full text-black">Active</span>
+            <h2 class="text-white font-bold mb-4">Created Courses</h2>
+            @if (Model.CreatedCourses.Any())
+            {
+                <div class="flex flex-col gap-2">
+                    @foreach (var course in Model.CreatedCourses)
+                    {
+                        <div class="flex items-center justify-between py-3 border-b border-gray-800">
+                            <div>
+                                <a href="/courses/detail/@course.IdCourse" class="text-white text-sm font-semibold hover:text-gray-300">@course.Title</a>
+                                <p class="text-gray-500 text-xs">@course.Price.ToString("F2") PLN</p>
+                            </div>
+                            <span class="badge @(course.IsActive ? "badge-success" : "badge-error") badge-sm rounded-full text-black">@(course.IsActive ? "Active" : "Banned")</span>
+                        </div>
+                    }
                 </div>
-                <div class="flex gap-4 items-center py-3 border-b border-gray-800">
-                    <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" 
-                         class="w-16 h-10 object-cover rounded flex-shrink-0" />
-                    <div class="flex-1">
-                        <a href="/courses/detail/2" class="text-white text-sm font-semibold hover:text-gray-300 transition-colors">HTML i CSS od Zera</a>
-                        <p class="text-gray-500 text-xs">450 sales • 49.99 PLN</p>
-                    </div>
-                    <span class="badge badge-success badge-sm rounded-full text-black">Active</span>
-                </div>
-            </div>
+            }
+            else
+            {
+                <p class="text-gray-500 text-sm">No courses created.</p>
+            }
         </div>
 
-        @* ZAMÓWIENIA UŻYTKOWNIKA *@
+        @* KURSY ZAKUPIONE *@
         <div class="card bg-black border border-gray-800 rounded-xl p-6">
-            <h2 class="text-white font-bold mb-4">Orders</h2>
-            <div class="overflow-x-auto">
-                <table class="table table-sm">
-                    <thead>
-                        <tr class="text-gray-400 border-gray-800">
-                            <th>Order ID</th>
-                            <th>Total</th>
-                            <th>Items</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-300">
-                        <tr class="border-gray-800">
-                            <td class="font-mono text-xs">#1021</td>
-                            <td>299.98 PLN</td>
-                            <td>2 courses</td>
-                            <td class="text-gray-500">25/03/2026</td>
-                        </tr>
-                        <tr class="border-gray-800">
-                            <td class="font-mono text-xs">#1015</td>
-                            <td>149.99 PLN</td>
-                            <td>1 course</td>
-                            <td class="text-gray-500">10/03/2026</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h2 class="text-white font-bold mb-4">Purchased Courses</h2>
+            @if (Model.PurchasedCourses.Any())
+            {
+                <div class="flex flex-col gap-2">
+                    @foreach (var course in Model.PurchasedCourses)
+                    {
+                        <div class="flex items-center justify-between py-3 border-b border-gray-800">
+                            <p class="text-white text-sm font-semibold">@course.Title</p>
+                            <p class="text-gray-500 text-xs">@course.Price.ToString("F2") PLN</p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-500 text-sm">No courses purchased.</p>
+            }
         </div>
 
     </div>
@@ -121,23 +107,62 @@
             <h2 class="text-white font-bold mb-4">Admin Actions</h2>
 
             <div class="flex flex-col gap-3">
-                <div class="flex flex-col gap-1">
-                        <button class="btn btn-sm bg-yellow-400 text-black rounded-full hover:bg-yellow-500 flex-1">
-                            Add Warning
+
+                @if (Model.IsActive)
+                {
+                    <form method="post" asp-action="SetNotActive" asp-route-id="@Model.IdUser">
+                        <button type="submit" class="btn btn-error rounded-full w-full hover:bg-red-900 bg-red-700 border-0">
+                            <i class="fa fa-ban mr-2"></i>Ban User
                         </button>
-                </div>
+                    </form>
+                }
+                else
+                {
+                    <form method="post" asp-action="SetActive" asp-route-id="@Model.IdUser">
+                        <button type="submit" class="btn btn-success rounded-full w-full border-0">
+                            <i class="fa fa-check mr-2"></i>Unban User
+                        </button>
+                    </form>
+                }
 
-                <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-1"></div>
-
-                <button class="btn btn-error rounded-full w-full hover:bg-red-900 bg-red-700 border-0">
-                    <i class="fa fa-ban mr-2"></i>Ban User
+                <button onclick="document.getElementById('modal-edit-user').showModal()"
+                        class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black">
+                    <i class="fa fa-edit mr-2"></i>Edit User
                 </button>
 
-                <button class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black">
-                    <i class="fa fa-shield-alt mr-2"></i>Change Role
-                </button>
             </div>
         </div>
     </div>
 
 </div>
+
+@* MODAL: EDIT USER *@
+<dialog id="modal-edit-user" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-4">Edit User</h3>
+        <form method="post" asp-action="Edit" asp-route-id="@Model.IdUser" class="flex flex-col gap-3">
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">Role</label>
+                <select name="role" class="select w-full bg-black text-white border-gray-700 rounded-lg">
+                    <option value="User" selected="@(Model.Role == "User")">User</option>
+                    <option value="Worker" selected="@(Model.Role == "Worker")">Worker</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">Warnings Count</label>
+                <input type="number" name="warningsCount" value="@Model.WarningsCount" min="0"
+                       class="input w-full bg-black text-white border-gray-700 rounded-lg" />
+            </div>
+            <div class="flex items-center gap-3">
+                <input type="checkbox" name="isActive" value="true" checked="@Model.IsActive" class="checkbox" />
+                <label class="text-gray-400 text-sm">Active</label>
+            </div>
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-edit-user').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Save</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>

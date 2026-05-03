@@ -21,14 +21,28 @@ public class UsersController : Controller
 
     public async Task<IActionResult> Detail(int id)
     {
-        return View();
+        var user = await _api.GetAsync<AdminUserDetailDto>($"api/admin/users/{id}");
+        return View(user);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, string role, int warningsCount, bool isActive)
+    {
+        await _api.PutAsync($"api/admin/user/{id}", new
+        {
+            IdUser = id,
+            Role = role == "Worker" ? 1 : 0,
+            WarningsCount = warningsCount,
+            IsActive = isActive
+        });
+        return RedirectToAction(nameof(Detail), new { id });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(string login, string email, string password,
         string firstName, string lastName, string role)
     {
-        await _api.PostAsync("api/admin/users", new
+        await _api.PostAsync("api/admin/user", new
         {
             Login = login,
             Email = email,
