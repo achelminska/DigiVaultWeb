@@ -1,0 +1,154 @@
+@model List<DigiVault.Intranet.Models.CategoryDto>
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "_Layout";
+    var page = (int)ViewData["Page"]!;
+    var totalPages = (int)ViewData["TotalPages"]!;
+    var search = ViewData["Search"] as string;
+}
+
+@* FILTRY + PRZYCISK ADD *@
+<div class="flex gap-3 mb-6 flex-wrap justify-between">
+    <form method="get" class="flex gap-3">
+        <label class="input input-sm rounded-full bg-black border-gray-700 flex items-center gap-2 w-64">
+            <svg class="h-4 w-4 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </g>
+            </svg>
+            <input type="search" name="search" value="@search" placeholder="Search categories..." class="bg-transparent text-white outline-none w-full text-sm" />
+        </label>
+        <button type="submit" class="btn btn-sm btn-ghost text-gray-400">Search</button>
+    </form>
+    <button onclick="document.getElementById('modal-add').showModal()" class="btn bg-white text-black rounded-full btn-sm px-6 hover:bg-gray-200">
+        + Add Category
+    </button>
+</div>
+
+@* TABELA *@
+<div class="card bg-black border border-gray-800 rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+                <tr class="text-gray-400 border-gray-800 bg-black">
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-300">
+                @foreach (var cat in Model)
+                {
+                    <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                        <td class="text-gray-500 text-sm font-mono">@cat.IdCategory</td>
+                        <td class="text-white font-semibold">@cat.Name</td>
+                        <td>
+                            @if (cat.IsActive)
+                            {
+                                <span class="badge badge-success badge-sm rounded-lg">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-error badge-sm rounded-lg">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button onclick="openEditModal(@cat.IdCategory, '@cat.Name')"
+                                        class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button onclick="openDeleteModal(@cat.IdCategory, '@cat.Name')"
+                                        class="btn btn-ghost btn-xs text-red-500 hover:text-red-400">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* PAGINACJA *@
+@if (totalPages > 1)
+{
+    <div class="flex justify-center gap-2 mt-6">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <a href="?page=@i&search=@search"
+               class="btn btn-sm @(i == page ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+                @i
+            </a>
+        }
+    </div>
+}
+
+@* MODAL: ADD *@
+<dialog id="modal-add" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-4">Add Category</h3>
+        <form method="post" asp-action="Create">
+            <input type="text" name="name" placeholder="Category name" required
+                   class="input w-full bg-black text-white border-gray-700 rounded-lg mb-4" />
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-add').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Add</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+@* MODAL: EDIT *@
+<dialog id="modal-edit" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-4">Edit Category</h3>
+        <form method="post" asp-action="Edit">
+            <input type="hidden" id="edit-id" name="id" />
+            <input type="text" id="edit-name" name="name" placeholder="Category name" required
+                   class="input w-full bg-black text-white border-gray-700 rounded-lg mb-4" />
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-edit').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Save</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+@* MODAL: DELETE *@
+<dialog id="modal-delete" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-2">Delete Category</h3>
+        <p class="text-gray-400 mb-4">Are you sure you want to delete <span id="delete-name" class="text-white font-semibold"></span>?</p>
+        <form method="post" asp-action="Delete">
+            <input type="hidden" id="delete-id" name="id" />
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-delete').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn btn-error rounded-full">Delete</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script>
+    function openEditModal(id, name) {
+        document.getElementById('edit-id').value = id;
+        document.getElementById('edit-name').value = name;
+        document.getElementById('modal-edit').showModal();
+    }
+
+    function openDeleteModal(id, name) {
+        document.getElementById('delete-id').value = id;
+        document.getElementById('delete-name').textContent = name;
+        document.getElementById('modal-delete').showModal();
+    }
+</script>
