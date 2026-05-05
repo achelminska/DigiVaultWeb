@@ -1,3 +1,4 @@
+@model DigiVault.Intranet.Models.AdminCourseDetailDto
 @{
     ViewData["Title"] = "Course Detail";
     Layout = "_Layout";
@@ -14,31 +15,30 @@
     @* LEWA STRONA *@
     <div class="flex-1">
 
-        <span class="badge badge-outline text-white border-gray-600 rounded-full px-4 py-3 mb-4">Web Development</span>
-        <h1 class="text-white text-3xl font-bold mt-4 mb-3">Python – Kompletny Kurs</h1>
-        <p class="text-gray-400 mb-4">Kompletny kurs Pythona od podstaw do zaawansowanych technik.</p>
+        <span class="badge badge-outline text-white border-gray-600 rounded-full px-4 py-3 mb-4">@Model.CategoryName</span>
+        <h1 class="text-white text-3xl font-bold mt-4 mb-3">@Model.Title</h1>
+        <p class="text-gray-400 mb-4">@Model.Description</p>
 
         <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
             <i class="fa fa-user"></i>
-            <a href="/users/detail/1" class="hover:text-white transition-colors">Aleksandra Chełmińska</a>
+            <span class="hover:text-white transition-colors">@Model.AuthorName</span>
         </div>
 
         <div class="flex items-center gap-2 text-yellow-400 mb-2">
             ⭐⭐⭐⭐⭐
-            <span class="text-white font-bold">4.8</span>
-            <span class="text-gray-400 text-sm">(420 reviews)</span>
+            <span class="text-white font-bold">@Model.AverageRating.ToString("F1")</span>
         </div>
 
         <div class="flex gap-6 text-gray-400 text-sm mb-6">
-            <span>🛒 420 sold</span>
-            <span>📅 01/01/2026</span>
+            <span>🛒 @Model.SalesCount sold</span>
+            <span>📅 @Model.CreatedAt.ToString("dd/MM/yyyy")</span>
         </div>
 
         <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
 
         <div class="mb-6">
             <h2 class="text-white text-xl font-bold mb-3">About</h2>
-            <p class="text-gray-400">Kompletny kurs Pythona od podstaw do zaawansowanych technik. Naucz się programowania w najbardziej popularnym języku świata.</p>
+            <p class="text-gray-400">@Model.Description</p>
         </div>
 
         <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
@@ -46,35 +46,10 @@
         @* ZGŁOSZENIA *@
         <div class="mb-6">
             <h2 class="text-white text-xl font-bold mb-4">
-                Reports 
-                <span class="badge bg-yellow-400 text-black badge-sm ml-2 rounded-xl">2 pending</span>
+                Reports
+                <span class="badge bg-yellow-400 text-black badge-sm ml-2 rounded-xl">@Model.ReportsCount pending</span>
             </h2>
-            <div class="flex flex-col gap-4">
-                <div class="card bg-black border border-gray-800 rounded-xl p-4">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <p class="text-white text-sm font-semibold">Jan Kowalski</p>
-                            <p class="text-gray-500 text-xs">24/03/2026</p>
-                        </div>
-                        <span class="badge badge-sm bg-yellow-400 text-black rounded-xl">Pending</span>
-                    </div>
-                    <p class="text-gray-400 text-sm">Treść kursu jest nieaktualna i zawiera błędy merytoryczne.</p>
-                    <button class="btn btn-sm bg-black text-white rounded-full hover:bg-green-800 hover:text-black mt-3 w-1/6">
-                        Mark as Resolved
-                    </button>
-                </div>
-
-                <div class="card bg-black border border-gray-800 rounded-xl p-4">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <p class="text-white text-sm font-semibold">Anna Nowak</p>
-                            <p class="text-gray-500 text-xs">23/03/2026</p>
-                        </div>
-                        <span class="badge badge-sm text-black bg-green-800 rounded-xl">Resolved</span>
-                    </div>
-                    <p class="text-gray-400 text-sm">Kurs zawiera skopiowane materiały z innego źródła.</p>
-                </div>
-            </div>
+            <a href="/reports" class="text-gray-400 text-sm hover:text-white">View all reports →</a>
         </div>
 
     </div>
@@ -84,53 +59,82 @@
         <div class="card bg-black border border-gray-800 rounded-xl overflow-hidden sticky top-4">
 
             @* OBRAZEK *@
-            <div class="aspect-video overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800" 
-                     class="w-full h-full object-cover" />
-            </div>
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="aspect-video overflow-hidden">
+                    <img src="@Model.ImageUrl" class="w-full h-full object-cover" />
+                </div>
+            }
 
             <div class="p-6">
-                <p class="text-white text-3xl font-bold mb-4">99.99 PLN</p>
+                <p class="text-white text-3xl font-bold mb-4">@Model.Price.ToString("F2") PLN</p>
 
                 <div class="flex flex-col gap-2 text-gray-400 text-sm mb-6">
                     <div class="flex justify-between">
                         <span>Status</span>
-                        <span class="badge badge-success badge-sm rounded-xl">Active</span>
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge badge-success badge-sm rounded-xl">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-error badge-sm rounded-xl">Banned</span>
+                        }
                     </div>
                     <div class="flex justify-between">
                         <span>Visibility</span>
-                        <span class="badge badge-success badge-sm rounded-xl">Visible</span>
+                        @if (Model.IsVisible)
+                        {
+                            <span class="badge badge-success badge-sm rounded-xl">Visible</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning badge-sm rounded-xl">Hidden</span>
+                        }
                     </div>
                     <div class="flex justify-between">
                         <span>Category</span>
-                        <span class="text-white">Web Development</span>
+                        <span class="text-white">@Model.CategoryName</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Rating</span>
-                        <span class="text-white">4.8 ⭐</span>
+                        <span class="text-white">@Model.AverageRating.ToString("F1") ⭐</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Sales</span>
-                        <span class="text-white">420</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Revenue</span>
-                        <span class="text-white">41,996 PLN</span>
+                        <span class="text-white">@Model.SalesCount</span>
                     </div>
                 </div>
 
                 <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-2"></div>
 
                 <div class="flex flex-col gap-2">
-                    <button class="btn bg-black text-white rounded-full w-full hover:bg-white hover:text-black">
-                        <i class="fa fa-eye-slash mr-2"></i>Hide Course
-                    </button>
-                    <button class="btn bg-red-800 rounded-full w-full hover:bg-red-900">
-                        <i class="fa fa-ban mr-2"></i>Ban Course
-                    </button>
+                    @if (Model.IsActive)
+                    {
+                        <button onclick="document.getElementById('modal-ban-course').showModal()"
+                                class="btn bg-red-800 rounded-full w-full hover:bg-red-900">
+                            <i class="fa fa-ban mr-2"></i>Ban Course
+                        </button>
+                    }
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+@* MODAL: BAN COURSE *@
+<dialog id="modal-ban-course" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-2">Ban Course</h3>
+        <p class="text-gray-400 mb-4">Are you sure you want to ban <span class="text-white font-semibold">@Model.Title</span>? Users who purchased it will keep access.</p>
+        <form method="post" asp-controller="Courses" asp-action="Delete" asp-route-id="@Model.IdCourse">
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-ban-course').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn btn-error rounded-full">Ban</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>

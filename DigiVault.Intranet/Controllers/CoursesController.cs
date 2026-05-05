@@ -30,7 +30,8 @@ public class CoursesController : Controller
 
     public async Task<IActionResult> Detail(int id)
     {
-        return View();
+        var course = await _api.GetAsync<AdminCourseDetailDto>($"api/admin/courses/{id}");
+        return View(course);
     }
 
     [HttpPost]
