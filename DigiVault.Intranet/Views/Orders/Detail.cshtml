@@ -1,0 +1,137 @@
+@model DigiVault.Intranet.Models.AdminOrderDetailDto
+@{
+    ViewData["Title"] = "Order Detail";
+    Layout = "_Layout";
+}
+
+<div class="mb-4">
+    <a href="/orders" class="text-gray-400 hover:text-white text-sm">
+        <i class="fa fa-arrow-left mr-2"></i>Back to Orders
+    </a>
+</div>
+
+@* HEADER *@
+<div class="card bg-black border border-gray-800 rounded-xl p-6 mb-6">
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <p class="text-gray-400 text-sm">Order ID</p>
+            <p class="text-white font-mono text-xl font-bold">#@Model.IdOrder</p>
+        </div>
+        <div class="text-right">
+            <p class="text-gray-400 text-sm">Date</p>
+            <p class="text-white text-sm">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 text-sm">
+        <div>
+            <p class="text-gray-400">Customer</p>
+            <a href="/users/detail/@Model.IdUser" class="text-white font-semibold hover:text-gray-300">@Model.UserName</a>
+        </div>
+        <div>
+            <p class="text-gray-400">Email</p>
+            <p class="text-white">@Model.Email</p>
+        </div>
+        <div>
+            <p class="text-gray-400">Items</p>
+            <p class="text-white">@Model.ItemsCount courses</p>
+        </div>
+        <div>
+            <p class="text-gray-400">Total</p>
+            <p class="text-white font-bold text-lg">@Model.TotalPrice.ToString("F2") PLN</p>
+        </div>
+    </div>
+</div>
+
+@* ORDER ITEMS *@
+<div class="card bg-black border border-gray-800 rounded-xl overflow-hidden mb-6">
+    <div class="p-4 border-b border-gray-800">
+        <h2 class="text-white font-bold">Order Items</h2>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+                <tr class="text-gray-400 border-gray-800 bg-black">
+                    <th>Course</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-300">
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                        <td>
+                            <a href="/courses/detail/@item.IdCourse" class="text-white font-semibold hover:text-gray-300">
+                                @item.Title
+                            </a>
+                        </td>
+                        <td class="text-white font-bold">@item.Price.ToString("F2") PLN</td>
+                        <td>
+                            <button onclick="openRemoveModal(@item.IdCourse, '@item.Title')"
+                                    class="btn btn-ghost btn-xs text-red-500 hover:text-red-400">
+                                <i class="fa fa-times"></i> Remove
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* ACTIONS *@
+<div class="flex justify-end">
+    <button onclick="document.getElementById('modal-cancel-order').showModal()"
+            class="btn btn-error rounded-full px-8">
+        <i class="fa fa-times-circle mr-2"></i>Cancel Order & Refund
+    </button>
+</div>
+
+@* MODAL: CANCEL ORDER *@
+<dialog id="modal-cancel-order" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-2">Cancel Order</h3>
+        <p class="text-gray-400 mb-4">
+            Are you sure? This will <span class="text-white">refund @Model.TotalPrice.ToString("F2") PLN</span> to the customer
+            and revoke access to all courses in this order.
+        </p>
+        <form method="post" asp-action="Cancel" asp-route-id="@Model.IdOrder">
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-cancel-order').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn btn-error rounded-full">Confirm Cancellation</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+@* MODAL: REMOVE SINGLE COURSE *@
+<dialog id="modal-remove-course" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-2">Remove Course</h3>
+        <p class="text-gray-400 mb-4">
+            Remove <span id="remove-course-name" class="text-white font-semibold"></span> from this order?
+            The customer will be refunded for this course and lose access to it.
+        </p>
+        <form method="post" asp-action="RemoveCourse">
+            <input type="hidden" name="idOrder" value="@Model.IdOrder" />
+            <input type="hidden" id="remove-course-id" name="idCourse" />
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-remove-course').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn btn-error rounded-full">Remove</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script>
+    function openRemoveModal(idCourse, title) {
+        document.getElementById('remove-course-id').value = idCourse;
+        document.getElementById('remove-course-name').textContent = title;
+        document.getElementById('modal-remove-course').showModal();
+    }
+</script>

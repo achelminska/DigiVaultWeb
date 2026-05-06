@@ -29,6 +29,21 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Detail(int id)
     {
-        return View();
+        var order = await _api.GetAsync<AdminOrderDetailDto>($"api/admin/orders/{id}");
+        return View(order);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Cancel(int id)
+    {
+        await _api.DeleteAsync($"api/admin/orders/{id}");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveCourse(int idOrder, int idCourse)
+    {
+        await _api.PutAsync($"api/admin/orders/{idOrder}/courses/{idCourse}", new { });
+        return RedirectToAction(nameof(Detail), new { id = idOrder });
     }
 }
