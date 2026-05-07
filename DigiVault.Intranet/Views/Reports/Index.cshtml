@@ -1,24 +1,26 @@
+@model List<DigiVault.Intranet.Models.AdminReportDto>
 @{
     ViewData["Title"] = "Reports";
     Layout = "_Layout";
+    var page = (int)(ViewData["Page"] ?? 1);
+    var totalPages = (int)(ViewData["TotalPages"] ?? 1);
+    var isResolved = ViewData["IsResolved"] as bool?;
 }
 
 @* FILTRY *@
 <div class="flex gap-3 mb-6 flex-wrap">
-    <label class="input input-sm rounded-full bg-black border-gray-700 flex items-center gap-2 w-64">
-        <svg class="h-4 w-4 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-            </g>
-        </svg>
-        <input type="search" placeholder="Search reports..." class="bg-transparent text-white outline-none w-full text-sm" />
-    </label>
-    <select class="select select-sm bg-black text-white border-gray-700 rounded-full">
-        <option>All Status</option>
-        <option>Pending</option>
-        <option>Resolved</option>
-    </select>
+    <a href="?isResolved=&page=1"
+       class="btn btn-sm @(isResolved == null ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+        All
+    </a>
+    <a href="?isResolved=false&page=1"
+       class="btn btn-sm @(isResolved == false ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+        Pending
+    </a>
+    <a href="?isResolved=true&page=1"
+       class="btn btn-sm @(isResolved == true ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+        Resolved
+    </a>
 </div>
 
 @* TABELA *@
@@ -36,95 +38,104 @@
                 </tr>
             </thead>
             <tbody class="text-gray-300">
-
-                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
-                    <td>
-                        <div class="flex items-center gap-3">
-                            <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400" 
-                                 class="w-12 h-8 object-cover rounded" />
-                            <p class="text-white text-sm font-semibold">Python – Kompletny Kurs</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="text-white text-sm">Jan Kowalski</p>
-                            <p class="text-gray-500 text-xs">jan@example.com</p>
-                        </div>
-                    </td>
-                    <td class="text-sm max-w-xs truncate">Treść kursu jest nieaktualna i zawiera błędy merytoryczne.</td>
-                    <td class="text-sm text-gray-500">24/03/2026</td>
-                    <td><span class="badge badge-warning badge-sm rounded-xl bg-yellow-400 text-black">Pending</span></td>
-                    <td>
-                        <div class="flex gap-2">
-                            <a href="/courses/detail/1" class="btn btn-ghost btn-xs text-blue-400 hover:text-blue-300">
-                                <i class="fa fa-book"></i>
-                            </a>
-                            <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                            <button class="btn btn-ghost btn-xs text-green-500 hover:text-green-400">
-                                <i class="fa fa-check"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
-                    <td>
-                        <div class="flex items-center gap-3">
-                            <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400" 
-                                 class="w-12 h-8 object-cover rounded" />
-                            <p class="text-white text-sm font-semibold">HTML i CSS od Zera</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="text-white text-sm">Anna Nowak</p>
-                            <p class="text-gray-500 text-xs">anna@example.com</p>
-                        </div>
-                    </td>
-                    <td class="text-sm max-w-xs truncate">Kurs zawiera skopiowane materiały z innego źródła.</td>
-                    <td class="text-sm text-gray-500">23/03/2026</td>
-                    <td><span class="badge badge-warning badge-sm rounded-xl bg-yellow-400 text-black">Pending</span></td>
-                    <td>
-                        <div class="flex gap-2">
-                            <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                            <button class="btn btn-ghost btn-xs text-green-500 hover:text-green-400">
-                                <i class="fa fa-check"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
-                    <td>
-                        <div class="flex items-center gap-3">
-                            <img src="https://images.unsplash.com/photo-1605745341112-85968b19335b?w=400" 
-                                 class="w-12 h-8 object-cover rounded" />
-                            <p class="text-white text-sm font-semibold">Docker i Kubernetes</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="text-white text-sm">Piotr Wiśniewski</p>
-                            <p class="text-gray-500 text-xs">piotr@example.com</p>
-                        </div>
-                    </td>
-                    <td class="text-sm max-w-xs truncate">Autor nie odpowiada na pytania studentów.</td>
-                    <td class="text-sm text-gray-500">20/03/2026</td>
-                    <td><span class="badge badge-success badge-sm bg-green-900 text-black rounded-xl">Resolved</span></td>
-                    <td>
-                        <div class="flex gap-2">
-                            <button class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
+                @foreach (var report in Model)
+                {
+                    <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                        <td>
+                            <p class="text-white text-sm font-semibold">@report.CourseTitle</p>
+                        </td>
+                        <td>
+                            <p class="text-white text-sm">@report.ReportedBy</p>
+                        </td>
+                        <td class="text-sm max-w-xs truncate">@report.Reason</td>
+                        <td class="text-sm text-gray-500">@report.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @if (report.IsResolved)
+                            {
+                                <span class="badge badge-success badge-sm bg-green-900 text-black rounded-xl">Resolved</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning badge-sm rounded-xl bg-yellow-400 text-black">Pending</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="flex gap-2">
+                                <a href="/courses/detail/@report.IdCourse" class="btn btn-ghost btn-xs text-blue-400 hover:text-blue-300">
+                                    <i class="fa fa-book"></i>
+                                </a>
+                                <button onclick="openDetailModal('@report.CourseTitle', '@report.ReportedBy', '@report.Reason', '@report.CreatedAt.ToString("dd/MM/yyyy")')"
+                                        class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                @if (!report.IsResolved)
+                                {
+                                    <form method="post" asp-action="Resolve" asp-route-id="@report.IdCourseReport"
+                                          onsubmit="return confirm('Mark as resolved?')">
+                                        <button type="submit" class="btn btn-ghost btn-xs text-green-500 hover:text-green-400">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
+
+@* MODAL: DETAIL *@
+<dialog id="modal-report-detail" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-4">Report Details</h3>
+        <div class="flex flex-col gap-3 text-sm">
+            <div>
+                <p class="text-gray-400 mb-1">Course</p>
+                <p id="detail-course" class="text-white font-semibold"></p>
+            </div>
+            <div>
+                <p class="text-gray-400 mb-1">Reported By</p>
+                <p id="detail-user" class="text-white"></p>
+            </div>
+            <div>
+                <p class="text-gray-400 mb-1">Date</p>
+                <p id="detail-date" class="text-white"></p>
+            </div>
+            <div>
+                <p class="text-gray-400 mb-1">Reason</p>
+                <p id="detail-reason" class="text-gray-300 leading-relaxed"></p>
+            </div>
+        </div>
+        <div class="modal-action">
+            <button onclick="document.getElementById('modal-report-detail').close()"
+                    class="btn bg-white text-black rounded-full hover:bg-gray-200">Close</button>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script>
+    function openDetailModal(course, user, reason, date) {
+        document.getElementById('detail-course').textContent = course;
+        document.getElementById('detail-user').textContent = user;
+        document.getElementById('detail-reason').textContent = reason;
+        document.getElementById('detail-date').textContent = date;
+        document.getElementById('modal-report-detail').showModal();
+    }
+</script>
+
+@* PAGINACJA *@
+@if (totalPages > 1)
+{
+    <div class="flex justify-center gap-2 mt-6">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <a href="?page=@i@(isResolved.HasValue ? $"&isResolved={isResolved}" : "")"
+               class="btn btn-sm @(i == page ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+                @i
+            </a>
+        }
+    </div>
+}
