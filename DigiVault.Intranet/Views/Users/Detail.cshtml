@@ -130,6 +130,11 @@
                     <i class="fa fa-edit mr-2"></i>Edit User
                 </button>
 
+                <button onclick="document.getElementById('modal-send-notification').showModal()"
+                        class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black">
+                    <i class="fa fa-bell mr-2"></i>Send Notification
+                </button>
+
             </div>
         </div>
     </div>
@@ -161,6 +166,32 @@
                 <button type="button" onclick="document.getElementById('modal-edit-user').close()"
                         class="btn btn-ghost text-gray-400">Cancel</button>
                 <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Save</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+@* MODAL: SEND NOTIFICATION *@
+<dialog id="modal-send-notification" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-4">Send Notification to @Model.FirstName</h3>
+        <form method="post" asp-controller="Notifications" asp-action="Send" class="flex flex-col gap-3">
+            <input type="hidden" name="idUser" value="@Model.IdUser" />
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">Title</label>
+                <input type="text" name="title" required
+                       class="input w-full bg-black text-white border-gray-700 rounded-lg" />
+            </div>
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">Message</label>
+                <textarea name="message" required rows="3"
+                          class="textarea w-full bg-black text-white border-gray-700 rounded-lg"></textarea>
+            </div>
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-send-notification').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Send</button>
             </div>
         </form>
     </div>

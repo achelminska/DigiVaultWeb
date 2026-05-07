@@ -1,0 +1,112 @@
+@model List<DigiVault.Intranet.Models.AdminNotificationDto>
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "_Layout";
+    var page = (int)(ViewData["Page"] ?? 1);
+    var totalPages = (int)(ViewData["TotalPages"] ?? 1);
+    var isRead = (bool)(ViewData["IsRead"] ?? false);
+}
+
+@* FILTRY + PRZYCISK SEND *@
+<div class="flex gap-3 mb-6 flex-wrap justify-between">
+    <div class="flex gap-3">
+        <a href="?isRead=false&page=1"
+           class="btn btn-sm @(!isRead ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+            Unread
+        </a>
+        <a href="?isRead=true&page=1"
+           class="btn btn-sm @(isRead ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+            All
+        </a>
+    </div>
+    <button onclick="document.getElementById('modal-send').showModal()"
+            class="btn bg-white text-black rounded-full btn-sm px-6 hover:bg-gray-200">
+        + Send Notification
+    </button>
+</div>
+
+@* TABELA *@
+<div class="card bg-black border border-gray-800 rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="table">
+            <thead>
+                <tr class="text-gray-400 border-gray-800 bg-black">
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-300">
+                @foreach (var n in Model)
+                {
+                    <tr class="border-gray-800 hover:bg-gray-900 transition-colors">
+                        <td>
+                            <a href="/users/detail/@n.IdUser" class="text-white text-sm font-semibold hover:text-gray-300">
+                                @n.UserName
+                            </a>
+                        </td>
+                        <td class="text-white text-sm font-semibold">@n.Title</td>
+                        <td class="text-sm text-gray-400 max-w-xs truncate">@n.Message</td>
+                        <td>
+                            @if (n.IsRead)
+                            {
+                                <span class="badge badge-success badge-sm rounded-lg">Read</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning badge-sm rounded-lg">Unread</span>
+                            }
+                        </td>
+                        <td class="text-sm text-gray-500">@n.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* PAGINACJA *@
+@if (totalPages > 1)
+{
+    <div class="flex justify-center gap-2 mt-6">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <a href="?page=@i&isRead=@isRead"
+               class="btn btn-sm @(i == page ? "bg-white text-black" : "btn-ghost text-gray-400") rounded-full">
+                @i
+            </a>
+        }
+    </div>
+}
+
+@* MODAL: SEND NOTIFICATION *@
+<dialog id="modal-send" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-4">Send Notification</h3>
+        <form method="post" asp-action="Send" class="flex flex-col gap-3">
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">User ID</label>
+                <input type="number" name="idUser" required placeholder="e.g. 1"
+                       class="input w-full bg-black text-white border-gray-700 rounded-lg" />
+            </div>
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">Title</label>
+                <input type="text" name="title" required
+                       class="input w-full bg-black text-white border-gray-700 rounded-lg" />
+            </div>
+            <div>
+                <label class="text-gray-400 text-sm mb-1 block">Message</label>
+                <textarea name="message" required rows="3"
+                          class="textarea w-full bg-black text-white border-gray-700 rounded-lg"></textarea>
+            </div>
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-send').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Send</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
