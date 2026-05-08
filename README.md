@@ -5,10 +5,20 @@
 ![Razor Views](https://img.shields.io/badge/Razor_Views-MVC-512BD4?logo=dotnet&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-🚧_work_in_progress-yellow)
+[![Live Intranet](https://img.shields.io/badge/Live-Intranet_Panel-512BD4?logo=dotnet&logoColor=white)](https://digivaultintranet.onrender.com)
 
 Web front-end for **DigiVault** — a digital course marketplace. This solution contains two ASP.NET Core MVC applications: a customer-facing public portal and an internal administration panel (intranet). Both communicate with the [DigiVault API](https://github.com/AIChelminska/DigiVaultAPI) over HTTP.
 
 > 🚧 This project is a work in progress. Some views and features are still being implemented.
+
+### Live Deployments
+
+| App | URL | Notes |
+|-----|-----|-------|
+| DigiVault.Intranet | [https://digivaultintranet.onrender.com](https://digivaultintranet.onrender.com) | Admin panel — full CRUD |
+| DigiVaultAPI | [https://digivaultapi.onrender.com/swagger](https://digivaultapi.onrender.com/swagger) | REST API + Swagger UI |
+
+> Both apps are hosted on Render's free tier. The first request after a period of inactivity may take up to 50 seconds (cold start).
 
 ---
 
@@ -34,7 +44,7 @@ Web front-end for **DigiVault** — a digital course marketplace. This solution 
 | Project | Description |
 |---------|-------------|
 | `DigiVault.PortalWWW` | Public-facing customer portal — browse courses, manage cart and wishlist, view orders, log in |
-| `DigiVault.Intranet` | Internal administration panel — dashboard and management views for staff *(stub views, in progress)* |
+| `DigiVault.Intranet` | Internal administration panel — full CRUD for users, courses, categories, orders, notifications, reports, and settings |
 
 Both projects live in the same solution (`DigiVaultWeb.sln`) and target **.NET 9**.
 
@@ -80,14 +90,15 @@ DigiVaultWeb/
 │
 ├── DigiVault.Intranet/             # Internal admin panel
 │   ├── Controllers/
-│   │   ├── HomeController.cs
+│   │   ├── AccountController.cs    # Login / logout (JWT → session)
 │   │   ├── DashboardController.cs
-│   │   ├── UsersController.cs      # User list + detail (stub)
-│   │   ├── CoursesController.cs    # Course list + detail (stub)
-│   │   ├── OrdersController.cs     # Order list (stub)
-│   │   ├── ReportsController.cs    # Reports (stub)
-│   │   ├── CmsController.cs        # CMS (stub)
-│   │   └── SettingsController.cs   # Settings (stub)
+│   │   ├── UsersController.cs      # User list, detail, create, edit, ban/unban
+│   │   ├── CoursesController.cs    # Course list, detail, soft delete
+│   │   ├── CategoriesController.cs # Full CRUD for categories
+│   │   ├── OrdersController.cs     # Order list, detail, cancel order / remove item
+│   │   ├── NotificationsController.cs  # Notification list, send notification
+│   │   ├── ReportsController.cs    # Report list, resolve report
+│   │   └── SettingsController.cs   # Platform settings (commission rate)
 │   ├── Views/
 │   ├── wwwroot/
 │   ├── appsettings.json
@@ -171,19 +182,39 @@ Default ports (may vary by launch profile):
 
 ### Intranet
 
-> ⚠️ The Intranet currently has no API integration — all controllers return stub views. Full implementation is planned.
+> Requires login with a `Worker` (admin) account. All routes redirect to `/Account/Login` if the session is missing.
+>
+> **Live:** [https://digivaultintranet.onrender.com](https://digivaultintranet.onrender.com) — log in with `admin` / `admin`
 
 | Route | Description |
 |-------|-------------|
-| `GET /Dashboard` | Admin dashboard *(stub)* |
-| `GET /Users` | User list *(stub)* |
-| `GET /Users/Detail/{id}` | User detail *(stub)* |
-| `GET /Courses` | Course list *(stub)* |
-| `GET /Courses/Detail/{id}` | Course detail *(stub)* |
-| `GET /Orders` | Order list *(stub)* |
-| `GET /Reports` | Reports *(stub)* |
-| `GET /Cms` | CMS *(stub)* |
-| `GET /Settings` | Settings *(stub)* |
+| `GET /Account/Login` | Admin login form |
+| `POST /Account/Login` | Authenticate via API → store JWT in session |
+| `GET /Account/Logout` | Clear session and redirect to login |
+| `GET /Dashboard` | Admin dashboard |
+| `GET /Categories` | Category list |
+| `POST /Categories/Create` | Create a new category (modal) |
+| `POST /Categories/Edit/{id}` | Update a category (modal) |
+| `POST /Categories/Delete/{id}` | Delete a category |
+| `GET /Users` | Paginated user list with search |
+| `GET /Users/Detail/{id}` | User detail — profile, created and purchased courses |
+| `POST /Users/Create` | Create a new user account (modal) |
+| `POST /Users/Edit/{id}` | Update user role and status (modal) |
+| `POST /Users/SetActive/{id}` | Activate a user |
+| `POST /Users/SetNotActive/{id}` | Deactivate (ban) a user |
+| `GET /Courses` | Paginated course list including hidden courses |
+| `GET /Courses/Detail/{id}` | Course detail with reports count |
+| `POST /Courses/Delete/{id}` | Soft-delete a course |
+| `GET /Orders` | Paginated order list with date filter |
+| `GET /Orders/Detail/{id}` | Order detail with item list |
+| `POST /Orders/Delete/{id}` | Cancel an order and refund the user |
+| `POST /Orders/RemoveItem/{orderId}/{courseId}` | Remove a single item from an order |
+| `GET /Notifications` | Notification list |
+| `POST /Notifications/Send` | Send a notification to a user (modal) |
+| `GET /Reports` | Report list |
+| `POST /Reports/Resolve/{id}` | Mark a report as resolved |
+| `GET /Settings` | Platform settings (commission rate) |
+| `POST /Settings/UpdateCommission` | Update the platform commission rate |
 
 ---
 
@@ -201,13 +232,22 @@ No cookies carry the raw JWT — the token lives exclusively in the server-side 
 
 ### Test Accounts
 
-Use the seeded accounts from the API (started with `DigiVaultSeeder`):
+#### PortalWWW (customer portal)
+
+| Login | Password | Role | Notes |
+|-------|----------|------|-------|
+| `test` | `test` | User | Has balance, orders, and purchased courses |
+| `test2` | `test` | User | |
+| `admin` | `admin` | Worker | Can also log in to the portal |
+
+#### Intranet (admin panel)
 
 | Login | Password | Role |
 |-------|----------|------|
-| `test` | `test` | User |
 | `admin` | `admin` | Worker (Admin) |
 
+> Only accounts with the `Worker` role can access the Intranet. Logging in with a `User` account will result in a 403 error from the API.
+>
 > See the [DigiVault API README](https://github.com/AIChelminska/DigiVaultAPI#seeded-data) for the full list of seeded accounts.
 
 ---
