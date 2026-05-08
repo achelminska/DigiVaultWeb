@@ -63,8 +63,11 @@ public async Task DeleteAsync(string endpoint)
 private void SetAuthHeader()
 {
     var token = _ctx.HttpContext?.Session.GetString("Token");
-    _client.DefaultRequestHeaders.Authorization = 
-        new AuthenticationHeaderValue("Bearer", token);
+    if (!string.IsNullOrEmpty(token))
+        _client.DefaultRequestHeaders.Authorization = 
+            new AuthenticationHeaderValue("Bearer", token);
+    else
+        _client.DefaultRequestHeaders.Authorization = null;
 }
 }
 
