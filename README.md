@@ -5,6 +5,7 @@
 ![Razor Views](https://img.shields.io/badge/Razor_Views-MVC-512BD4?logo=dotnet&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-🚧_work_in_progress-yellow)
+[![Live Portal](https://img.shields.io/badge/Live-Customer_Portal-239120?logo=dotnet&logoColor=white)](https://digivaultportal.onrender.com/Account/Login)
 [![Live Intranet](https://img.shields.io/badge/Live-Intranet_Panel-512BD4?logo=dotnet&logoColor=white)](https://digivaultintranet.onrender.com)
 
 Web front-end for **DigiVault** — a digital course marketplace. This solution contains two ASP.NET Core MVC applications: a customer-facing public portal and an internal administration panel (intranet). Both communicate with the [DigiVault API](https://github.com/AIChelminska/DigiVaultAPI) over HTTP.
@@ -15,6 +16,7 @@ Web front-end for **DigiVault** — a digital course marketplace. This solution 
 
 | App | URL | Notes |
 |-----|-----|-------|
+| DigiVault.PortalWWW | [https://digivaultportal.onrender.com/Account/Login](https://digivaultportal.onrender.com/Account/Login) | Customer portal |
 | DigiVault.Intranet | [https://digivaultintranet.onrender.com](https://digivaultintranet.onrender.com) | Admin panel — full CRUD |
 | DigiVaultAPI | [https://digivaultapi.onrender.com/swagger](https://digivaultapi.onrender.com/swagger) | REST API + Swagger UI |
 
@@ -153,10 +155,10 @@ dotnet run --project DigiVault.Intranet
 
 Default ports (may vary by launch profile):
 
-| App | URL |
-|-----|-----|
-| PortalWWW | `http://localhost:5000` |
-| Intranet | `http://localhost:5001` |
+| App | Local URL | Live URL |
+|-----|-----------|----------|
+| PortalWWW | `http://localhost:5000` | [https://digivaultportal.onrender.com](https://digivaultportal.onrender.com) |
+| Intranet | `http://localhost:5001` | [https://digivaultintranet.onrender.com](https://digivaultintranet.onrender.com) |
 
 > Check `Properties/launchSettings.json` in each project for the exact ports configured in your environment.
 
