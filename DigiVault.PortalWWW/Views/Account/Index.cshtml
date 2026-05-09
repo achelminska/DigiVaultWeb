@@ -26,7 +26,7 @@
                             <label class="text-gray-400 text-sm">Last Name</label>
                             <input type="text" name="lastName" value="@p.LastName" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
                         </div>
-                        <button type="submit" class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200">Save Changes</button>
+                        <button type="submit" class="btn bg-black text-white border border-white rounded-full w-fit px-8 hover:bg-white hover:text-black transition-colors">Save Changes</button>
                     </form>
 
                     <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-6"></div>
@@ -41,7 +41,7 @@
                             <label class="text-gray-400 text-sm">Confirm with Password</label>
                             <input type="password" name="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
                         </div>
-                        <button type="submit" class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200">Update Email</button>
+                        <button type="submit" class="btn bg-black text-white border border-white rounded-full w-fit px-8 hover:bg-white hover:text-black transition-colors">Update Email</button>
                     </form>
 
                     <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-6"></div>
@@ -60,7 +60,7 @@
                             <label class="text-gray-400 text-sm">Confirm New Password</label>
                             <input type="password" name="newPasswordConfirmation" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
                         </div>
-                        <button type="submit" class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200">Change Password</button>
+                        <button type="submit" class="btn bg-black text-white border border-white rounded-full w-fit px-8 hover:bg-white hover:text-black transition-colors">Change Password</button>
                     </form>
                 </div>
             </div>
@@ -71,7 +71,7 @@
         <div role="tabpanel" class="tab-content pt-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-white text-xl font-bold">My Courses</h2>
-                <a href="/Account/CourseForm" class="btn bg-white text-black rounded-full btn-sm px-6 hover:bg-gray-200">+ Add Course</a>
+                <a href="/Account/CourseForm" class="btn bg-black text-white border border-white rounded-full btn-sm px-6 hover:bg-white hover:text-black transition-colors">+ Add Course</a>
             </div>
 
             @if (!Model.MyCourses.Any())
