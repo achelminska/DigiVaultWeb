@@ -66,5 +66,14 @@ public class CoursesController(ApiService api) : Controller
             IsPurchased  = purchased.Any(c => c.IdCourse == id),
         });
     }
-    
+
+    [HttpPost]
+    public async Task<IActionResult> AddReview(int id, int rating, string? comment)
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login", "Account");
+
+        await api.PostAuthBodyAsync($"/api/courses/{id}/reviews", new { Rating = rating, Comment = comment });
+        return RedirectToAction(nameof(Detail), new { id });
+    }
 }
