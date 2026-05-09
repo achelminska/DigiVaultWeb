@@ -1,0 +1,16 @@
+@model (double Rating, int Count)
+@{
+    var halfStars = (int)Math.Round(Model.Rating * 2);
+    var id = $"r{Guid.NewGuid():N}";
+}
+<div class="flex items-center gap-1">
+    <div class="rating rating-xs rating-half pointer-events-none">
+        <input type="radio" name="@id" class="rating-hidden" @(halfStars == 0 ? "checked" : "") />
+        @for (int i = 1; i <= 10; i++)
+        {
+            var mask = i % 2 == 1 ? "mask mask-star-2 mask-half-1" : "mask mask-star-2 mask-half-2";
+            <input type="radio" name="@id" class="@mask bg-yellow-400" @(i == halfStars ? "checked" : "") />
+        }
+    </div>
+    <span class="text-gray-400 text-xs">(@Model.Count)</span>
+</div>

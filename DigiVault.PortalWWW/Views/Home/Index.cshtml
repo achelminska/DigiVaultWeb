@@ -40,7 +40,7 @@
                     <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
                     <p class="text-gray-400 text-xs">@course.AuthorName</p>
                     <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        ⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span>
+                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                     </div>
                     <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
                 </div>
@@ -96,7 +96,7 @@
                     <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
                     <p class="text-gray-400 text-xs">@course.AuthorName</p>
                     <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        ⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span>
+                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                     </div>
                     <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
                 </div>
@@ -141,7 +141,7 @@
                     <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
                     <p class="text-gray-400 text-xs">@course.AuthorName</p>
                     <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        ⭐ @course.AverageRating.ToString("0.0") <span class="text-gray-400">(@course.RatingsCount)</span>
+                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                     </div>
                     <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
                 </div>

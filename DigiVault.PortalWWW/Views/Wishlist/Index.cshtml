@@ -42,9 +42,7 @@
                             <h3 class="card-title text-white text-sm hover:underline">@course.Title</h3>
                         </a>
                         <p class="text-gray-400 text-xs">@course.AuthorName</p>
-                        <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                            ⭐ @course.AverageRating.ToString("F1") <span class="text-gray-400">(@course.RatingsCount)</span>
-                        </div>
+                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                         <p class="text-white font-bold">@course.Price.ToString("F2") PLN</p>
                         <form method="post" action="/Cart/Add">
                             <input type="hidden" name="idCourse" value="@course.IdCourse" />

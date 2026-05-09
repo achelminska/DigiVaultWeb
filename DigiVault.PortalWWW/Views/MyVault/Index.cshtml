@@ -34,9 +34,7 @@
                             <h3 class="card-title text-white text-sm hover:underline">@course.Title</h3>
                         </a>
                         <p class="text-gray-400 text-xs">@course.AuthorName</p>
-                        <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                            ⭐ @course.AverageRating.ToString("F1") <span class="text-gray-400">(@course.RatingsCount)</span>
-                        </div>
+                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                         <div class="flex justify-end mt-2">
                             <a href="/Courses/Detail/@course.IdCourse"
                                class="btn btn-circle bg-base-content text-black hover:opacity-80 border-none">
