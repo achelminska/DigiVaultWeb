@@ -37,7 +37,7 @@
                         @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                         <div class="flex justify-end mt-2">
                             <a href="/Courses/Detail/@course.IdCourse"
-                               class="btn btn-circle bg-base-content text-black hover:opacity-80 border-none">
+                               class="btn btn-circle bg-base-content text-black border border-gray-300 hover:bg-black hover:text-gray-300 hover:border-gray-300 transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                 </svg>
