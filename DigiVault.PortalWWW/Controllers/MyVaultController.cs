@@ -1,12 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
+using DigiVault.PortalWWW.Models;
+using DigiVault.PortalWWW.Services;
 
 namespace DigiVault.PortalWWW.Controllers;
 
-public class MyVaultController : Controller
+public class MyVaultController(ApiService api) : Controller
 {
-    // GET
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login", "Account");
+
+        var courses = await api.GetAuthAsync<List<CourseListDto>>("/api/courses/purchased");
+        return View(courses ?? []);
     }
 }

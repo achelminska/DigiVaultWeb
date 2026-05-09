@@ -36,4 +36,22 @@ public class ApiService
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<T>();
     }
+
+    public async Task PostAuthAsync(string endpoint)
+    {
+        var token = _ctx.HttpContext?.Session.GetString("Token");
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+        var response = await _client.PostAsJsonAsync(endpoint, new { });
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task DeleteAuthAsync(string endpoint)
+    {
+        var token = _ctx.HttpContext?.Session.GetString("Token");
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+        var response = await _client.DeleteAsync(endpoint);
+        response.EnsureSuccessStatusCode();
+    }
 }
