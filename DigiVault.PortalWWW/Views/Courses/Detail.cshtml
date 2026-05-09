@@ -45,21 +45,42 @@
                 @if (Model.IsPurchased)
                 {
                     <div class="bg-black border border-gray-800 rounded-xl p-5 mb-6">
-                        <h3 class="text-white font-semibold mb-3">Leave a review</h3>
-                        <form method="post" action="/Courses/AddReview/@course.IdCourse">
-                            <input type="hidden" name="id" value="@course.IdCourse" />
-                            <div class="rating rating-sm mb-3">
-                                @for (int i = 1; i <= 5; i++)
-                                {
-                                    <input type="radio" name="rating" value="@i" class="mask mask-star-2 bg-gray-300" @(i == 5 ? "checked" : "") />
-                                }
-                            </div>
-                            <textarea name="comment" placeholder="Share your thoughts about this course..." rows="3"
-                                      class="textarea bg-black border-gray-700 text-white placeholder-gray-500 w-full rounded-xl mb-3 focus:border-gray-500 focus:outline-none"></textarea>
-                            <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200 font-semibold">
-                                Submit Review
-                            </button>
-                        </form>
+                        @if (Model.UserReview == null)
+                        {
+                            <h3 class="text-white font-semibold mb-3">Leave a review</h3>
+                            <form method="post" action="/Courses/AddReview/@course.IdCourse">
+                                <input type="hidden" name="id" value="@course.IdCourse" />
+                                <div class="rating rating-sm mb-3">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <input type="radio" name="rating" value="@i" class="mask mask-star-2 bg-gray-300" @(i == 5 ? "checked" : "") />
+                                    }
+                                </div>
+                                <textarea name="comment" placeholder="Share your thoughts about this course..." rows="3"
+                                          class="textarea bg-black border-gray-700 text-white placeholder-gray-500 w-full rounded-xl mb-3 focus:border-gray-500 focus:outline-none"></textarea>
+                                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200 font-semibold">
+                                    Submit Review
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <h3 class="text-white font-semibold mb-3">Edit your review</h3>
+                            <form method="post" action="/Courses/EditReview/@course.IdCourse">
+                                <input type="hidden" name="id" value="@course.IdCourse" />
+                                <div class="rating rating-sm mb-3">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <input type="radio" name="rating" value="@i" class="mask mask-star-2 bg-gray-300" @(i == Model.UserReview.Rating ? "checked" : "") />
+                                    }
+                                </div>
+                                <textarea name="comment" rows="3"
+                                          class="textarea bg-black border-gray-700 text-white placeholder-gray-500 w-full rounded-xl mb-3 focus:border-gray-500 focus:outline-none">@Model.UserReview.Comment</textarea>
+                                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200 font-semibold">
+                                    Update Review
+                                </button>
+                            </form>
+                        }
                     </div>
                 }
                 <div class="flex flex-col gap-4">

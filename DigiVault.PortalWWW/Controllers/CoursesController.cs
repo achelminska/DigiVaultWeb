@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DigiVault.PortalWWW.Models;
 using DigiVault.PortalWWW.Services;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DigiVault.PortalWWW.Controllers;
 
@@ -56,14 +57,22 @@ public class CoursesController(ApiService api) : Controller
         var cart      = await cartTask ?? [];
         var wishlist  = await wishlistTask ?? [];
         var purchased = await purchasedTask ?? [];
+        var reviews   = (await reviewsTask ?? []).ToList();
+
+        var jwt       = new JwtSecurityTokenHandler().ReadJwtToken(token);
+        var firstName = jwt.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value ?? "";
+        var lastName  = jwt.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value ?? "";
+        var fullName  = $"{firstName} {lastName}".Trim();
+        var userReview = reviews.FirstOrDefault(r => r.AuthorName == fullName);
 
         return View(new CourseDetailViewModel
         {
-            Course      = course,
-            Reviews     = await reviewsTask ?? [],
-            IsInCart    = cart.Any(c => c.IdCourse == id),
+            Course       = course,
+            Reviews      = reviews,
+            IsInCart     = cart.Any(c => c.IdCourse == id),
             IsInWishlist = wishlist.Any(c => c.IdCourse == id),
             IsPurchased  = purchased.Any(c => c.IdCourse == id),
+            UserReview   = userReview,
         });
     }
 
@@ -73,6 +82,17 @@ public class CoursesController(ApiService api) : Controller
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login", "Account");
 
+        await api.PostAuthBodyAsync($"/api/courses/{id}/reviews", new { Rating = rating, Comment = comment });
+        return RedirectToAction(nameof(Detail), new { id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditReview(int id, int rating, string? comment)
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login", "Account");
+
+        await api.DeleteAuthAsync($"/api/courses/{id}/reviews");
         await api.PostAuthBodyAsync($"/api/courses/{id}/reviews", new { Rating = rating, Comment = comment });
         return RedirectToAction(nameof(Detail), new { id });
     }

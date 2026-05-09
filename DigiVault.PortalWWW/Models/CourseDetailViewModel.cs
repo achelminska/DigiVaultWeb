@@ -7,4 +7,5 @@ public class CourseDetailViewModel
     public bool IsInCart { get; set; }
     public bool IsInWishlist { get; set; }
     public bool IsPurchased { get; set; }
+    public ReviewDto? UserReview { get; set; }
 }
