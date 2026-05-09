@@ -29,7 +29,14 @@
                     <select name="idCategory" class="select bg-black text-white border-gray-700 rounded-lg w-full" required>
                         @foreach (var cat in categories)
                         {
-                            <option value="@cat.IdCategory" @(cat.Name == Model.CategoryName ? "selected" : "")>@cat.Name</option>
+                            if (cat.Name == Model.CategoryName)
+                            {
+                                <option value="@cat.IdCategory" selected>@cat.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@cat.IdCategory">@cat.Name</option>
+                            }
                         }
                     </select>
                 </div>
