@@ -64,9 +64,11 @@
                         <span>Total</span>
                         <span>@total.ToString("F2") PLN</span>
                     </div>
-                    <button class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200">
-                        Checkout
-                    </button>
+                    <form method="post" action="/Cart/Checkout">
+                        <button type="submit" class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200">
+                            Checkout
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

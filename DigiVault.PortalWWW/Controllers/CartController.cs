@@ -34,4 +34,14 @@ public class CartController(ApiService api) : Controller
         await api.DeleteAuthAsync($"/api/cart/{idCourse}");
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Checkout()
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login", "Account");
+
+        await api.PostAuthAsync("/api/orders");
+        return RedirectToAction("Index", "MyVault");
+    }
 }
