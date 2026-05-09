@@ -25,10 +25,12 @@
                 @foreach (var course in Model)
                 {
                     <div class="flex gap-4 items-center py-4 border-b border-gray-800 px-2">
-                        <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
-                             class="w-24 h-16 object-cover rounded-lg flex-shrink-0" />
+                        <a href="/Courses/Detail/@course.IdCourse">
+                            <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
+                                 class="w-24 h-16 object-cover rounded-lg flex-shrink-0 hover:opacity-80 transition-opacity" />
+                        </a>
                         <div class="flex-1">
-                            <h3 class="text-white font-semibold text-sm">@course.Title</h3>
+                            <a href="/Courses/Detail/@course.IdCourse" class="text-white font-semibold text-sm hover:underline">@course.Title</a>
                             <p class="text-gray-400 text-xs mt-1">@course.AuthorName</p>
                             <div class="flex items-center gap-1 text-yellow-400 text-xs mt-1">
                                 ⭐ @course.AverageRating.ToString("F1") <span class="text-gray-400">(@course.RatingsCount)</span>
