@@ -11,8 +11,14 @@ public class WishlistController(ApiService api) : Controller
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login", "Account");
 
-        var items = await api.GetAuthAsync<List<CourseListDto>>("/api/wishlist");
-        return View(items ?? []);
+        var wishlistTask = api.GetAuthAsync<List<CourseListDto>>("/api/wishlist");
+        var cartTask     = api.GetAuthAsync<List<CourseListDto>>("/api/cart");
+        await Task.WhenAll(wishlistTask, cartTask);
+
+        var cart = await cartTask ?? [];
+        ViewBag.CartIds = cart.Select(c => c.IdCourse).ToHashSet();
+
+        return View(await wishlistTask ?? []);
     }
 
     [HttpPost]
