@@ -81,6 +81,40 @@ public class AccountController(ApiService api) : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> EditCourse(int id)
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login");
+
+        var courseTask     = api.GetAsync<CourseDetailDto>($"/api/courses/{id}");
+        var categoriesTask = api.GetAsync<List<CategoryDto>>("/api/categories");
+        await Task.WhenAll(courseTask, categoriesTask);
+
+        var course = await courseTask;
+        if (course == null) return NotFound();
+
+        ViewBag.Categories = await categoriesTask ?? [];
+        return View(course);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditCourse(int id, string title, string description, decimal price, string? imageUrl, int idCategory)
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login");
+
+        await api.PutAuthAsync($"/api/seller/courses/{id}", new
+        {
+            Title       = title,
+            Description = description,
+            Price       = price,
+            ImageUrl    = imageUrl,
+            IdCategory  = idCategory
+        });
+        return RedirectToAction(nameof(Index));
+    }
+
     [HttpPost]
     public async Task<IActionResult> UpdateName(string firstName, string lastName)
     {

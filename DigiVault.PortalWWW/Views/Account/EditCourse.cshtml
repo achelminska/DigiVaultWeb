@@ -1,0 +1,95 @@
+@model DigiVault.PortalWWW.Models.CourseDetailDto
+@{
+    ViewData["Title"] = "Edit Course";
+    Layout = "_Layout";
+    var categories = ViewBag.Categories as List<DigiVault.PortalWWW.Models.CategoryDto> ?? [];
+}
+
+<section class="py-6 mb-20">
+    <h1 class="text-white text-4xl font-bold mb-6">Edit Course</h1>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        <div class="flex-1">
+            <form method="post" action="/Account/EditCourse/@Model.IdCourse" class="flex flex-col gap-4">
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Title</label>
+                    <input type="text" name="title" id="titleInput" value="@Model.Title"
+                           class="input bg-black text-white border-gray-700 rounded-lg w-full" required />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Description</label>
+                    <textarea name="description" class="textarea bg-black text-white border-gray-700 rounded-lg w-full h-32" required>@Model.Description</textarea>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Category</label>
+                    <select name="idCategory" class="select bg-black text-white border-gray-700 rounded-lg w-full" required>
+                        @foreach (var cat in categories)
+                        {
+                            <option value="@cat.IdCategory" @(cat.Name == Model.CategoryName ? "selected" : "")>@cat.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Price (PLN)</label>
+                    <input type="number" name="price" step="0.01" min="0" value="@Model.Price.ToString("F2")"
+                           class="input bg-black text-white border-gray-700 rounded-lg w-full" required />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-sm">Image URL</label>
+                    <input type="url" name="imageUrl" id="imageInput" value="@Model.ImageUrl"
+                           class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                </div>
+
+                <div class="flex gap-3 mt-4">
+                    <button type="submit" class="btn bg-white text-black rounded-full px-8 hover:bg-gray-200 font-bold">
+                        Save Changes
+                    </button>
+                    <a href="/account" class="btn bg-black text-white border-gray-700 rounded-full px-8 hover:bg-white hover:text-black">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="lg:w-80">
+            <div class="card bg-black border border-gray-800 rounded-xl overflow-hidden sticky top-4">
+                <div class="aspect-video overflow-hidden">
+                    <img id="previewImg" src="@Model.ImageUrl" class="w-full h-full object-cover @(string.IsNullOrEmpty(Model.ImageUrl) ? "hidden" : "")" />
+                    <div id="previewPlaceholder" class="w-full h-full flex items-center justify-center @(!string.IsNullOrEmpty(Model.ImageUrl) ? "hidden" : "")">
+                        <p class="text-gray-600 text-sm">Image preview</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <p id="previewTitle" class="text-white font-semibold text-sm">@Model.Title</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    document.getElementById('imageInput').addEventListener('input', function () {
+        const img = document.getElementById('previewImg');
+        const placeholder = document.getElementById('previewPlaceholder');
+        if (this.value) {
+            img.src = this.value;
+            img.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+        } else {
+            img.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+        }
+    });
+
+    document.getElementById('titleInput').addEventListener('input', function () {
+        document.getElementById('previewTitle').textContent = this.value || 'Course title will appear here';
+    });
+</script>
