@@ -116,6 +116,16 @@ public class AccountController(ApiService api) : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> ToggleCourseVisibility(int id, bool isVisible)
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login");
+
+        await api.PatchAuthAsync($"/api/seller/courses/{id}/visibility", new { IsVisible = !isVisible });
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
     public async Task<IActionResult> UpdateName(string firstName, string lastName)
     {
         var token = HttpContext.Session.GetString("Token");
