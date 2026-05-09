@@ -55,6 +55,15 @@ public class ApiService
         response.EnsureSuccessStatusCode();
     }
 
+    public async Task PatchAuthAsync(string endpoint, object data)
+    {
+        var token = _ctx.HttpContext?.Session.GetString("Token");
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+        var response = await _client.PatchAsJsonAsync(endpoint, data);
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task DeleteAuthAsync(string endpoint)
     {
         var token = _ctx.HttpContext?.Session.GetString("Token");
