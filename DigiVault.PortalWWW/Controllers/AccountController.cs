@@ -41,14 +41,16 @@ public class AccountController(ApiService api) : Controller
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login");
 
-        var profileTask    = api.GetAuthAsync<UserProfileDto>("/api/profile");
-        var coursesTask    = api.GetAuthAsync<PagedResult<CourseListDto>>("/api/seller/courses?page=1&pageSize=50");
+        var profileTask = api.GetAuthAsync<UserProfileDto>("/api/profile");
+        var coursesTask = api.GetAuthAsync<PagedResult<CourseListDto>>("/api/seller/courses?page=1&pageSize=50");
         await Task.WhenAll(profileTask, coursesTask);
+
+        var courses = (await coursesTask)?.Items ?? [];
 
         return View(new AccountViewModel
         {
             Profile   = await profileTask ?? new(),
-            MyCourses = (await coursesTask)?.Items ?? [],
+            MyCourses = courses.ToList(),
         });
     }
 

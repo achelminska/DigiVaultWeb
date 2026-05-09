@@ -10,5 +10,8 @@ public class CourseListDto
     public string CategoryName { get; set; } = string.Empty;
     public double AverageRating { get; set; }
     public int RatingsCount { get; set; }
+    public int SalesCount { get; set; }
+    public bool IsActive { get; set; }
+    public bool IsVisible { get; set; }
     public DateTime CreatedAt { get; set; }
 }
