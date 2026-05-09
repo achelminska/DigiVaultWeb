@@ -95,7 +95,18 @@
                                 </div>
                                 <div>
                                     <p class="text-white font-semibold text-sm">@review.AuthorName</p>
-                                    @await Html.PartialAsync("_RatingStars", ((double)review.Rating, 0))
+                                    @{
+                                        var ratingId = $"rev{review.IdReview}";
+                                        var halfCount = review.Rating * 2;
+                                    }
+                                    <div class="rating rating-xs rating-half pointer-events-none">
+                                        <input type="radio" name="@ratingId" class="rating-hidden" />
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            var mask = i % 2 == 1 ? "mask mask-star-2 mask-half-1" : "mask mask-star-2 mask-half-2";
+                                            <input type="radio" name="@ratingId" class="@mask bg-gray-300" @(i == halfCount ? "checked" : "") />
+                                        }
+                                    </div>
                                 </div>
                             </div>
                             <p class="text-gray-400 text-sm">@review.Comment</p>
