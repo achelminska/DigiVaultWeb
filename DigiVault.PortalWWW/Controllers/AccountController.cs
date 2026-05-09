@@ -54,6 +54,33 @@ public class AccountController(ApiService api) : Controller
         });
     }
 
+    [HttpGet]
+    public async Task<IActionResult> CourseForm()
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login");
+
+        var categories = await api.GetAsync<List<CategoryDto>>("/api/categories");
+        return View(categories ?? []);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCourse(string title, string description, decimal price, string? imageUrl, int idCategory)
+    {
+        var token = HttpContext.Session.GetString("Token");
+        if (token == null) return RedirectToAction("Login");
+
+        await api.PostAuthBodyAsync("/api/seller/courses", new
+        {
+            Title       = title,
+            Description = description,
+            Price       = price,
+            ImageUrl    = imageUrl,
+            IdCategory  = idCategory
+        });
+        return RedirectToAction(nameof(Index));
+    }
+
     [HttpPost]
     public async Task<IActionResult> UpdateName(string firstName, string lastName)
     {
