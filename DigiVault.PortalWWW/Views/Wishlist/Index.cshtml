@@ -23,12 +23,10 @@
             @foreach (var course in Model)
             {
                 <div class="card bg-black hover:scale-105 transition-transform border border-gray-800 rounded-lg">
-                    <figure>
-                        <a href="/Courses/Detail/@course.IdCourse">
-                            <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
-                                 class="w-full h-40 object-cover" />
-                        </a>
-                    </figure>
+                    <a href="/Courses/Detail/@course.IdCourse">
+                        <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
+                             class="w-full h-40 object-cover rounded-t-lg" />
+                    </a>
                     <div class="card-body p-4">
                         <a href="/Courses/Detail/@course.IdCourse">
                             <h3 class="card-title text-white text-sm hover:underline">@course.Title</h3>
