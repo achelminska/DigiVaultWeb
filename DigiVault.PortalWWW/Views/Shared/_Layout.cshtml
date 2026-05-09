@@ -39,7 +39,7 @@
     @*PRAWA STRONA*@
     <div class="navbar-end gap-2">
         @*Koszyk*@
-        <div class="indicator">
+        <div class="relative">
             @await Component.InvokeAsync("CartCount")
             <a href="/cart" class="btn btn-ghost btn-circle hover:bg-white hover:text-black transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
