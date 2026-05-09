@@ -28,9 +28,7 @@
                              class="w-full h-40 object-cover rounded-t-lg" />
                     </a>
                     <div class="card-body p-4">
-                        <a href="/Courses/Detail/@course.IdCourse">
-                            <h3 class="card-title text-white text-sm hover:underline">@course.Title</h3>
-                        </a>
+                        <h3 class="card-title text-white text-sm">@course.Title</h3>
                         <p class="text-gray-400 text-xs">@course.AuthorName</p>
                         @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                         @{
