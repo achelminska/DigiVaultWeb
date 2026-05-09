@@ -118,6 +118,42 @@
             }
         </div>
 
+        @* ── ORDERS TAB ───────────────────────────────────────────── *@
+        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Orders" />
+        <div role="tabpanel" class="tab-content pt-6">
+            <h2 class="text-white text-xl font-bold mb-4">Order History</h2>
+            @if (!Model.Orders.Any())
+            {
+                <p class="text-gray-400">You haven't placed any orders yet.</p>
+            }
+            else
+            {
+                <div class="flex flex-col gap-3">
+                    @foreach (var order in Model.Orders.OrderByDescending(o => o.CreatedAt))
+                    {
+                        <div class="bg-black border border-gray-800 rounded-xl p-5">
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-white font-semibold text-sm">Order #@order.IdOrder</p>
+                                    <p class="text-gray-400 text-xs">@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                                </div>
+                                <p class="text-white font-bold">@order.TotalPrice.ToString("F2") PLN</p>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <div class="flex justify-between text-sm">
+                                        <a href="/Courses/Detail/@item.IdCourse" class="text-gray-300 hover:text-white hover:underline">@item.Title</a>
+                                        <span class="text-gray-400">@item.Price.ToString("F2") PLN</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
         @* ── EARNINGS TAB ─────────────────────────────────────────── *@
         <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Earnings" />
         <div role="tabpanel" class="tab-content pt-6">

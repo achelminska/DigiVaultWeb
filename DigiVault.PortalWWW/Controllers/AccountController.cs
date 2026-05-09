@@ -43,7 +43,8 @@ public class AccountController(ApiService api) : Controller
 
         var profileTask = api.GetAuthAsync<UserProfileDto>("/api/profile");
         var coursesTask = api.GetAuthAsync<PagedResult<CourseListDto>>("/api/seller/courses?page=1&pageSize=50");
-        await Task.WhenAll(profileTask, coursesTask);
+        var ordersTask  = api.GetAuthAsync<List<OrderHistoryDto>>("/api/orders");
+        await Task.WhenAll(profileTask, coursesTask, ordersTask);
 
         var courses = (await coursesTask)?.Items ?? [];
 
@@ -51,6 +52,7 @@ public class AccountController(ApiService api) : Controller
         {
             Profile   = await profileTask ?? new(),
             MyCourses = courses.ToList(),
+            Orders    = await ordersTask ?? [],
         });
     }
 
