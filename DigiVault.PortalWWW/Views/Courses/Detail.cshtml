@@ -174,7 +174,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span>Rating</span>
-                            @await Html.PartialAsync("_RatingStars", (course.AverageRating, 0))
+                            @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                         </div>
                         <div class="flex justify-between">
                             <span>Sales</span>
