@@ -34,8 +34,12 @@
                     <h2 class="text-white text-xl font-bold mb-4">Email</h2>
                     <form method="post" action="/Account/UpdateEmail" class="flex flex-col gap-4">
                         <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">Email</label>
+                            <label class="text-gray-400 text-sm">New Email</label>
                             <input type="email" name="email" value="@p.Email" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Confirm with Password</label>
+                            <input type="password" name="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
                         </div>
                         <button type="submit" class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200">Update Email</button>
                     </form>
@@ -46,11 +50,15 @@
                     <form method="post" action="/Account/UpdatePassword" class="flex flex-col gap-4">
                         <div class="flex flex-col gap-1">
                             <label class="text-gray-400 text-sm">Current Password</label>
-                            <input type="password" name="currentPassword" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                            <input type="password" name="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
                         </div>
                         <div class="flex flex-col gap-1">
                             <label class="text-gray-400 text-sm">New Password</label>
                             <input type="password" name="newPassword" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-gray-400 text-sm">Confirm New Password</label>
+                            <input type="password" name="newPasswordConfirmation" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
                         </div>
                         <button type="submit" class="btn bg-white text-black rounded-full w-fit px-8 hover:bg-gray-200">Change Password</button>
                     </form>

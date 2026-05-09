@@ -65,22 +65,22 @@ public class AccountController(ApiService api) : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateEmail(string email)
+    public async Task<IActionResult> UpdateEmail(string email, string password)
     {
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login");
 
-        await api.PatchAuthAsync("/api/profile/email", new { Email = email });
+        await api.PatchAuthAsync("/api/profile/email", new { Email = email, Password = password });
         return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdatePassword(string currentPassword, string newPassword)
+    public async Task<IActionResult> UpdatePassword(string password, string newPassword, string newPasswordConfirmation)
     {
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login");
 
-        await api.PatchAuthAsync("/api/profile/password", new { CurrentPassword = currentPassword, NewPassword = newPassword });
+        await api.PatchAuthAsync("/api/profile/password", new { Password = password, NewPassword = newPassword, NewPasswordConfirmation = newPasswordConfirmation });
         return RedirectToAction(nameof(Index));
     }
 }
