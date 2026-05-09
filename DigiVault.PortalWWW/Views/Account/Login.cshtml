@@ -39,17 +39,17 @@
             <input asp-for="Password" type="password" placeholder="Password" class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
             <span asp-validation-for="Password" class="text-red-500 text-sm text-center"></span>
 
-            <button type="submit" class="btn bg-black text-gray-300 rounded-full w-full font-bold text-lg mt-2">Login</button>
+            <button type="submit" class="btn bg-black text-white border border-white rounded-full w-full font-bold text-lg mt-2 hover:bg-white hover:text-black transition-colors">Login</button>
         </form>
 
             <div class="divider divider-neutral before:bg-gray-400 after:bg-gray-400 text-gray-500 text-sm">Or login with</div>
 
             <div class="flex justify-center gap-4">
-                <button class="btn btn-circle btn-outline border-gray-400">
-                    <i class="fab fa-google fa-lg text-black"></i>
+                <button class="btn btn-circle bg-black border border-white text-white hover:bg-white hover:text-black transition-colors">
+                    <i class="fab fa-google fa-lg"></i>
                 </button>
-                <button class="btn btn-circle btn-outline border-gray-400">
-                    <i class="fab fa-apple fa-xl text-black"></i>
+                <button class="btn btn-circle bg-black border border-white text-white hover:bg-white hover:text-black transition-colors">
+                    <i class="fab fa-apple fa-xl"></i>
                 </button>
             </div>
 
