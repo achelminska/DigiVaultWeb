@@ -9,7 +9,7 @@
         @for (int i = 1; i <= 10; i++)
         {
             var mask = i % 2 == 1 ? "mask mask-star-2 mask-half-1" : "mask mask-star-2 mask-half-2";
-            <input type="radio" name="@id" class="@mask bg-yellow-400" @(i == halfStars ? "checked" : "") />
+            <input type="radio" name="@id" class="@mask bg-gray-300" @(i == halfStars ? "checked" : "") />
         }
     </div>
     <span class="text-gray-400 text-xs">(@Model.Count)</span>
