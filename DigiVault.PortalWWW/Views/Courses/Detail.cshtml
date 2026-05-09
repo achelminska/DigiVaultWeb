@@ -78,23 +78,54 @@
 
                 <div class="p-6">
                     <p class="text-white text-3xl font-bold mb-4">@course.Price.ToString("0.00") PLN</p>
-                    <form method="post" action="/Cart/Add">
-                        <input type="hidden" name="idCourse" value="@course.IdCourse" />
-                        <input type="hidden" name="returnUrl" value="/Courses/Detail/@course.IdCourse" />
-                        <button type="submit" class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200 mb-3">
-                            Add to Cart
-                        </button>
-                    </form>
-                    <form method="post" action="/Wishlist/Add">
-                        <input type="hidden" name="idCourse" value="@course.IdCourse" />
-                        <input type="hidden" name="returnUrl" value="/Courses/Detail/@course.IdCourse" />
-                        <button type="submit" class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                            </svg>
-                            Add to Wishlist
-                        </button>
-                    </form>
+                    @if (Model.IsPurchased)
+                    {
+                        <a href="/MyVault" class="btn bg-green-600 text-white rounded-full w-full font-bold mb-3 cursor-default">
+                            ✓ Already Purchased
+                        </a>
+                    }
+                    else if (Model.IsInCart)
+                    {
+                        <a href="/Cart" class="btn bg-gray-700 text-white rounded-full w-full font-bold mb-3">
+                            ✓ Go to Cart
+                        </a>
+                    }
+                    else
+                    {
+                        <form method="post" action="/Cart/Add">
+                            <input type="hidden" name="idCourse" value="@course.IdCourse" />
+                            <input type="hidden" name="returnUrl" value="/Courses/Detail/@course.IdCourse" />
+                            <button type="submit" class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200 mb-3">
+                                Add to Cart
+                            </button>
+                        </form>
+                    }
+
+                    @if (Model.IsInWishlist)
+                    {
+                        <form method="post" action="/Wishlist/Remove">
+                            <input type="hidden" name="idCourse" value="@course.IdCourse" />
+                            <button type="submit" class="btn bg-red-900 text-white border-red-800 rounded-full w-full hover:bg-red-800 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                Remove from Wishlist
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" action="/Wishlist/Add">
+                            <input type="hidden" name="idCourse" value="@course.IdCourse" />
+                            <input type="hidden" name="returnUrl" value="/Courses/Detail/@course.IdCourse" />
+                            <button type="submit" class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                Add to Wishlist
+                            </button>
+                        </form>
+                    }
                     <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-2"></div>
                     <div class="flex flex-col gap-2 text-gray-400 text-sm">
                         <div class="flex justify-between">

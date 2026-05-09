@@ -42,16 +42,28 @@ public class CoursesController(ApiService api) : Controller
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login", "Account");
 
-        var course = await api.GetAsync<CourseDetailDto>($"/api/courses/{id}");
+        var courseTask   = api.GetAsync<CourseDetailDto>($"/api/courses/{id}");
+        var reviewsTask  = api.GetAsync<IEnumerable<ReviewDto>>($"/api/courses/{id}/reviews");
+        var cartTask     = api.GetAuthAsync<List<CourseListDto>>("/api/cart");
+        var wishlistTask = api.GetAuthAsync<List<CourseListDto>>("/api/wishlist");
+        var purchasedTask = api.GetAuthAsync<List<CourseListDto>>("/api/courses/purchased");
+
+        await Task.WhenAll(courseTask, reviewsTask, cartTask, wishlistTask, purchasedTask);
+
+        var course = await courseTask;
         if (course == null) return NotFound();
 
-        var reviews = await api.GetAsync<IEnumerable<ReviewDto>>($"/api/courses/{id}/reviews");
-        if (reviews == null) return NotFound();
+        var cart      = await cartTask ?? [];
+        var wishlist  = await wishlistTask ?? [];
+        var purchased = await purchasedTask ?? [];
 
-        return View(new CourseDetailViewModel 
-        { 
-            Course = course, 
-            Reviews = reviews ?? []
+        return View(new CourseDetailViewModel
+        {
+            Course      = course,
+            Reviews     = await reviewsTask ?? [],
+            IsInCart    = cart.Any(c => c.IdCourse == id),
+            IsInWishlist = wishlist.Any(c => c.IdCourse == id),
+            IsPurchased  = purchased.Any(c => c.IdCourse == id),
         });
     }
     
