@@ -87,11 +87,11 @@ public class AccountController(ApiService api) : Controller
         var token = HttpContext.Session.GetString("Token");
         if (token == null) return RedirectToAction("Login");
 
-        var courseTask     = api.GetAsync<CourseDetailDto>($"/api/courses/{id}");
+        var coursesTask    = api.GetAuthAsync<PagedResult<CourseListDto>>("/api/seller/courses?page=1&pageSize=200");
         var categoriesTask = api.GetAsync<List<CategoryDto>>("/api/categories");
-        await Task.WhenAll(courseTask, categoriesTask);
+        await Task.WhenAll(coursesTask, categoriesTask);
 
-        var course = await courseTask;
+        var course = (await coursesTask)?.Items?.FirstOrDefault(c => c.IdCourse == id);
         if (course == null) return NotFound();
 
         ViewBag.Categories = await categoriesTask ?? [];

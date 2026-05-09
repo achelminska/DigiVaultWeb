@@ -8,6 +8,7 @@ public class CourseListDto
     public string? ImageUrl { get; set; }
     public string AuthorName { get; set; } = string.Empty;
     public string CategoryName { get; set; } = string.Empty;
+    public string? Description { get; set; }
     public double AverageRating { get; set; }
     public int RatingsCount { get; set; }
     public int SalesCount { get; set; }
