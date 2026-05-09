@@ -94,20 +94,18 @@
                                         <span class="text-gray-400 text-xs">@course.SalesCount sales</span>
                                     </div>
                                 </div>
-                                <form method="post" action="/Account/ToggleCourseVisibility">
-                                    <input type="hidden" name="id" value="@course.IdCourse" />
-                                    <input type="hidden" name="isVisible" value="@course.IsVisible.ToString().ToLower()" />
-                                    <button type="submit" class="btn btn-circle btn-sm border transition-colors @(course.IsVisible ? "bg-black text-green-500 border-green-600 hover:bg-green-600 hover:text-black hover:border-green-600" : "bg-black text-gray-500 border-gray-600 hover:bg-white hover:text-black hover:border-white")" title="@(course.IsVisible ? "Hide course" : "Show course")">
-                                        @if (course.IsVisible)
-                                        {
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                        }
-                                        else
-                                        {
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                                        }
-                                    </button>
-                                </form>
+                                <button onclick="toggleVisibility(this, @course.IdCourse, @course.IsVisible.ToString().ToLower())"
+                                        data-visible="@course.IsVisible.ToString().ToLower()"
+                                        class="btn btn-circle btn-sm border transition-colors @(course.IsVisible ? "bg-black text-green-500 border-green-600 hover:bg-green-600 hover:text-black hover:border-green-600" : "bg-black text-gray-500 border-gray-600 hover:bg-white hover:text-black hover:border-white")">
+                                    @if (course.IsVisible)
+                                    {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    }
+                                    else
+                                    {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                                    }
+                                </button>
                                 <a href="/Account/EditCourse/@course.IdCourse" class="btn btn-circle btn-sm bg-black text-white border border-gray-600 hover:bg-white hover:text-black hover:border-white transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -138,3 +136,28 @@
 
     </div>
 </section>
+
+<script>
+const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+async function toggleVisibility(btn, id, isVisible) {
+    await fetch(`/Account/ToggleCourseVisibility`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${id}&isVisible=${isVisible}`
+    });
+
+    const nowVisible = !isVisible;
+    btn.dataset.visible = nowVisible;
+    btn.innerHTML = nowVisible ? eyeOpen : eyeClosed;
+
+    if (nowVisible) {
+        btn.className = 'btn btn-circle btn-sm border transition-colors bg-black text-green-500 border-green-600 hover:bg-green-600 hover:text-black hover:border-green-600';
+        btn.setAttribute('onclick', `toggleVisibility(this, ${id}, true)`);
+    } else {
+        btn.className = 'btn btn-circle btn-sm border transition-colors bg-black text-gray-500 border-gray-600 hover:bg-white hover:text-black hover:border-white';
+        btn.setAttribute('onclick', `toggleVisibility(this, ${id}, false)`);
+    }
+}
+</script>
