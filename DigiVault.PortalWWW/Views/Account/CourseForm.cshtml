@@ -26,13 +26,22 @@
 
                 <div class="flex flex-col gap-1">
                     <label class="text-gray-400 text-sm">Category</label>
-                    <select name="idCategory" class="select bg-black text-white border-gray-700 rounded-lg w-full" style="color-scheme: dark;" required>
-                        <option value="" disabled selected>Select category</option>
-                        @foreach (var cat in Model)
-                        {
-                            <option value="@cat.IdCategory">@cat.Name</option>
-                        }
-                    </select>
+                    <input type="hidden" name="idCategory" id="categoryInput" required />
+                    <div class="relative w-full">
+                        <button type="button" onclick="toggleDropdown()" class="input bg-black text-white border-gray-700 rounded-lg w-full text-left flex justify-between items-center px-4">
+                            <span id="categoryLabel" class="text-gray-500">Select category</span>
+                            <span>▾</span>
+                        </button>
+                        <ul id="categoryList" class="hidden absolute z-50 w-full bg-black border border-gray-700 rounded-lg mt-1 max-h-60 overflow-y-auto">
+                            @foreach (var cat in Model)
+                            {
+                                <li onclick="selectCategory(@cat.IdCategory, '@cat.Name')"
+                                    class="px-4 py-2 text-white hover:bg-gray-800 cursor-pointer text-sm">
+                                    @cat.Name
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="flex flex-col gap-1">
@@ -76,6 +85,20 @@
 </section>
 
 <script>
+    function toggleDropdown() {
+        document.getElementById('categoryList').classList.toggle('hidden');
+    }
+    function selectCategory(id, name) {
+        document.getElementById('categoryInput').value = id;
+        document.getElementById('categoryLabel').textContent = name;
+        document.getElementById('categoryLabel').className = 'text-white';
+        document.getElementById('categoryList').classList.add('hidden');
+    }
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.relative'))
+            document.getElementById('categoryList').classList.add('hidden');
+    });
+
     document.getElementById('imageInput').addEventListener('input', function () {
         const img = document.getElementById('previewImg');
         const placeholder = document.getElementById('previewPlaceholder');
