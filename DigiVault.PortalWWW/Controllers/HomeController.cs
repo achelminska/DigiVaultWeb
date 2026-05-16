@@ -21,9 +21,9 @@ public class HomeController(ApiService api, CmsService cms) : Controller
             TopRatedCourses = await api.GetAsync<IEnumerable<CourseListDto>>("/api/courses/top-rated"),
             Categories      = await api.GetAsync<IEnumerable<CategoryDto>>("/api/categories"),
             HeroTitle = await cms.GetValueAsync("home.hero.title",
-                "Odkryj kursy, które zmienią Twoją karierę"),
+                "Discover courses that will transform your career"),
             HeroSubtitle = await cms.GetValueAsync("home.hero.subtitle",
-                "Najlepsze kursy od praktyków branżowych."),
+                "Top courses taught by industry practitioners."),
         };
 
         var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);

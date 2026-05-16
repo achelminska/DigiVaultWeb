@@ -9,28 +9,28 @@ public class PagesController(CmsService cms) : Controller
     public async Task<IActionResult> About()
     {
         var content = await cms.GetValueAsync("about.description",
-            "DigiVault to platforma e-learningowa łącząca studentów z ekspertami.");
-        return View("Content", new CmsPageViewModel { Title = "O nas", Content = content });
+            "DigiVault is an e-learning platform connecting students with industry experts.");
+        return View("Content", new CmsPageViewModel { Title = "About", Content = content });
     }
 
     public async Task<IActionResult> Terms()
     {
         var content = await cms.GetValueAsync("terms.content",
-            "Regulamin korzystania z platformy DigiVault.");
-        return View("Content", new CmsPageViewModel { Title = "Regulamin", Content = content });
+            "Terms of service for the DigiVault platform.");
+        return View("Content", new CmsPageViewModel { Title = "Terms of Service", Content = content });
     }
 
     public async Task<IActionResult> Privacy()
     {
         var content = await cms.GetValueAsync("privacy.content",
-            "Polityka prywatności platformy DigiVault.");
-        return View("Content", new CmsPageViewModel { Title = "Polityka prywatności", Content = content });
+            "Privacy policy for the DigiVault platform.");
+        return View("Content", new CmsPageViewModel { Title = "Privacy Policy", Content = content });
     }
 
     public async Task<IActionResult> Contact()
     {
         var content = await cms.GetValueAsync("contact.info",
-            "Kontakt: support@digivault.example");
-        return View("Content", new CmsPageViewModel { Title = "Kontakt", Content = content });
+            "Contact our team: support@digivault.example");
+        return View("Content", new CmsPageViewModel { Title = "Contact", Content = content });
     }
 }

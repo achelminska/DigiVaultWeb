@@ -7,7 +7,7 @@ public class CmsFooterViewComponent(CmsService cms) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var copyright = await cms.GetValueAsync("footer.copyright", "© 2026 — Wszystkie prawa zastrzeżone");
+        var copyright = await cms.GetValueAsync("footer.copyright", "© 2026 — All rights reserved");
         return View(model: copyright);
     }
 }
