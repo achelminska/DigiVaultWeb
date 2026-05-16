@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace DigiVault.PortalWWW.Controllers;
 
-public class HomeController(ApiService api) : Controller
+public class HomeController(ApiService api, CmsService cms) : Controller
 {
     // GET
     public async Task<IActionResult> Index()
@@ -20,6 +20,10 @@ public class HomeController(ApiService api) : Controller
             NewestCourses   = await api.GetAsync<IEnumerable<CourseListDto>>("/api/courses/newest"),
             TopRatedCourses = await api.GetAsync<IEnumerable<CourseListDto>>("/api/courses/top-rated"),
             Categories      = await api.GetAsync<IEnumerable<CategoryDto>>("/api/categories"),
+            HeroTitle = await cms.GetValueAsync("home.hero.title",
+                "Odkryj kursy, które zmienią Twoją karierę"),
+            HeroSubtitle = await cms.GetValueAsync("home.hero.subtitle",
+                "Najlepsze kursy od praktyków branżowych."),
         };
 
         var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);

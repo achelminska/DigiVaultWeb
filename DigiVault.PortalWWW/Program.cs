@@ -14,6 +14,7 @@ builder.Services.AddHttpClient("DigiVaultAPI", client =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 builder.Services.AddScoped<ApiService>();
+builder.Services.AddScoped<CmsService>();
 
 var app = builder.Build();
 

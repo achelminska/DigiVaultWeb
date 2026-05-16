@@ -1,0 +1,28 @@
+@model DigiVault.Intranet.Models.AdminCmsContentDto
+@{
+    ViewData["Title"] = "Edit CMS";
+    Layout = "_Layout";
+}
+
+<div class="max-w-2xl">
+    <a asp-action="Index" class="text-gray-400 hover:text-white text-sm mb-4 inline-block">← Back to CMS</a>
+    <h1 class="text-white text-2xl font-bold mb-2">Edit content</h1>
+    <p class="font-mono text-xs text-gray-500 mb-6">@Model.Key</p>
+
+    <form method="post" asp-action="Edit" asp-route-id="@Model.IdContent" class="card bg-black border border-gray-800 rounded-xl p-6">
+        <label class="text-gray-400 text-xs">Title (admin label)</label>
+        <input type="text" name="title" value="@Model.Title" required
+               class="input w-full bg-black text-white border-gray-700 rounded-lg mb-4" />
+
+        <label class="text-gray-400 text-xs">Value (shown on portal)</label>
+        <textarea name="value" rows="8" required
+                  class="textarea w-full bg-black text-white border-gray-700 rounded-lg mb-6">@Model.Value</textarea>
+
+        <p class="text-gray-500 text-xs mb-4">Last updated: @Model.LastUpdated.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</p>
+
+        <div class="flex gap-3">
+            <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200">Save</button>
+            <a asp-action="Index" class="btn btn-ghost text-gray-400">Cancel</a>
+        </div>
+    </form>
+</div>

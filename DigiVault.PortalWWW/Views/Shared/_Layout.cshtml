@@ -78,10 +78,16 @@
 </main>
 
 @*FOOTER*@
-<footer class="footer footer-center bg-black text-neutral-content items-center p-4 bottom-0 w-full border-t border-gray-800">
-  <aside class="grid-flow-col items-center">
+<footer class="footer footer-center bg-black text-neutral-content items-center p-6 bottom-0 w-full border-t border-gray-800">
+  <aside class="flex flex-col items-center gap-3">
       <img src="~/images/logoDV.png" alt="DigiVault" class="h-10" />
-    <p>© 2026 - All right reserved</p>
+      <nav class="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+          <a href="/pages/about" class="hover:text-white">O nas</a>
+          <a href="/pages/terms" class="hover:text-white">Regulamin</a>
+          <a href="/pages/privacy" class="hover:text-white">Prywatność</a>
+          <a href="/pages/contact" class="hover:text-white">Kontakt</a>
+      </nav>
+      @await Component.InvokeAsync("CmsFooter")
   </aside>
 </footer>
 

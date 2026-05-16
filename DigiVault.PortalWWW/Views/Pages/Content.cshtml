@@ -1,0 +1,10 @@
+@model DigiVault.PortalWWW.Models.CmsPageViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "_Layout";
+}
+
+<article class="max-w-3xl mx-auto py-8">
+    <h1 class="text-white text-3xl font-bold mb-6">@Model.Title</h1>
+    <p class="text-gray-300 leading-relaxed whitespace-pre-line">@Model.Content</p>
+</article>
