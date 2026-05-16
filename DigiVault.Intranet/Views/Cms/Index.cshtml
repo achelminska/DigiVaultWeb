@@ -46,10 +46,18 @@
                         <td class="text-white text-sm truncate max-w-xs">@item.Value</td>
                         <td class="text-sm text-gray-500">@item.LastUpdated.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.IdContent"
-                               class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
-                                <i class="fa fa-edit"></i>
-                            </a>
+                            <div class="flex gap-2">
+                                <a asp-action="Edit" asp-route-id="@item.IdContent"
+                                   class="btn btn-ghost btn-xs text-gray-400 hover:text-white">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button type="button"
+                                        class="btn btn-ghost btn-xs text-red-500 hover:text-red-400 btn-delete-cms"
+                                        data-id="@item.IdContent"
+                                        data-key="@item.Key">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 }
@@ -93,3 +101,29 @@
     </div>
     <form method="dialog" class="modal-backdrop"><button>close</button></form>
 </dialog>
+
+<dialog id="modal-delete" class="modal">
+    <div class="modal-box bg-black border border-gray-800">
+        <h3 class="text-white font-bold text-lg mb-2">Delete CMS content</h3>
+        <p class="text-gray-400 mb-4">Are you sure you want to delete <span id="delete-key" class="text-white font-mono text-sm"></span>?</p>
+        <form method="post" asp-action="Delete">
+            <input type="hidden" id="delete-id" name="id" />
+            <div class="modal-action">
+                <button type="button" onclick="document.getElementById('modal-delete').close()"
+                        class="btn btn-ghost text-gray-400">Cancel</button>
+                <button type="submit" class="btn btn-error rounded-full">Delete</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<script>
+    document.querySelectorAll('.btn-delete-cms').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('delete-id').value = btn.dataset.id;
+            document.getElementById('delete-key').textContent = btn.dataset.key;
+            document.getElementById('modal-delete').showModal();
+        });
+    });
+</script>

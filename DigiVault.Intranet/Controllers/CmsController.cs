@@ -38,4 +38,11 @@ public class CmsController(ApiService api) : Controller
         await api.PutAsync($"api/admin/cms/{id}", new { Title = title, Value = value });
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await api.DeleteAsync($"api/admin/cms/{id}");
+        return RedirectToAction(nameof(Index));
+    }
 }
