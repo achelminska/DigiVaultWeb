@@ -9,4 +9,5 @@ public class HomeViewModel
     public string UserFirstName { get; set; } = string.Empty;
     public string HeroTitle { get; set; } = string.Empty;
     public string HeroSubtitle { get; set; } = string.Empty;
+    public string HeroTest { get; set; } = string.Empty;
 }

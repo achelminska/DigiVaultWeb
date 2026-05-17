@@ -24,6 +24,8 @@ public class HomeController(ApiService api, CmsService cms) : Controller
                 "Discover courses that will transform your career"),
             HeroSubtitle = await cms.GetValueAsync("home.hero.subtitle",
                 "Top courses taught by industry practitioners."),
+            HeroTest = await cms.GetValueAsync("home.hero.test",
+                "Hello, World!"),
         };
 
         var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
