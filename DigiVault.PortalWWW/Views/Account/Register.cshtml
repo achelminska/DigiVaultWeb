@@ -1,0 +1,67 @@
+@model DigiVault.PortalWWW.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl" data-theme="black">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - DigiVault</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="min-h-screen flex flex-col bg-black justify-center items-center py-8">
+
+    <div class="flex flex-col items-center pb-8">
+        <img src="~/images/logoDV.png" alt="DigiVault" class="h-20" />
+    </div>
+
+    <div class="flex flex-col items-center pb-8 px-4 w-full">
+        <div class="bg-gray-200 rounded-3xl p-8 flex flex-col gap-4 w-full max-w-xs md:max-w-sm lg:max-w-sm">
+
+            <h2 class="text-3xl font-bold text-black text-center mb-2">Sign up</h2>
+
+            <form asp-controller="Account" asp-action="Register" method="post" class="flex flex-col gap-3">
+
+                <span asp-validation-summary="All" class="text-red-500 text-sm text-center"></span>
+
+                <input asp-for="FirstName" type="text" placeholder="First name"
+                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <span asp-validation-for="FirstName" class="text-red-500 text-sm text-center"></span>
+
+                <input asp-for="LastName" type="text" placeholder="Last name"
+                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <span asp-validation-for="LastName" class="text-red-500 text-sm text-center"></span>
+
+                <input asp-for="Email" type="email" placeholder="Email"
+                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <span asp-validation-for="Email" class="text-red-500 text-sm text-center"></span>
+
+                <input asp-for="Login" type="text" placeholder="Login"
+                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <span asp-validation-for="Login" class="text-red-500 text-sm text-center"></span>
+
+                <input asp-for="Password" type="password" placeholder="Password (min. 8 znaków, wielka litera, cyfra)"
+                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <span asp-validation-for="Password" class="text-red-500 text-sm text-center"></span>
+
+                <button type="submit"
+                        class="btn bg-black text-white border border-white rounded-full w-full font-bold text-lg mt-2 hover:shadow-[0_0_12px_2px_rgba(255,255,255,0.4)] transition-all duration-300">
+                    Create account
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-gray-600 mt-2">
+                Already have an account? <a href="/account/login" class="font-bold underline text-black">Log in</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

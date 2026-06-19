@@ -29,6 +29,30 @@ public class AccountController(ApiService api) : Controller
     }
 
     [HttpGet]
+    public IActionResult Register() => View();
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterViewModel model)
+    {
+        var response = await api.PostAsync<object>("/api/auth/register", new
+        {
+            login     = model.Login,
+            email     = model.Email,
+            firstName = model.FirstName,
+            lastName  = model.LastName,
+            password  = model.Password
+        });
+
+        if (response is null)
+        {
+            ModelState.AddModelError(string.Empty, "Rejestracja nie powiodła się. Sprawdź dane i spróbuj ponownie.");
+            return View(model);
+        }
+
+        return RedirectToAction("Login");
+    }
+
+    [HttpGet]
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
