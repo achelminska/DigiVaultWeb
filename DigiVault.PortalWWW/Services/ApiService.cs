@@ -37,6 +37,12 @@ public class ApiService
         return await response.Content.ReadFromJsonAsync<T>();
     }
 
+    public async Task PostBodyAsync(string endpoint, object data)
+    {
+        var response = await _client.PostAsJsonAsync(endpoint, data);
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task PostAuthAsync(string endpoint)
     {
         var token = _ctx.HttpContext?.Session.GetString("Token");

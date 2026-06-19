@@ -34,22 +34,23 @@ public class AccountController(ApiService api) : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        var response = await api.PostAsync<object>("/api/auth/register", new
+        try
         {
-            login     = model.Login,
-            email     = model.Email,
-            firstName = model.FirstName,
-            lastName  = model.LastName,
-            password  = model.Password
-        });
-
-        if (response is null)
+            await api.PostBodyAsync("/api/auth/register", new
+            {
+                login     = model.Login,
+                email     = model.Email,
+                firstName = model.FirstName,
+                lastName  = model.LastName,
+                password  = model.Password
+            });
+            return RedirectToAction("Login");
+        }
+        catch
         {
-            ModelState.AddModelError(string.Empty, "Rejestracja nie powiodła się. Sprawdź dane i spróbuj ponownie.");
+            ModelState.AddModelError(string.Empty, "Rejestracja nie powiodła się. Login lub email już zajęty, albo hasło nie spełnia wymagań (min. 8 znaków, wielka litera, cyfra).");
             return View(model);
         }
-
-        return RedirectToAction("Login");
     }
 
     [HttpGet]
