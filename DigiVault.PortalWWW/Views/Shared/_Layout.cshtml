@@ -51,11 +51,11 @@
             </a>
         </div>
 
-        @*Wyloguj się*@
-        <a href="/account/logout" class="btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">Logout</a>
+        @*Wyloguj się - tylko desktop*@
+        <a href="/account/logout" class="hidden lg:flex btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">Logout</a>
 
-        @*Zaloguj się*@
-        <a href="/account" class="btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">My Account</a>
+        @*Moje konto - tylko desktop*@
+        <a href="/account" class="hidden lg:flex btn btn-ghost btn-sm text-base-content rounded-2xl hover:bg-white hover:text-black">My Account</a>
 
         @*Hamburger - mobile*@
         <div class="dropdown dropdown-end lg:hidden">
@@ -68,6 +68,8 @@
                 <li><a href="/courses">Find Course</a></li>
                 <li><a href="/myvault">My Vault</a></li>
                 <li><a href="/wishlist">Wishlist</a></li>
+                <li><a href="/account">My Account</a></li>
+                <li><a href="/account/logout">Logout</a></li>
             </ul>
         </div>
     </div>
