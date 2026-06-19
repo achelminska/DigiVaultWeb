@@ -14,6 +14,9 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
 <div class="min-h-screen flex flex-col bg-black justify-center items-center">
@@ -31,7 +34,12 @@
 
             <form asp-controller="Account" asp-action="Login" method="post" class="flex flex-col gap-4">
 
-            <span asp-validation-summary="All" class="text-red-500 text-sm text-center"></span>
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="bg-red-100 border border-red-400 text-red-700 rounded-2xl px-4 py-3 text-sm text-center">
+                    <div asp-validation-summary="All"></div>
+                </div>
+            }
 
             <input asp-for="Login" type="text" placeholder="Login" class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
             <span asp-validation-for="Login" class="text-red-500 text-sm text-center"></span>
