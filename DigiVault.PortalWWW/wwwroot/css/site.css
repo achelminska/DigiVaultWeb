@@ -156,26 +156,29 @@ body {
     }
 }
 
-/* ---------- login page — subtle flipped gradient on mobile ---------- */
+/* ---------- login page — subtle gradient on mobile (top-weighted) ---------- */
 @media (max-width: 639px) {
     body.auth-login-page {
         background-color: var(--dv-bg);
         background-image:
-            radial-gradient(60rem 40rem at 15% 110%, rgba(139, 92, 246, 0.05), transparent 60%),
-            radial-gradient(50rem 35rem at 110% 65%, rgba(217, 70, 239, 0.03), transparent 60%);
+            radial-gradient(60rem 40rem at 85% -10%, rgba(139, 92, 246, 0.04), transparent 60%),
+            radial-gradient(50rem 35rem at -10% 35%, rgba(217, 70, 239, 0.02), transparent 60%);
     }
 
     body.auth-login-page .auth-glow-violet {
-        top: auto;
-        bottom: -10rem;
-        background-color: rgba(124, 58, 237, 0.08);
+        top: -10rem;
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        background-color: rgba(124, 58, 237, 0.06);
     }
 
     body.auth-login-page .auth-glow-fuchsia {
-        bottom: auto;
-        top: -10rem;
-        right: auto;
-        left: 0;
-        background-color: rgba(192, 38, 211, 0.04);
+        top: auto;
+        bottom: -10rem;
+        right: 0;
+        left: auto;
+        background-color: rgba(192, 38, 211, 0.03);
     }
 }
