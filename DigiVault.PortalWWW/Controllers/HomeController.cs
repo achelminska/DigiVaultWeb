@@ -11,9 +11,6 @@ public class HomeController(ApiService api, CmsService cms) : Controller
     // GET
     public async Task<IActionResult> Index()
     {
-        var token = HttpContext.Session.GetString("Token");
-        if (token == null) return RedirectToAction("Login", "Account");
-
         var model = new HomeViewModel
         {
             PopularCourses  = await api.GetAsync<IEnumerable<CourseListDto>>("/api/courses/popular"),
@@ -26,8 +23,12 @@ public class HomeController(ApiService api, CmsService cms) : Controller
                 "Top courses taught by industry practitioners."),
         };
 
-        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
-        model.UserFirstName = jwt.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value ?? "Gość";
+        var token = HttpContext.Session.GetString("Token");
+        if (token != null)
+        {
+            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            model.UserFirstName = jwt.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value ?? "";
+        }
 
         return View(model);
     }

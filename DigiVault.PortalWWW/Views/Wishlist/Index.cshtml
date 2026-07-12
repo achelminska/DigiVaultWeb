@@ -4,71 +4,74 @@
     Layout = "_Layout";
 }
 
-<section class="py-6">
-    <h1 class="text-white text-4xl font-bold">Wishlist</h1>
-    <p class="text-gray-400 text-sm mt-2">@Model.Count course@(Model.Count != 1 ? "s" : "")</p>
+<section class="animate-fade-up py-4">
+    <h1 class="font-display text-3xl font-extrabold text-white sm:text-4xl">Wishlist</h1>
+    <p class="mt-2 text-zinc-500">@Model.Count course@(Model.Count != 1 ? "s" : "") saved for later</p>
 </section>
 
-<section class="mb-20">
+<section class="animate-fade-up dv-delay-1 mb-16">
     @if (!Model.Any())
     {
-        <div class="text-center py-20">
-            <p class="text-gray-400 text-lg">Your wishlist is empty.</p>
-            <a href="/Courses" class="btn bg-black text-white border border-white rounded-full mt-4 hover:bg-white hover:text-black transition-colors">Browse Courses</a>
+        <div class="flex flex-col items-center rounded-3xl border border-white/[0.08] bg-ink-900 py-20 text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-zinc-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+            </div>
+            <p class="text-lg font-semibold text-white">Your wishlist is empty</p>
+            <p class="mt-1 text-sm text-zinc-500">Tap the heart on any course to save it here.</p>
+            <a href="/Courses" class="btn btn-gradient mt-6 rounded-full px-8 font-semibold">Browse Courses</a>
         </div>
     }
     else
     {
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        var cartIds = ViewBag.CartIds as HashSet<int> ?? new HashSet<int>();
+
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach (var course in Model)
             {
-                <div class="card bg-black hover:scale-105 transition-transform border border-gray-800 rounded-lg">
-                    <a href="/Courses/Detail/@course.IdCourse">
-                        <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
-                             class="w-full h-40 object-cover rounded-t-lg" />
+                var inCart = cartIds.Contains(course.IdCourse);
+
+                <article class="dv-card flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900">
+                    <a href="/Courses/Detail/@course.IdCourse" class="dv-thumb relative block aspect-[16/10] overflow-hidden bg-ink-800">
+                        <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600")"
+                             alt="@course.Title" loading="lazy" class="h-full w-full object-cover" />
                     </a>
-                    <div class="card-body p-4">
-                        <h3 class="card-title text-white text-sm">@course.Title</h3>
-                        <p class="text-gray-400 text-xs">@course.AuthorName</p>
+                    <div class="flex flex-1 flex-col gap-1.5 p-4">
+                        <a href="/Courses/Detail/@course.IdCourse" class="line-clamp-2 text-sm font-semibold leading-snug text-white hover:text-brand-300">@course.Title</a>
+                        <p class="text-xs text-zinc-500">@course.AuthorName</p>
                         @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
-                        @{
-                            var cartIds = ViewBag.CartIds as HashSet<int> ?? new HashSet<int>();
-                            var inCart = cartIds.Contains(course.IdCourse);
-                        }
-                        <div class="flex justify-between items-center mt-2">
-                            <p class="text-white font-bold">@course.Price.ToString("F2") PLN</p>
+
+                        <div class="mt-auto flex items-center justify-between pt-3">
+                            <p class="text-base font-bold text-white">@course.Price.ToString("F2") <span class="text-xs font-medium text-zinc-500">PLN</span></p>
                             <div class="flex gap-2">
-                                @* SERCE - usuń z wishlisty *@
                                 <form method="post" action="/Wishlist/Remove">
                                     <input type="hidden" name="idCourse" value="@course.IdCourse" />
-                                    <button type="submit" class="btn btn-circle bg-black text-gray-400 border border-gray-600 hover:text-white hover:border-gray-400 transition-colors flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <button type="submit" aria-label="Remove from wishlist"
+                                            class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-rose-400 transition-colors hover:border-rose-500/50 hover:bg-rose-500/10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                         </svg>
                                     </button>
                                 </form>
 
-                                @* KOSZYK *@
                                 @if (inCart)
                                 {
-                                    <a href="/Cart" class="btn btn-circle bg-black text-gray-600 border border-gray-800 flex items-center justify-center opacity-40 cursor-not-allowed pointer-events-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:translateX(-1px)">
-                                            <circle cx="9" cy="21" r="1"></circle>
-                                            <circle cx="20" cy="21" r="1"></circle>
-                                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                        </svg>
-                                    </a>
+                                    <span aria-label="Already in cart"
+                                          class="flex h-9 w-9 cursor-default items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
                                 }
                                 else
                                 {
                                     <form method="post" action="/Cart/Add">
                                         <input type="hidden" name="idCourse" value="@course.IdCourse" />
                                         <input type="hidden" name="returnUrl" value="/Wishlist" />
-                                        <button type="submit" class="btn btn-circle bg-black text-gray-400 border border-gray-600 hover:text-white hover:border-white transition-colors flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:translateX(-1px)">
-                                                <circle cx="9" cy="21" r="1"></circle>
-                                                <circle cx="20" cy="21" r="1"></circle>
-                                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                        <button type="submit" aria-label="Add to cart"
+                                                class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition-colors hover:border-brand-400/60 hover:bg-brand-500/10 hover:text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                                             </svg>
                                         </button>
                                     </form>
@@ -76,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             }
         </div>
     }

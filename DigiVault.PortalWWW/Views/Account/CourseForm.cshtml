@@ -4,39 +4,41 @@
     Layout = "_Layout";
 }
 
-<section class="py-6 mb-20">
-    <h1 class="text-white text-4xl font-bold mb-6">Add Course</h1>
+<section class="animate-fade-up py-4 mb-16">
+    <h1 class="font-display text-3xl font-extrabold text-white sm:text-4xl">Add Course</h1>
+    <p class="mt-2 text-zinc-500">Share what you know — publish a new course on the marketplace</p>
 
-    <div class="flex flex-col lg:flex-row gap-8">
+    <div class="mt-8 flex flex-col gap-8 lg:flex-row">
 
-        <div class="flex-1">
-            <form method="post" action="/Account/CreateCourse" id="courseForm" class="flex flex-col gap-4">
+        <div class="min-w-0 flex-1">
+            <form method="post" action="/Account/CreateCourse" id="courseForm"
+                  class="flex flex-col gap-5 rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-gray-400 text-sm">Title</label>
-                    <input type="text" name="title" id="titleInput" placeholder="Course title..."
-                           class="input bg-black text-white border-gray-700 rounded-lg w-full" required />
+                <div>
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-400">Title</label>
+                    <input type="text" name="title" id="titleInput" placeholder="Course title…" class="input-dv" required />
                 </div>
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-gray-400 text-sm">Description</label>
-                    <textarea name="description" placeholder="Course description..."
-                              class="textarea bg-black text-white border-gray-700 rounded-lg w-full h-32" required></textarea>
+                <div>
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-400">Description</label>
+                    <textarea name="description" placeholder="What will students learn?" rows="5"
+                              class="input-dv resize-y" required></textarea>
                 </div>
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-gray-400 text-sm">Category</label>
+                <div>
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-400">Category</label>
                     <input type="hidden" name="idCategory" id="categoryInput" required />
-                    <div class="relative w-full">
-                        <button type="button" onclick="toggleDropdown()" class="input bg-black text-white border-gray-700 rounded-lg w-full text-left flex justify-between items-center px-4">
-                            <span id="categoryLabel" class="text-gray-500">Select category</span>
-                            <span>▾</span>
+                    <div class="relative w-full" id="categoryDropdown">
+                        <button type="button" onclick="toggleDropdown()"
+                                class="input-dv flex items-center justify-between text-left">
+                            <span id="categoryLabel" class="text-zinc-500">Select category</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-500"><path d="m6 9 6 6 6-6"/></svg>
                         </button>
-                        <ul id="categoryList" class="hidden absolute z-50 w-full bg-black border border-gray-700 rounded-lg mt-1 max-h-60 overflow-y-auto">
+                        <ul id="categoryList" class="absolute z-50 mt-2 hidden max-h-60 w-full overflow-y-auto rounded-xl border border-white/10 bg-ink-800 p-1.5 shadow-2xl">
                             @foreach (var cat in Model)
                             {
                                 <li onclick="selectCategory(@cat.IdCategory, '@cat.Name')"
-                                    class="px-4 py-2 text-white hover:bg-gray-800 cursor-pointer text-sm">
+                                    class="cursor-pointer rounded-lg px-3.5 py-2 text-sm text-zinc-300 transition-colors hover:bg-brand-500/15 hover:text-white">
                                     @cat.Name
                                 </li>
                             }
@@ -44,39 +46,38 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-gray-400 text-sm">Price (PLN)</label>
-                    <input type="number" name="price" step="0.01" min="0" placeholder="0.00"
-                           class="input bg-black text-white border-gray-700 rounded-lg w-full" required />
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    <div>
+                        <label class="mb-1.5 block text-xs font-medium text-zinc-400">Price (PLN)</label>
+                        <input type="number" name="price" step="0.01" min="0" placeholder="0.00" class="input-dv" required />
+                    </div>
+                    <div>
+                        <label class="mb-1.5 block text-xs font-medium text-zinc-400">Image URL</label>
+                        <input type="url" name="imageUrl" id="imageInput" placeholder="https://…" class="input-dv" />
+                    </div>
                 </div>
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-gray-400 text-sm">Image URL</label>
-                    <input type="url" name="imageUrl" id="imageInput" placeholder="https://..."
-                           class="input bg-black text-white border-gray-700 rounded-lg w-full" />
-                </div>
-
-                <div class="flex gap-3 mt-4">
-                    <button type="submit" class="btn bg-white text-black rounded-full px-8 hover:bg-gray-200 font-bold">
-                        Save Course
+                <div class="mt-2 flex gap-3">
+                    <button type="submit" class="btn btn-gradient rounded-full px-8 font-bold">
+                        Publish Course
                     </button>
-                    <a href="/account" class="btn bg-black text-white border-gray-700 rounded-full px-8 hover:bg-white hover:text-black">
+                    <a href="/account" class="btn rounded-full border border-white/15 bg-transparent px-8 font-semibold text-zinc-300 hover:border-white/40 hover:bg-white/5 hover:text-white">
                         Cancel
                     </a>
                 </div>
-
             </form>
         </div>
 
-        @* PODGLĄD *@
-        <div class="lg:w-80">
-            <div class="card bg-black border border-gray-800 rounded-xl overflow-hidden sticky top-4">
-                <div class="aspect-video bg-gray-900 flex items-center justify-center overflow-hidden">
-                    <img id="previewImg" src="" alt="" class="w-full h-full object-cover hidden" />
-                    <p id="previewPlaceholder" class="text-gray-600 text-sm">Image preview</p>
+        @* live preview *@
+        <div class="w-full lg:w-80 lg:shrink-0">
+            <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-600">Live preview</p>
+            <div class="sticky top-24 overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900">
+                <div class="flex aspect-video items-center justify-center overflow-hidden bg-ink-800">
+                    <img id="previewImg" src="" alt="" class="hidden h-full w-full object-cover" />
+                    <p id="previewPlaceholder" class="text-sm text-zinc-600">Image preview</p>
                 </div>
                 <div class="p-4">
-                    <p id="previewTitle" class="text-gray-500 text-sm">Course title will appear here</p>
+                    <p id="previewTitle" class="text-sm text-zinc-600">Course title will appear here</p>
                 </div>
             </div>
         </div>
@@ -95,7 +96,7 @@
         document.getElementById('categoryList').classList.add('hidden');
     }
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('.relative'))
+        if (!document.getElementById('categoryDropdown').contains(e.target))
             document.getElementById('categoryList').classList.add('hidden');
     });
 
@@ -114,6 +115,6 @@
 
     document.getElementById('titleInput').addEventListener('input', function () {
         document.getElementById('previewTitle').textContent = this.value || 'Course title will appear here';
-        document.getElementById('previewTitle').className = this.value ? 'text-white font-semibold text-sm' : 'text-gray-500 text-sm';
+        document.getElementById('previewTitle').className = this.value ? 'text-sm font-semibold text-white' : 'text-sm text-zinc-600';
     });
 </script>

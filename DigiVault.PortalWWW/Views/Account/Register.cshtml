@@ -6,64 +6,103 @@
 }
 
 <!DOCTYPE html>
-<html lang="pl" data-theme="black">
+<html lang="en" data-theme="black">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - DigiVault</title>
+    <link rel="icon" type="image/png" href="/images/logoDV-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        display: ['Sora', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        ink: { 950: '#0b0b11', 900: '#12121a', 800: '#1a1a24' },
+                        brand: { 300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed' },
+                    },
+                },
+            },
+        };
+    </script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 </head>
-<body>
-<div class="min-h-screen flex flex-col bg-black justify-center items-center py-8">
+<body class="font-sans antialiased">
 
-    <div class="flex flex-col items-center pb-8">
-        <img src="~/images/logoDV.png" alt="DigiVault" class="h-20" />
-    </div>
+<div class="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12">
+    <div class="pointer-events-none absolute -top-40 left-1/2 h-96 w-[40rem] -translate-x-1/2 rounded-full bg-violet-600/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-40 right-0 h-80 w-96 rounded-full bg-fuchsia-600/10 blur-3xl"></div>
 
-    <div class="flex flex-col items-center pb-8 px-4 w-full">
-        <div class="bg-gray-200 rounded-3xl p-8 flex flex-col gap-4 w-full max-w-xs md:max-w-sm lg:max-w-sm">
+    <div class="animate-fade-up relative w-full max-w-md">
 
-            <h2 class="text-3xl font-bold text-black text-center mb-2">Sign up</h2>
+        <div class="mb-8 flex justify-center">
+            <a href="/"><img src="~/images/logoDV.png" alt="DigiVault" asp-append-version="true" class="h-14 w-auto" /></a>
+        </div>
 
-            <form asp-controller="Account" asp-action="Register" method="post" class="flex flex-col gap-3">
+        <div class="rounded-3xl border border-white/[0.08] bg-ink-900/90 p-8 shadow-2xl shadow-black/50 backdrop-blur-xl">
+            <h1 class="font-display text-center text-2xl font-bold text-white">Create your account</h1>
+            <p class="mt-1.5 text-center text-sm text-zinc-500">Join DigiVault and start learning today</p>
+
+            <form asp-controller="Account" asp-action="Register" method="post" class="mt-8 flex flex-col gap-4">
 
                 @if (!ViewData.ModelState.IsValid)
                 {
-                    <div class="bg-red-100 border border-red-400 text-red-700 rounded-2xl px-4 py-3 text-sm text-center">
+                    <div class="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-center text-sm text-rose-300">
                         <div asp-validation-summary="All"></div>
                     </div>
                 }
 
-                <input asp-for="FirstName" type="text" placeholder="First name"
-                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label class="mb-1.5 block text-xs font-medium text-zinc-400" for="FirstName">First name</label>
+                        <input asp-for="FirstName" type="text" placeholder="Anna" class="input-dv" />
+                    </div>
+                    <div>
+                        <label class="mb-1.5 block text-xs font-medium text-zinc-400" for="LastName">Last name</label>
+                        <input asp-for="LastName" type="text" placeholder="Kowalska" class="input-dv" />
+                    </div>
+                </div>
 
-                <input asp-for="LastName" type="text" placeholder="Last name"
-                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <div>
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-400" for="Email">Email</label>
+                    <input asp-for="Email" type="email" placeholder="you@example.com" class="input-dv" />
+                </div>
 
-                <input asp-for="Email" type="email" placeholder="Email"
-                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <div>
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-400" for="Login">Login</label>
+                    <input asp-for="Login" type="text" placeholder="Your login" class="input-dv" />
+                </div>
 
-                <input asp-for="Login" type="text" placeholder="Login"
-                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
+                <div>
+                    <label class="mb-1.5 block text-xs font-medium text-zinc-400" for="Password">Password</label>
+                    <input asp-for="Password" type="password" placeholder="Min. 8 characters, capital letter, number" class="input-dv" />
+                </div>
 
-                <input asp-for="Password" type="password" placeholder="Password (min. 8 characters, capital letter, number)"
-                       class="input bg-black text-white text-center placeholder-gray-500 rounded-full w-full font-thin" />
-
-                <button type="submit"
-                        class="btn bg-black text-white border border-white rounded-full w-full font-bold text-lg mt-2 hover:shadow-[0_0_12px_2px_rgba(255,255,255,0.4)] transition-all duration-300">
+                <button type="submit" class="btn btn-gradient mt-2 w-full rounded-full text-base font-bold">
                     Create account
                 </button>
             </form>
 
-            <p class="text-center text-sm text-gray-600 mt-2">
-                Already have an account? <a href="/account/login" class="font-bold underline text-black">Log in</a>
+            <p class="mt-6 text-center text-sm text-zinc-500">
+                Already have an account?
+                <a href="/account/login" class="font-semibold text-brand-300 hover:text-brand-400 hover:underline">Log in</a>
             </p>
         </div>
+
+        <p class="mt-6 text-center text-xs text-zinc-600">
+            <a href="/" class="transition-colors hover:text-zinc-400">← Back to DigiVault</a>
+        </p>
     </div>
 </div>
 </body>

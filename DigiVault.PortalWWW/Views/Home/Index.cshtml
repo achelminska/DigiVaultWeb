@@ -1,163 +1,88 @@
-﻿@model HomeViewModel
+@model HomeViewModel
 
 @{
     ViewData["Title"] = "Home";
     Layout = "_Layout";
-    var popularCourses = Model.PopularCourses;
-    var newestCourses = Model.NewestCourses;
-    var topRatedCourses = Model.TopRatedCourses;
-    var categories = Model.Categories;
 }
 
-@* HERO *@
-<section class="py-8">
-    <h1 class="text-white text-4xl font-bold mb-2">@Model.HeroTitle</h1>
-    <p class="text-gray-400 text-lg mb-4">@Model.HeroSubtitle</p>
-    <p class="text-gray-500 text-sm">Hello, <span class="text-white">@Model.UserFirstName</span></p>
-</section>
+@* ── HERO ───────────────────────────────────────────────── *@
+<section class="animate-fade-up relative overflow-hidden rounded-3xl border border-white/[0.08] bg-ink-900 px-6 py-14 sm:px-12 lg:py-20">
+    <div class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand-600/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-32 -left-16 h-72 w-72 rounded-full bg-fuchsia-600/10 blur-3xl"></div>
 
-@* MOST POPULAR *@
-<section class="py-4">
-    <h2 class="text-white text-2xl font-bold mb-4">Most Popular</h2>
-    <div class="relative">
-        
-        @* PRZYCISK LEWO *@
-        <button onclick="scrollCarouselLeft('popular')" 
-                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -ml-8 hover:bg-white hover:text-black hover:border-white">
-            ❮
-        </button>
-
-        @* KARUZELA *@
-        <div id="popular" class="flex gap-4 overflow-x-auto pb-4" style="scrollbar-width: none;">
-            @* KARTA - powiel tyle razy ile kursów *@
-        @foreach (var course in popularCourses)
+    <div class="relative max-w-2xl">
+        @if (!string.IsNullOrEmpty(Model.UserFirstName))
         {
-            <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
-            <div class="card bg-black min-w-[260px] max-w-[260px] hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg flex-shrink-0" style="height: 320px;">
-                <figure class="flex-shrink-0">
-                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-40 object-cover" />
-                </figure>
-                <div class="card-body p-4">
-                    <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
-                    <p class="text-gray-400 text-xs">@course.AuthorName</p>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
-                    </div>
-                    <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
-                </div>
-            </div>
-             </a>
+            <p class="mb-3 text-sm font-medium text-brand-300">Welcome back, @Model.UserFirstName 👋</p>
         }
-
+        <h1 class="font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl">
+            @Model.HeroTitle
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-zinc-400">@Model.HeroSubtitle</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/courses" class="btn btn-gradient rounded-full px-8 font-semibold">Explore Courses</a>
+            @if (!string.IsNullOrEmpty(Model.UserFirstName))
+            {
+                <a href="/myvault" class="btn rounded-full border border-white/15 bg-transparent px-8 font-semibold text-white hover:border-white/40 hover:bg-white/5">My Vault</a>
+            }
+            else
+            {
+                <a href="/account/register" class="btn rounded-full border border-white/15 bg-transparent px-8 font-semibold text-white hover:border-white/40 hover:bg-white/5">Sign up free</a>
+            }
         </div>
-
-        @* PRZYCISK PRAWO *@
-        <button onclick="scrollCarouselRight('popular')" 
-                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -mr-8 hover:bg-white hover:text-black hover:border-white">
-            ❯
-        </button>
-        
-        
     </div>
 </section>
 
-@* CATEGORIES *@
-<section class="py-4">
-    <h2 class="text-white text-2xl font-bold mb-4">Categories</h2>
-    <div class="flex flex-wrap gap-3">
+@* ── carousel section template ──────────────────────────── *@
+@{
+    async Task CarouselAsync(string id, string title, string subtitle, IEnumerable<DigiVault.PortalWWW.Models.CourseListDto> courses)
+    {
+        <section class="animate-fade-up dv-delay-1 mt-14">
+            <div class="mb-5 flex items-end justify-between">
+                <div>
+                    <h2 class="font-display text-2xl font-bold text-white">@title</h2>
+                    <p class="mt-1 text-sm text-zinc-500">@subtitle</p>
+                </div>
+                <div class="hidden gap-2 sm:flex">
+                    <button onclick="scrollCarouselLeft('@id')" aria-label="Scroll left"
+                            class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition-colors hover:border-brand-400/60 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <button onclick="scrollCarouselRight('@id')" aria-label="Scroll right"
+                            class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition-colors hover:border-brand-400/60 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="@id" class="no-scrollbar -mx-1 flex snap-x gap-4 overflow-x-auto px-1 pb-2">
+                @foreach (var course in courses)
+                {
+                    <div class="w-[270px] flex-shrink-0 snap-start">
+                        @await Html.PartialAsync("_CourseCard", course)
+                    </div>
+                }
+            </div>
+        </section>
+    }
+}
+
+@{ await CarouselAsync("popular", "Most Popular", "Courses learners love the most", Model.PopularCourses); }
+
+@* ── CATEGORIES ─────────────────────────────────────────── *@
+<section class="animate-fade-up dv-delay-2 mt-14">
+    <h2 class="font-display mb-5 text-2xl font-bold text-white">Browse by Category</h2>
+    <div class="flex flex-wrap gap-2.5">
         @foreach (var category in Model.Categories)
         {
-            <a href="/Courses?idCategory=@category.IdCategory" class="badge badge-outline text-white border-gray-500 rounded-full px-4 py-3 cursor-pointer hover:bg-white hover:text-black hover:scale-105 transition-transform">@category.Name</a>
-        }
-    </div>
-</section>
-
-@* NEWEST *@
-<section class="py-4">
-    <h2 class="text-white text-2xl font-bold mb-4">Newest</h2>
-    <div class="relative">
-        
-        @* PRZYCISK LEWO *@
-        <button onclick="scrollCarouselLeft('newest')" 
-                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -ml-8 hover:bg-white hover:text-black hover:border-white">
-            ❮
-        </button>
-
-        @* KARUZELA *@
-        <div id="newest" class="flex gap-4 overflow-x-auto pb-4" style="scrollbar-width: none;">
-            @* KARTA - powiel tyle razy ile kursów *@
-        @foreach (var course in newestCourses)
-        {
-            <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
-            <div class="card bg-black min-w-[260px] max-w-[260px] flex-shrink-0 border border-gray-800 rounded-lg hover:scale-105 transition-transform cursor-pointer" style="height: 320px;">
-                <figure>
-                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
-                </figure>
-                <div class="card-body p-4 flex flex-col">
-                    <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
-                    <p class="text-gray-400 text-xs">@course.AuthorName</p>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
-                    </div>
-                    <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
-                </div>
-            </div>
+            <a href="/Courses?idCategory=@category.IdCategory"
+               class="rounded-full border border-white/10 bg-white/[0.04] px-5 py-2 text-sm font-medium text-zinc-300 transition-all hover:border-brand-400/60 hover:bg-brand-500/10 hover:text-white">
+                @category.Name
             </a>
         }
-
-        </div>
-
-        @* PRZYCISK PRAWO *@
-        <button onclick="scrollCarouselRight('newest')" 
-                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -mr-8 hover:bg-white hover:text-black hover:border-white">
-            ❯
-        </button>
-        
-        
     </div>
 </section>
 
-@* TOP RATED *@
-<section class="py-4">
-    <h2 class="text-white text-2xl font-bold mb-4">Top Rated</h2>
-    <div class="relative">
-        
-        @* PRZYCISK LEWO *@
-        <button onclick="scrollCarouselLeft('top-rated')" 
-                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -ml-8 hover:bg-white hover:text-black hover:border-white">
-            ❮
-        </button>
+@{ await CarouselAsync("newest", "Fresh & New", "Recently added to the marketplace", Model.NewestCourses); }
+@{ await CarouselAsync("top-rated", "Top Rated", "The highest rated courses on DigiVault", Model.TopRatedCourses); }
 
-        @* KARUZELA *@
-        <div id="top-rated" class="flex gap-4 overflow-x-auto pb-4" style="scrollbar-width: none;">
-            @* KARTA - powiel tyle razy ile kursów *@
-        @foreach (var course in topRatedCourses)
-        {
-            <a asp-controller="Courses" asp-action="Detail" asp-route-id="@course.IdCourse">
-            <div class="card bg-black min-w-[260px] max-w-[260px] flex-shrink-0 border border-gray-800 rounded-lg hover:scale-105 transition-transform cursor-pointer" style="height: 320px;">
-                <figure>
-                    <img src="@course.ImageUrl" alt="@course.Title" class="w-full h-36 object-cover" />
-                </figure>
-                <div class="card-body p-4 flex flex-col">
-                    <h3 class="card-title text-white text-sm line-clamp-2">@course.Title</h3>
-                    <p class="text-gray-400 text-xs">@course.AuthorName</p>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
-                    </div>
-                    <p class="text-white font-bold mt-auto">@course.Price.ToString("0.00") PLN</p>
-                </div>
-            </div>
-            </a>
-        }
-
-        </div>
-
-        @* PRZYCISK PRAWO *@
-        <button onclick="scrollCarouselRight('top-rated')" 
-                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn btn-circle bg-black text-white border-gray-800 -mr-8 hover:bg-white hover:text-black hover:border-white">
-            ❯
-        </button>
-        
-        
-    </div>
-</section>
+<div class="h-10"></div>

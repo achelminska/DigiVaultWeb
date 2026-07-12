@@ -10,9 +10,6 @@ public class CoursesController(ApiService api) : Controller
     // GET
     public async Task<IActionResult> Index(int page = 1, string? search = null, int? idCategory = null, string? sortBy = null)
     {
-        var token = HttpContext.Session.GetString("Token");
-        if (token == null) return RedirectToAction("Login", "Account");
-        
         var query = new Dictionary<string, string?>
         {
             ["page"]       = page.ToString(),
@@ -41,38 +38,40 @@ public class CoursesController(ApiService api) : Controller
     public async Task<IActionResult> Detail(int id)
     {
         var token = HttpContext.Session.GetString("Token");
-        if (token == null) return RedirectToAction("Login", "Account");
+        var isLoggedIn = token != null;
 
-        var courseTask   = api.GetAsync<CourseDetailDto>($"/api/courses/{id}");
-        var reviewsTask  = api.GetAsync<IEnumerable<ReviewDto>>($"/api/courses/{id}/reviews");
-        var cartTask     = api.GetAuthAsync<List<CourseListDto>>("/api/cart");
-        var wishlistTask = api.GetAuthAsync<List<CourseListDto>>("/api/wishlist");
-        var purchasedTask = api.GetAuthAsync<List<CourseListDto>>("/api/courses/purchased");
-
-        await Task.WhenAll(courseTask, reviewsTask, cartTask, wishlistTask, purchasedTask);
-
-        var course = await courseTask;
+        var course  = await api.GetAsync<CourseDetailDto>($"/api/courses/{id}");
         if (course == null) return NotFound();
 
-        var cart      = await cartTask ?? [];
-        var wishlist  = await wishlistTask ?? [];
-        var purchased = await purchasedTask ?? [];
-        var reviews   = (await reviewsTask ?? []).ToList();
+        var reviews = (await api.GetAsync<IEnumerable<ReviewDto>>($"/api/courses/{id}/reviews") ?? []).ToList();
 
-        var jwt       = new JwtSecurityTokenHandler().ReadJwtToken(token);
-        var firstName = jwt.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value ?? "";
-        var lastName  = jwt.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value ?? "";
-        var fullName  = $"{firstName} {lastName}".Trim();
-        var userReview = reviews.FirstOrDefault(r => r.AuthorName == fullName);
+        var cart = new List<CourseListDto>();
+        var wishlist = new List<CourseListDto>();
+        var purchased = new List<CourseListDto>();
+        ReviewDto? userReview = null;
+
+        if (isLoggedIn)
+        {
+            cart      = await api.GetAuthAsync<List<CourseListDto>>("/api/cart") ?? [];
+            wishlist  = await api.GetAuthAsync<List<CourseListDto>>("/api/wishlist") ?? [];
+            purchased = await api.GetAuthAsync<List<CourseListDto>>("/api/courses/purchased") ?? [];
+
+            var jwt       = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var firstName = jwt.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value ?? "";
+            var lastName  = jwt.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value ?? "";
+            var fullName  = $"{firstName} {lastName}".Trim();
+            userReview = reviews.FirstOrDefault(r => r.AuthorName == fullName);
+        }
 
         return View(new CourseDetailViewModel
         {
-            Course       = course,
-            Reviews      = reviews,
-            IsInCart     = cart.Any(c => c.IdCourse == id),
-            IsInWishlist = wishlist.Any(c => c.IdCourse == id),
-            IsPurchased  = purchased.Any(c => c.IdCourse == id),
-            UserReview   = userReview,
+            Course            = course,
+            Reviews           = reviews,
+            IsAuthenticated   = isLoggedIn,
+            IsInCart          = cart.Any(c => c.IdCourse == id),
+            IsInWishlist      = wishlist.Any(c => c.IdCourse == id),
+            IsPurchased       = purchased.Any(c => c.IdCourse == id),
+            UserReview        = userReview,
         });
     }
 

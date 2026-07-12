@@ -5,70 +5,89 @@
     var total = Model.Sum(c => c.Price);
 }
 
-<section class="py-6">
-    <h1 class="text-white text-4xl font-bold">Cart</h1>
-    <p class="text-gray-400 text-sm mt-2">@Model.Count course@(Model.Count != 1 ? "s" : "")</p>
+<section class="animate-fade-up py-4">
+    <h1 class="font-display text-3xl font-extrabold text-white sm:text-4xl">Your Cart</h1>
+    <p class="mt-2 text-zinc-500">@Model.Count course@(Model.Count != 1 ? "s" : "") ready for checkout</p>
 </section>
 
-<section class="mb-20">
+<section class="animate-fade-up dv-delay-1 mb-16">
     @if (!Model.Any())
     {
-        <div class="text-center py-20">
-            <p class="text-gray-400 text-lg">Your cart is empty.</p>
-            <a href="/Courses" class="btn bg-black text-white border border-white rounded-full mt-4 hover:bg-white hover:text-black transition-colors">Browse Courses</a>
+        <div class="flex flex-col items-center rounded-3xl border border-white/[0.08] bg-ink-900 py-20 text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-zinc-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                </svg>
+            </div>
+            <p class="text-lg font-semibold text-white">Your cart is empty</p>
+            <p class="mt-1 text-sm text-zinc-500">Browse the marketplace and find something worth learning.</p>
+            <a href="/Courses" class="btn btn-gradient mt-6 rounded-full px-8 font-semibold">Browse Courses</a>
         </div>
     }
     else
     {
-        <div class="flex flex-col lg:flex-row gap-8">
-            <div class="flex-1 flex flex-col gap-1">
-                @foreach (var course in Model)
-                {
-                    <div class="flex gap-4 items-center py-4 border-b border-gray-800 px-2">
-                        <a href="/Courses/Detail/@course.IdCourse">
-                            <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
-                                 class="w-24 h-16 object-cover rounded-lg flex-shrink-0 hover:opacity-80 transition-opacity" />
-                        </a>
-                        <div class="flex-1">
-                            <a href="/Courses/Detail/@course.IdCourse" class="text-white font-semibold text-sm hover:underline">@course.Title</a>
-                            <p class="text-gray-400 text-xs mt-1">@course.AuthorName</p>
-                            @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
+        <div class="flex flex-col gap-8 lg:flex-row">
+
+            <div class="min-w-0 flex-1">
+                <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900">
+                    @foreach (var course in Model)
+                    {
+                        <div class="flex items-center gap-4 border-b border-white/[0.06] p-4 last:border-b-0 transition-colors hover:bg-white/[0.02]">
+                            <a href="/Courses/Detail/@course.IdCourse" class="shrink-0 overflow-hidden rounded-xl">
+                                <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
+                                     alt="@course.Title" class="h-16 w-28 object-cover transition-transform duration-300 hover:scale-105" />
+                            </a>
+                            <div class="min-w-0 flex-1">
+                                <a href="/Courses/Detail/@course.IdCourse" class="block truncate text-sm font-semibold text-white hover:text-brand-300">@course.Title</a>
+                                <p class="mt-0.5 text-xs text-zinc-500">@course.AuthorName</p>
+                                <div class="mt-1">
+                                    @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
+                                </div>
+                            </div>
+                            <div class="flex shrink-0 flex-col items-end gap-2">
+                                <p class="font-bold text-white">@course.Price.ToString("F2") <span class="text-xs font-medium text-zinc-500">PLN</span></p>
+                                <form method="post" action="/Cart/Remove">
+                                    <input type="hidden" name="idCourse" value="@course.IdCourse" />
+                                    <button type="submit" aria-label="Remove from cart"
+                                            class="flex h-8 w-8 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-rose-500/10 hover:text-rose-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"/>
+                                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                            <path d="M10 11v6"/><path d="M14 11v6"/>
+                                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="flex flex-col items-end gap-2">
-                            <p class="text-white font-bold">@course.Price.ToString("F2") PLN</p>
-                            <form method="post" action="/Cart/Remove">
-                                <input type="hidden" name="idCourse" value="@course.IdCourse" />
-                                <button type="submit" class="btn btn-sm btn-circle bg-black text-red-500 border border-red-500 hover:bg-red-500 hover:text-black hover:border-red-500 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
-                                        <path d="M10 11v6"></path><path d="M14 11v6"></path>
-                                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
 
-            <div class="lg:w-80">
-                <div class="card bg-black border border-gray-800 rounded-xl p-6 sticky top-4">
-                    <h2 class="text-white text-xl font-bold mb-4">Order Summary</h2>
-                    <div class="flex justify-between text-gray-400 text-sm mb-2">
+            <div class="w-full lg:w-80 lg:shrink-0">
+                <div class="sticky top-24 rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                    <h2 class="font-display mb-5 text-lg font-bold text-white">Order Summary</h2>
+                    <div class="mb-3 flex justify-between text-sm text-zinc-400">
                         <span>@Model.Count course@(Model.Count != 1 ? "s" : "")</span>
                         <span>@total.ToString("F2") PLN</span>
                     </div>
-                    <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-2"></div>
-                    <div class="flex justify-between text-white font-bold mb-6">
-                        <span>Total</span>
-                        <span>@total.ToString("F2") PLN</span>
+                    <div class="my-4 border-t border-white/[0.08]"></div>
+                    <div class="mb-6 flex items-baseline justify-between">
+                        <span class="font-semibold text-white">Total</span>
+                        <span class="text-2xl font-extrabold text-white">@total.ToString("F2") <span class="text-xs font-medium text-zinc-500">PLN</span></span>
                     </div>
                     <form method="post" action="/Cart/Checkout">
-                        <button type="submit" class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200">
+                        <button type="submit" class="btn btn-gradient w-full rounded-full font-bold">
                             Checkout
                         </button>
                     </form>
+                    <p class="mt-4 flex items-center justify-center gap-1.5 text-xs text-zinc-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Secure checkout · Instant access
+                    </p>
                 </div>
             </div>
         </div>

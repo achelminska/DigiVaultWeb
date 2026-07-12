@@ -1,148 +1,139 @@
 @model CourseDetailViewModel
 
 @{
-    ViewData["Title"] = "Course Detail";
+    ViewData["Title"] = Model.Course.Title;
     Layout = "_Layout";
     var course = Model.Course;
 }
 
-<section class="py-6">
-    <div class="flex flex-col lg:flex-row gap-8">
+<section class="animate-fade-up py-4">
+    <div class="flex flex-col gap-10 lg:flex-row">
 
-        @* LEWA STRONA - info *@
-        <div class="flex-1">
+        @* ── LEFT — course info ─────────────────────────── *@
+        <div class="min-w-0 flex-1">
 
-            <span class="badge badge-outline text-white border-gray-600 rounded-full px-4 py-3 mb-4">@course.CategoryName</span>
-            <h1 class="text-white text-3xl font-bold mt-4 mb-3">@course.Title</h1>
-            <p class="text-gray-400 mb-4">@course.Description</p>
-
-            <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
-                <i class="fa fa-user"></i>
-                <span>@course.AuthorName</span>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="rounded-full border border-brand-400/40 bg-brand-500/10 px-4 py-1.5 text-xs font-semibold text-brand-300">
+                    @course.CategoryName
+                </span>
+                <span class="text-xs text-zinc-500">Published @course.CreatedAt.ToString("dd MMM yyyy")</span>
             </div>
 
-                    <div class="flex items-center gap-2 mb-2">
-                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
+            <h1 class="font-display mt-5 text-3xl font-extrabold leading-tight text-white sm:text-4xl">@course.Title</h1>
+
+            <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+                <div class="flex items-center gap-2.5">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 text-xs font-bold text-white">
+                        @(course.AuthorName.Length >= 2 ? course.AuthorName[..2].ToUpper() : course.AuthorName.ToUpper())
                     </div>
-
-            <div class="flex gap-6 text-gray-400 text-sm mb-6">
-                <span>🛒 @course.SalesCount sold</span>
-                <span>@course.CreatedAt.ToString("dd/MM/yyyy")</span>
+                    <div>
+                        <p class="font-medium text-white">@course.AuthorName</p>
+                        <p class="text-xs text-zinc-500">Course author</p>
+                    </div>
+                </div>
+                @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
+                <span class="flex items-center gap-1.5 text-zinc-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                    </svg>
+                    @course.SalesCount sold
+                </span>
             </div>
 
-            <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
-
-            <div class="mb-6">
-                <h2 class="text-white text-xl font-bold mb-3">About</h2>
-                <p class="text-gray-400">@course.Description</p>
+            <div class="mt-8 rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                <h2 class="font-display mb-3 text-lg font-bold text-white">About this course</h2>
+                <p class="leading-relaxed text-zinc-400">@course.Description</p>
             </div>
 
-            <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800"></div>
-
-            <div class="mb-20">
-                <h2 class="text-white text-xl font-bold mb-4">Reviews</h2>
+            @* ── REVIEWS ────────────────────────────────── *@
+            <div class="mt-10 mb-16">
+                <h2 class="font-display mb-5 text-xl font-bold text-white">Reviews <span class="ml-1 text-sm font-normal text-zinc-500">(@Model.Reviews.Count())</span></h2>
 
                 @if (Model.IsPurchased)
                 {
-                    <div class="bg-black border border-gray-800 rounded-xl p-5 mb-6">
-                        @if (Model.UserReview == null)
-                        {
-                            <h3 class="text-white font-semibold mb-3">Leave a review</h3>
-                            <form method="post" action="/Courses/AddReview/@course.IdCourse">
-                                <input type="hidden" name="id" value="@course.IdCourse" />
-                                <div class="rating rating-sm mb-3">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        <input type="radio" name="rating" value="@i" class="mask mask-star-2 bg-gray-300" @(i == 5 ? "checked" : "") />
-                                    }
-                                </div>
-                                <textarea name="comment" placeholder="Share your thoughts about this course..." rows="3"
-                                          class="textarea bg-black border-gray-700 text-white placeholder-gray-500 w-full rounded-xl mb-3 focus:border-gray-500 focus:outline-none"></textarea>
-                                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200 font-semibold">
-                                    Submit Review
-                                </button>
-                            </form>
+                    <div class="mb-6 rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                        @{
+                            var isEdit = Model.UserReview != null;
+                            var formAction = isEdit ? $"/Courses/EditReview/{course.IdCourse}" : $"/Courses/AddReview/{course.IdCourse}";
+                            var checkedRating = isEdit ? Model.UserReview!.Rating : 5;
                         }
-                        else
-                        {
-                            <h3 class="text-white font-semibold mb-3">Edit your review</h3>
-                            <form method="post" action="/Courses/EditReview/@course.IdCourse">
-                                <input type="hidden" name="id" value="@course.IdCourse" />
-                                <div class="rating rating-sm mb-3">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        <input type="radio" name="rating" value="@i" class="mask mask-star-2 bg-gray-300" @(i == Model.UserReview.Rating ? "checked" : "") />
-                                    }
-                                </div>
-                                <textarea name="comment" rows="3"
-                                          class="textarea bg-black border-gray-700 text-white placeholder-gray-500 w-full rounded-xl mb-3 focus:border-gray-500 focus:outline-none">@Model.UserReview.Comment</textarea>
-                                <button type="submit" class="btn bg-white text-black rounded-full hover:bg-gray-200 font-semibold">
-                                    Update Review
-                                </button>
-                            </form>
-                        }
+                        <h3 class="mb-4 font-semibold text-white">@(isEdit ? "Edit your review" : "Leave a review")</h3>
+                        <form method="post" action="@formAction">
+                            <input type="hidden" name="id" value="@course.IdCourse" />
+                            <div class="rating rating-md mb-4">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <input type="radio" name="rating" value="@i" class="mask mask-star-2 bg-amber-400" @(i == checkedRating ? "checked" : "") />
+                                }
+                            </div>
+                            <textarea name="comment" placeholder="Share your thoughts about this course…" rows="3"
+                                      class="input-dv mb-4 resize-y" style="min-height: 6rem;">@(isEdit ? Model.UserReview!.Comment : "")</textarea>
+                            <button type="submit" class="btn btn-gradient rounded-full px-8 font-semibold">
+                                @(isEdit ? "Update Review" : "Submit Review")
+                            </button>
+                        </form>
                     </div>
                 }
+
                 @if (!Model.Reviews.Any())
                 {
-                    <p class="text-gray-400 text-base text-center py-8">No reviews yet.</p>
+                    <div class="rounded-2xl border border-dashed border-white/10 py-12 text-center">
+                        <p class="text-zinc-500">No reviews yet — be the first to share your experience.</p>
+                    </div>
                 }
-                <div class="flex flex-col gap-4">
+
+                <div class="flex flex-col gap-3">
                     @foreach (var review in Model.Reviews)
                     {
-                        <div class="bg-black border border-gray-800 rounded-xl p-4">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="avatar placeholder">
-                                    <div class="bg-gray-700 text-white rounded-full w-9">
-                                        <span class="text-sm">@(review.AuthorName.Length >= 2 ? review.AuthorName[..2].ToUpper() : review.AuthorName.ToUpper())</span>
-                                    </div>
+                        <div class="rounded-2xl border border-white/[0.08] bg-ink-900 p-5">
+                            <div class="mb-3 flex items-center gap-3">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-600/70 to-fuchsia-600/70 text-xs font-bold text-white">
+                                    @(review.AuthorName.Length >= 2 ? review.AuthorName[..2].ToUpper() : review.AuthorName.ToUpper())
                                 </div>
                                 <div>
-                                    <p class="text-white font-semibold text-sm">@review.AuthorName</p>
-                                    @{
-                                        var ratingId = $"rev{review.IdReview}";
-                                        var halfCount = review.Rating * 2;
-                                    }
-                                    <div class="rating rating-xs rating-half pointer-events-none">
-                                        <input type="radio" name="@ratingId" class="rating-hidden" />
-                                        @for (int i = 1; i <= 10; i++)
-                                        {
-                                            var mask = i % 2 == 1 ? "mask mask-star-2 mask-half-1" : "mask mask-star-2 mask-half-2";
-                                            <input type="radio" name="@ratingId" class="@mask bg-gray-300" @(i == halfCount ? "checked" : "") />
-                                        }
-                                    </div>
+                                    <p class="text-sm font-semibold text-white">@review.AuthorName</p>
+                                    @await Html.PartialAsync("_RatingStars", ((double)review.Rating, 0))
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm">@review.Comment</p>
+                            <p class="text-sm leading-relaxed text-zinc-400">@review.Comment</p>
                         </div>
                     }
                 </div>
             </div>
-
         </div>
 
-        @* PRAWA STRONA - sticky panel *@
-        <div class="lg:w-96">
-            <div class="card bg-black border border-gray-800 rounded-xl overflow-hidden sticky top-4">
-                
-                @* OBRAZEK *@
-                <div class="aspect-video overflow-hidden">
-                    <img src=@course.ImageUrl 
-                         class="w-full h-full object-cover" />
+        @* ── RIGHT — sticky purchase panel ──────────────── *@
+        <div class="w-full lg:w-96 lg:shrink-0">
+            <div class="sticky top-24 overflow-hidden rounded-3xl border border-white/[0.08] bg-ink-900 shadow-2xl shadow-black/40">
+                <div class="aspect-video overflow-hidden bg-ink-800">
+                    <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800")"
+                         alt="@course.Title" class="h-full w-full object-cover" />
                 </div>
 
                 <div class="p-6">
-                    <p class="text-white text-3xl font-bold mb-4">@course.Price.ToString("0.00") PLN</p>
-                    @if (Model.IsPurchased)
+                    <p class="mb-5 text-3xl font-extrabold text-white">@course.Price.ToString("0.00") <span class="text-sm font-medium text-zinc-500">PLN</span></p>
+
+                    @if (!Model.IsAuthenticated)
                     {
-                        <a href="/MyVault" class="btn bg-green-600 text-white rounded-full w-full font-bold mb-3 cursor-default">
-                            ✓ Already Purchased
+                        <a href="/account/login" class="btn btn-gradient mb-3 w-full rounded-full font-bold">
+                            Log in to buy
+                        </a>
+                        <a href="/account/register" class="btn w-full rounded-full border border-white/10 bg-transparent font-semibold text-zinc-300 hover:border-white/30 hover:bg-white/5 hover:text-white">
+                            Create free account
+                        </a>
+                    }
+                    else if (Model.IsPurchased)
+                    {
+                        <a href="/MyVault" class="btn mb-3 w-full rounded-full border-0 bg-emerald-600/90 font-bold text-white hover:bg-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                            Already Purchased
                         </a>
                     }
                     else if (Model.IsInCart)
                     {
-                        <a href="/Cart" class="btn bg-gray-700 text-white rounded-full w-full font-bold mb-3">
-                            ✓ Go to Cart
+                        <a href="/Cart" class="btn mb-3 w-full rounded-full border border-white/15 bg-white/5 font-bold text-white hover:bg-white/10">
+                            Go to Cart →
                         </a>
                     }
                     else
@@ -150,19 +141,21 @@
                         <form method="post" action="/Cart/Add">
                             <input type="hidden" name="idCourse" value="@course.IdCourse" />
                             <input type="hidden" name="returnUrl" value="/Courses/Detail/@course.IdCourse" />
-                            <button type="submit" class="btn bg-white text-black rounded-full w-full font-bold hover:bg-gray-200 mb-3">
+                            <button type="submit" class="btn btn-gradient mb-3 w-full rounded-full font-bold">
                                 Add to Cart
                             </button>
                         </form>
                     }
 
-                    @if (Model.IsInWishlist)
+                    @if (Model.IsAuthenticated)
+                    {
+                        @if (Model.IsInWishlist)
                     {
                         <form method="post" action="/Wishlist/Remove">
                             <input type="hidden" name="idCourse" value="@course.IdCourse" />
-                            <button type="submit" class="btn bg-red-900 text-white border-red-800 rounded-full w-full hover:bg-red-800 mb-4">
+                            <button type="submit" class="btn w-full rounded-full border border-white/10 bg-transparent font-semibold text-rose-400 hover:border-rose-500/50 hover:bg-rose-500/10">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                                 </svg>
                                 Remove from Wishlist
                             </button>
@@ -173,27 +166,32 @@
                         <form method="post" action="/Wishlist/Add">
                             <input type="hidden" name="idCourse" value="@course.IdCourse" />
                             <input type="hidden" name="returnUrl" value="/Courses/Detail/@course.IdCourse" />
-                            <button type="submit" class="btn bg-black text-white border-gray-700 rounded-full w-full hover:bg-white hover:text-black mb-4">
+                            <button type="submit" class="btn w-full rounded-full border border-white/10 bg-transparent font-semibold text-zinc-300 hover:border-white/30 hover:bg-white/5 hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                                 </svg>
                                 Add to Wishlist
                             </button>
                         </form>
                     }
-                    <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-2"></div>
-                    <div class="flex flex-col gap-2 text-gray-400 text-sm">
-                        <div class="flex justify-between">
-                            <span>Category</span>
-                            <span class="text-white">@course.CategoryName</span>
+                    }
+
+                    <div class="mt-6 space-y-3 border-t border-white/[0.08] pt-5 text-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="text-zinc-500">Category</span>
+                            <span class="font-medium text-white">@course.CategoryName</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span>Rating</span>
+                        <div class="flex items-center justify-between">
+                            <span class="text-zinc-500">Rating</span>
                             @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
                         </div>
-                        <div class="flex justify-between">
-                            <span>Sales</span>
-                            <span class="text-white">@course.SalesCount</span>
+                        <div class="flex items-center justify-between">
+                            <span class="text-zinc-500">Students</span>
+                            <span class="font-medium text-white">@course.SalesCount</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-zinc-500">Access</span>
+                            <span class="font-medium text-white">Lifetime</span>
                         </div>
                     </div>
                 </div>

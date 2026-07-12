@@ -3,148 +3,172 @@
     ViewData["Title"] = "My Account";
     Layout = "_Layout";
     var p = Model.Profile;
+    var initials = $"{(string.IsNullOrEmpty(p.FirstName) ? "" : p.FirstName[..1])}{(string.IsNullOrEmpty(p.LastName) ? "" : p.LastName[..1])}".ToUpper();
 }
 
-<section class="py-6">
-    <h1 class="text-white text-4xl font-bold mb-6">My Account</h1>
+<section class="animate-fade-up py-4">
+    <div class="mb-8 flex items-center gap-4">
+        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 text-lg font-bold text-white">
+            @initials
+        </div>
+        <div>
+            <h1 class="font-display text-2xl font-extrabold text-white sm:text-3xl">@p.FirstName @p.LastName</h1>
+            <p class="text-sm text-zinc-500">@p.Email</p>
+        </div>
+    </div>
 
     <div role="tablist" class="tabs tabs-bordered mb-8">
 
         @* ── PROFILE TAB ─────────────────────────────────────────── *@
-        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Profile" checked />
-        <div role="tabpanel" class="tab-content pt-6">
-            <div class="flex flex-col lg:flex-row gap-8">
-                <div class="flex-1">
+        <input type="radio" name="account_tabs" role="tab" class="tab" aria-label="Profile" checked />
+        <div role="tabpanel" class="tab-content pt-8">
+            <div class="grid max-w-4xl grid-cols-1 gap-6 lg:grid-cols-2">
 
-                    <h2 class="text-white text-xl font-bold mb-4">Personal Information</h2>
+                <div class="rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                    <h2 class="font-display mb-5 text-lg font-bold text-white">Personal Information</h2>
                     <form method="post" action="/Account/UpdateName" class="flex flex-col gap-4">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">First Name</label>
-                            <input type="text" name="firstName" value="@p.FirstName" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">First Name</label>
+                            <input type="text" name="firstName" value="@p.FirstName" class="input-dv" />
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">Last Name</label>
-                            <input type="text" name="lastName" value="@p.LastName" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">Last Name</label>
+                            <input type="text" name="lastName" value="@p.LastName" class="input-dv" />
                         </div>
-                        <button type="submit" class="btn bg-black text-white border border-white rounded-full w-fit px-8 hover:bg-white hover:text-black transition-colors">Save Changes</button>
+                        <button type="submit" class="btn btn-gradient btn-sm mt-1 w-fit rounded-full px-6 font-semibold">Save Changes</button>
                     </form>
+                </div>
 
-                    <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-6"></div>
-
-                    <h2 class="text-white text-xl font-bold mb-4">Email</h2>
+                <div class="rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                    <h2 class="font-display mb-5 text-lg font-bold text-white">Email</h2>
                     <form method="post" action="/Account/UpdateEmail" class="flex flex-col gap-4">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">New Email</label>
-                            <input type="email" name="email" value="@p.Email" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">New Email</label>
+                            <input type="email" name="email" value="@p.Email" class="input-dv" />
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">Confirm with Password</label>
-                            <input type="password" name="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">Confirm with Password</label>
+                            <input type="password" name="password" placeholder="••••••••" class="input-dv" />
                         </div>
-                        <button type="submit" class="btn bg-black text-white border border-white rounded-full w-fit px-8 hover:bg-white hover:text-black transition-colors">Update Email</button>
+                        <button type="submit" class="btn btn-gradient btn-sm mt-1 w-fit rounded-full px-6 font-semibold">Update Email</button>
                     </form>
+                </div>
 
-                    <div class="divider divider-neutral before:bg-gray-800 after:bg-gray-800 my-6"></div>
-
-                    <h2 class="text-white text-xl font-bold mb-4">Change Password</h2>
-                    <form method="post" action="/Account/UpdatePassword" class="flex flex-col gap-4">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">Current Password</label>
-                            <input type="password" name="password" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                <div class="rounded-2xl border border-white/[0.08] bg-ink-900 p-6 lg:col-span-2">
+                    <h2 class="font-display mb-5 text-lg font-bold text-white">Change Password</h2>
+                    <form method="post" action="/Account/UpdatePassword" class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">Current Password</label>
+                            <input type="password" name="password" placeholder="••••••••" class="input-dv" />
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">New Password</label>
-                            <input type="password" name="newPassword" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">New Password</label>
+                            <input type="password" name="newPassword" placeholder="••••••••" class="input-dv" />
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-gray-400 text-sm">Confirm New Password</label>
-                            <input type="password" name="newPasswordConfirmation" placeholder="••••••••" class="input bg-black text-white border-gray-700 rounded-lg w-full" />
+                        <div>
+                            <label class="mb-1.5 block text-xs font-medium text-zinc-400">Confirm New Password</label>
+                            <input type="password" name="newPasswordConfirmation" placeholder="••••••••" class="input-dv" />
                         </div>
-                        <button type="submit" class="btn bg-black text-white border border-white rounded-full w-fit px-8 hover:bg-white hover:text-black transition-colors">Change Password</button>
+                        <div class="sm:col-span-3">
+                            <button type="submit" class="btn btn-gradient btn-sm rounded-full px-6 font-semibold">Change Password</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
 
         @* ── MY COURSES TAB ───────────────────────────────────────── *@
-        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="My Courses" />
-        <div role="tabpanel" class="tab-content pt-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-white text-xl font-bold">My Courses</h2>
-                <a href="/Account/CourseForm" class="btn bg-black text-white border border-white rounded-full btn-sm px-6 hover:bg-white hover:text-black transition-colors">+ Add Course</a>
+        <input type="radio" name="account_tabs" role="tab" class="tab" aria-label="My Courses" />
+        <div role="tabpanel" class="tab-content pt-8">
+            <div class="mb-5 flex items-center justify-between">
+                <h2 class="font-display text-lg font-bold text-white">My Courses</h2>
+                <a href="/Account/CourseForm" class="btn btn-gradient btn-sm rounded-full px-5 font-semibold">+ Add Course</a>
             </div>
 
             @if (!Model.MyCourses.Any())
             {
-                <p class="text-gray-400">You haven't created any courses yet.</p>
+                <div class="rounded-2xl border border-dashed border-white/10 py-14 text-center">
+                    <p class="text-zinc-500">You haven't created any courses yet.</p>
+                    <a href="/Account/CourseForm" class="mt-2 inline-block text-sm font-semibold text-brand-300 hover:underline">Create your first course →</a>
+                </div>
             }
             else
             {
-                <div class="flex flex-col gap-2">
+                <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900">
                     @foreach (var course in Model.MyCourses)
                     {
-                        <div class="flex gap-4 items-center py-4 border-b border-gray-800 px-2">
+                        <div class="flex items-center gap-4 border-b border-white/[0.06] p-4 last:border-b-0 transition-colors hover:bg-white/[0.02]">
                             <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
-                                 class="w-24 h-16 object-cover rounded-lg flex-shrink-0" />
-                            <div class="flex-1">
-                                <h3 class="text-white font-semibold text-sm">@course.Title</h3>
-                                <p class="text-gray-400 text-xs mt-1">@course.CategoryName • @course.Price.ToString("F2") PLN</p>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <span class="badge @(course.IsActive ? "badge-success" : "badge-error") badge-sm">@(course.IsActive ? "Active" : "Inactive")</span>
-                                        <span class="text-gray-400 text-xs">@course.SalesCount sales</span>
-                                    </div>
+                                 alt="@course.Title" class="h-16 w-28 shrink-0 rounded-xl object-cover" />
+                            <div class="min-w-0 flex-1">
+                                <h3 class="truncate text-sm font-semibold text-white">@course.Title</h3>
+                                <p class="mt-0.5 text-xs text-zinc-500">@course.CategoryName · @course.Price.ToString("F2") PLN</p>
+                                <div class="mt-1.5 flex items-center gap-2">
+                                    <span class="rounded-full px-2.5 py-0.5 text-[11px] font-semibold @(course.IsActive
+                                        ? "bg-emerald-500/15 text-emerald-400"
+                                        : "bg-rose-500/15 text-rose-400")">
+                                        @(course.IsActive ? "Active" : "Inactive")
+                                    </span>
+                                    <span class="text-xs text-zinc-500">@course.SalesCount sales</span>
                                 </div>
-                                <button onclick="toggleVisibility(this, @course.IdCourse, @course.IsVisible.ToString().ToLower())"
-                                        data-visible="@course.IsVisible.ToString().ToLower()"
-                                        class="btn btn-circle btn-sm border transition-colors @(course.IsVisible ? "bg-black text-green-500 border-green-600 hover:bg-green-600 hover:text-black hover:border-green-600" : "bg-black text-gray-500 border-gray-600 hover:bg-white hover:text-black hover:border-white")">
-                                    @if (course.IsVisible)
-                                    {
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                    }
-                                    else
-                                    {
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                                    }
-                                </button>
-                                <a href="/Account/EditCourse/@course.IdCourse" class="btn btn-circle btn-sm bg-black text-white border border-gray-600 hover:bg-white hover:text-black hover:border-white transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                    </svg>
-                                </a>
                             </div>
+
+                            <button onclick="toggleVisibility(this, @course.IdCourse, @course.IsVisible.ToString().ToLower())"
+                                    data-visible="@course.IsVisible.ToString().ToLower()" aria-label="Toggle visibility"
+                                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors @(course.IsVisible
+                                        ? "border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10"
+                                        : "border-white/10 text-zinc-500 hover:border-white/25 hover:text-white")">
+                                @if (course.IsVisible)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                }
+                                else
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                                }
+                            </button>
+                            <a href="/Account/EditCourse/@course.IdCourse" aria-label="Edit course"
+                               class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition-colors hover:border-brand-400/60 hover:bg-brand-500/10 hover:text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </a>
+                        </div>
                     }
                 </div>
             }
         </div>
 
         @* ── ORDERS TAB ───────────────────────────────────────────── *@
-        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Orders" />
-        <div role="tabpanel" class="tab-content pt-6">
-            <h2 class="text-white text-xl font-bold mb-4">Order History</h2>
+        <input type="radio" name="account_tabs" role="tab" class="tab" aria-label="Orders" />
+        <div role="tabpanel" class="tab-content pt-8">
+            <h2 class="font-display mb-5 text-lg font-bold text-white">Order History</h2>
             @if (!Model.Orders.Any())
             {
-                <p class="text-gray-400">You haven't placed any orders yet.</p>
+                <div class="rounded-2xl border border-dashed border-white/10 py-14 text-center">
+                    <p class="text-zinc-500">You haven't placed any orders yet.</p>
+                </div>
             }
             else
             {
-                <div class="flex flex-col gap-3">
+                <div class="flex max-w-3xl flex-col gap-4">
                     @foreach (var order in Model.Orders.OrderByDescending(o => o.CreatedAt))
                     {
-                        <div class="bg-black border border-gray-800 rounded-xl p-5">
-                            <div class="flex justify-between items-center mb-3">
+                        <div class="rounded-2xl border border-white/[0.08] bg-ink-900 p-5">
+                            <div class="mb-4 flex items-center justify-between">
                                 <div>
-                                    <p class="text-white font-semibold text-sm">Order #@order.IdOrder</p>
-                                    <p class="text-gray-400 text-xs">@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                                    <p class="text-sm font-semibold text-white">Order #@order.IdOrder</p>
+                                    <p class="mt-0.5 text-xs text-zinc-500">@order.CreatedAt.ToString("dd MMM yyyy · HH:mm")</p>
                                 </div>
-                                <p class="text-white font-bold">@order.TotalPrice.ToString("F2") PLN</p>
+                                <p class="text-lg font-bold text-white">@order.TotalPrice.ToString("F2") <span class="text-xs font-medium text-zinc-500">PLN</span></p>
                             </div>
-                            <div class="flex flex-col gap-1">
+                            <div class="flex flex-col gap-2 border-t border-white/[0.06] pt-3">
                                 @foreach (var item in order.OrderItems)
                                 {
                                     <div class="flex justify-between text-sm">
-                                        <a href="/Courses/Detail/@item.IdCourse" class="text-gray-300 hover:text-white hover:underline">@item.Title</a>
-                                        <span class="text-gray-400">@item.Price.ToString("F2") PLN</span>
+                                        <a href="/Courses/Detail/@item.IdCourse" class="text-zinc-300 transition-colors hover:text-brand-300">@item.Title</a>
+                                        <span class="shrink-0 text-zinc-500">@item.Price.ToString("F2") PLN</span>
                                     </div>
                                 }
                             </div>
@@ -155,17 +179,19 @@
         </div>
 
         @* ── EARNINGS TAB ─────────────────────────────────────────── *@
-        <input type="radio" name="account_tabs" role="tab" class="tab text-white" aria-label="Earnings" />
-        <div role="tabpanel" class="tab-content pt-6">
-            <h2 class="text-white text-xl font-bold mb-6">Earnings</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <div class="card bg-black border border-gray-800 rounded-xl p-6">
-                    <p class="text-gray-400 text-sm mb-1">Balance</p>
-                    <p class="text-white text-3xl font-bold">@p.Balance.ToString("F2") PLN</p>
+        <input type="radio" name="account_tabs" role="tab" class="tab" aria-label="Earnings" />
+        <div role="tabpanel" class="tab-content pt-8">
+            <h2 class="font-display mb-5 text-lg font-bold text-white">Earnings</h2>
+            <div class="grid max-w-3xl grid-cols-1 gap-5 sm:grid-cols-2">
+                <div class="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                    <div class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-violet-600/15 blur-2xl"></div>
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-500">Current Balance</p>
+                    <p class="text-3xl font-extrabold text-white">@p.Balance.ToString("F2") <span class="text-sm font-medium text-zinc-500">PLN</span></p>
                 </div>
-                <div class="card bg-black border border-gray-800 rounded-xl p-6">
-                    <p class="text-gray-400 text-sm mb-1">Total Withdrawn</p>
-                    <p class="text-white text-3xl font-bold">@p.TotalWithdrawn.ToString("F2") PLN</p>
+                <div class="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900 p-6">
+                    <div class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-fuchsia-600/15 blur-2xl"></div>
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-500">Total Withdrawn</p>
+                    <p class="text-3xl font-extrabold text-white">@p.TotalWithdrawn.ToString("F2") <span class="text-sm font-medium text-zinc-500">PLN</span></p>
                 </div>
             </div>
         </div>
@@ -174,8 +200,11 @@
 </section>
 
 <script>
-const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
-const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
+const visibleClasses = 'flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10';
+const hiddenClasses = 'flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors border-white/10 text-zinc-500 hover:border-white/25 hover:text-white';
 
 async function toggleVisibility(btn, id, isVisible) {
     await fetch(`/Account/ToggleCourseVisibility`, {
@@ -187,13 +216,7 @@ async function toggleVisibility(btn, id, isVisible) {
     const nowVisible = !isVisible;
     btn.dataset.visible = nowVisible;
     btn.innerHTML = nowVisible ? eyeOpen : eyeClosed;
-
-    if (nowVisible) {
-        btn.className = 'btn btn-circle btn-sm border transition-colors bg-black text-green-500 border-green-600 hover:bg-green-600 hover:text-black hover:border-green-600';
-        btn.setAttribute('onclick', `toggleVisibility(this, ${id}, true)`);
-    } else {
-        btn.className = 'btn btn-circle btn-sm border transition-colors bg-black text-gray-500 border-gray-600 hover:bg-white hover:text-black hover:border-white';
-        btn.setAttribute('onclick', `toggleVisibility(this, ${id}, false)`);
-    }
+    btn.className = nowVisible ? visibleClasses : hiddenClasses;
+    btn.setAttribute('onclick', `toggleVisibility(this, ${id}, ${nowVisible})`);
 }
 </script>

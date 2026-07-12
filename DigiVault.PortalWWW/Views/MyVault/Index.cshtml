@@ -4,45 +4,53 @@
     Layout = "_Layout";
 }
 
-<section class="py-6">
-    <h1 class="text-white text-4xl font-bold mb-6">My Vault</h1>
+<section class="animate-fade-up py-4">
+    <h1 class="font-display text-3xl font-extrabold text-white sm:text-4xl">My Vault</h1>
+    <p class="mt-2 text-zinc-500">Your personal library — @Model.Count course@(Model.Count != 1 ? "s" : "") and counting</p>
 </section>
 
-<section class="mb-20">
+<section class="animate-fade-up dv-delay-1 mb-16">
     @if (!Model.Any())
     {
-        <div class="text-center py-20">
-            <p class="text-gray-400 text-lg">You haven't purchased any courses yet.</p>
-            <a href="/Courses" class="btn bg-black text-white border border-white rounded-full mt-4 hover:bg-white hover:text-black transition-colors">Browse Courses</a>
+        <div class="flex flex-col items-center rounded-3xl border border-white/[0.08] bg-ink-900 py-20 text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-zinc-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            </div>
+            <p class="text-lg font-semibold text-white">Your vault is empty</p>
+            <p class="mt-1 text-sm text-zinc-500">Courses you purchase will appear here, ready whenever you are.</p>
+            <a href="/Courses" class="btn btn-gradient mt-6 rounded-full px-8 font-semibold">Browse Courses</a>
         </div>
     }
     else
     {
-        <p class="text-gray-400 text-sm mb-4">@Model.Count course@(Model.Count != 1 ? "s" : "")</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach (var course in Model)
             {
-                <div class="card bg-black hover:scale-105 transition-transform cursor-pointer border border-gray-800 rounded-lg">
-                    <a href="/Courses/Detail/@course.IdCourse">
-                        <figure>
-                            <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400")"
-                                 class="w-full h-40 object-cover" />
-                        </figure>
-                    </a>
-                    <div class="card-body p-4">
-                        <h3 class="card-title text-white text-sm">@course.Title</h3>
-                        <p class="text-gray-400 text-xs">@course.AuthorName</p>
-                        @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
-                        <div class="flex justify-end mt-2">
-                            <a href="/Courses/Detail/@course.IdCourse"
-                               class="btn btn-circle bg-black text-white border border-white hover:bg-white hover:text-black transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="transform:translateX(2px)">
+                <a href="/Courses/Detail/@course.IdCourse" class="block h-full">
+                    <article class="dv-card group flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-ink-900">
+                        <div class="dv-thumb relative aspect-[16/10] overflow-hidden bg-ink-800">
+                            <img src="@(course.ImageUrl ?? "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600")"
+                                 alt="@course.Title" loading="lazy" class="h-full w-full object-cover" />
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black shadow-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;">
                                         <path d="M7.05 3.606c-1.18-.7-2.65.188-2.65 1.545v13.698c0 1.357 1.47 2.245 2.65 1.545l11.9-6.849c1.15-.661 1.15-2.429 0-3.09L7.05 3.606z"/>
                                     </svg>
-                            </a>
+                                </span>
+                            </div>
+                            <span class="absolute right-3 top-3 rounded-full bg-emerald-500/90 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                                Owned
+                            </span>
                         </div>
-                    </div>
-                </div>
+                        <div class="flex flex-1 flex-col gap-1.5 p-4">
+                            <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-white">@course.Title</h3>
+                            <p class="text-xs text-zinc-500">@course.AuthorName</p>
+                            @await Html.PartialAsync("_RatingStars", (course.AverageRating, course.RatingsCount))
+                        </div>
+                    </article>
+                </a>
             }
         </div>
     }
