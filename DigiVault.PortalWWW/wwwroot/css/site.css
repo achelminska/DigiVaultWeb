@@ -155,3 +155,15 @@ body {
         height: 7rem;
     }
 }
+
+/* ---------- login page — uniform dark background on mobile ---------- */
+@media (max-width: 639px) {
+    body.auth-login-page {
+        background-color: var(--dv-bg);
+        background-image: none;
+    }
+
+    body.auth-login-page .auth-glow {
+        display: none;
+    }
+}
